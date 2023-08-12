@@ -28,7 +28,7 @@ public class Torch : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        torchLight = torch.GetComponent<Light>();
+        torchLight = torch.GetComponentInChildren<Light>();
 
         currentBattery = maxBattery;
     }
@@ -73,17 +73,15 @@ public class Torch : MonoBehaviour
     {
         if (isTorchActive)
         {
+            hitPos = Vector3.zero;
+
             RaycastHit hit;
             
             if (Physics.SphereCast(torch.transform.position, sphereCastRadius, torch.transform.forward, out hit, torchDistance, ~groundLayer))
             {
                 if (hit.transform.CompareTag("Enemy"))
                 {
-                    hitPos = hit.point + hit.normal * (sphereCastRadius / 2);   
-                }
-                else
-                {
-                    hitPos = Vector3.zero;
+                    hitPos = hit.point + hit.normal * (sphereCastRadius / 2);
                 }
             }
         }
