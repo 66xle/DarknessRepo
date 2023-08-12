@@ -7,28 +7,32 @@ public class Torch : MonoBehaviour
 {
     [Header("Battery")]
     [SerializeField] float maxBattery = 100f;
-    [SerializeField] float drainBattery = 1f;
+    [SerializeField] float drainNormalBattery = 1f;
+    [SerializeField] float drainUVBattery = 3f;
 
     [Header("Sphere Cast")]
-    [SerializeField] float torchDistance = 10f;
+    public float torchDistance = 10f;
     [SerializeField] float sphereCastRadius = 2f;
 
     [Header("References")]
     [SerializeField] GameObject torch;
     [SerializeField] LayerMask groundLayer;
 
-
-    private Light torchLight;
+    private Light normalTorchLight;
+    private Light UVTorchLight;
     private float currentBattery;
 
-    [HideInInspector]
-    public bool isTorchActive = false;
+    
+    public bool isTorchActive = false, isUVActive = false;
     private Vector3 hitPos;
 
     // Start is called before the first frame update
     void Start()
     {
-        torchLight = torch.GetComponentInChildren<Light>();
+        torch.GetComponent<SphereCollider>().radius = (torchDistance + sphereCastRadius) * 2 ;
+
+        normalTorchLight = torch.transform.GetChild(0).GetComponent<Light>();
+        UVTorchLight = torch.transform.GetChild(1).GetComponent<Light>();
 
         currentBattery = maxBattery;
     }
@@ -45,15 +49,28 @@ public class Torch : MonoBehaviour
 
     void ToggleTorch()
     {
-        if (Input.GetKey(KeyCode.Mouse0) && !isTorchActive && currentBattery > 0f)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !isTorchActive && currentBattery > 0f)
         {
-            torchLight.enabled = true;
+            normalTorchLight.enabled = true;
             isTorchActive = true;
         }
         else if (Input.GetKeyUp(KeyCode.Mouse0) && isTorchActive || currentBattery <= 0f)
         {
-            torchLight.enabled = false;
+            normalTorchLight.enabled = false;
             isTorchActive = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Mouse1) && !isTorchActive && currentBattery > 0f)
+        {
+            UVTorchLight.enabled = true;
+            isTorchActive = true;
+            isUVActive = true;
+        }
+        else if (Input.GetKeyUp(KeyCode.Mouse1) && isTorchActive || currentBattery <= 0f)
+        {
+            UVTorchLight.enabled = false;
+            isTorchActive = false;
+            isUVActive = false;
         }
     }
 
@@ -61,9 +78,11 @@ public class Torch : MonoBehaviour
     {
         if (isTorchActive)
         {
+            float drainBattery = isUVActive ? drainUVBattery : drainNormalBattery; 
+
             currentBattery -= drainBattery * Time.deltaTime;
 
-            Debug.Log(currentBattery);
+            //Debug.Log(currentBattery);
         }
 
         currentBattery = Mathf.Clamp(currentBattery, 0, maxBattery);
@@ -76,7 +95,7 @@ public class Torch : MonoBehaviour
             hitPos = Vector3.zero;
 
             RaycastHit hit;
-            
+
             if (Physics.SphereCast(torch.transform.position, sphereCastRadius, torch.transform.forward, out hit, torchDistance, ~groundLayer))
             {
                 if (hit.transform.CompareTag("Enemy"))
@@ -95,4 +114,6 @@ public class Torch : MonoBehaviour
             Gizmos.DrawWireSphere(hitPos, sphereCastRadius);
         }
     }
+
+    
 }

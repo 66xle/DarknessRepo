@@ -4,7 +4,7 @@ Shader "Revealing Under Light"
 	Properties
 	{
 		MyColor("Color", Color) = (1,1,1,1)
-		MyMainTex("Albedo (RGB)", 2D) = "white" {}
+		_MainTex("Albedo (RGB)", 2D) = "white" {}
 		MyGlossiness("Smoothness", Range(0,1)) = 0.5
 		MyMetallic("Metallic", Range(0,1)) = 0.0
 		MyLightDirection("Light Direction", Vector) = (0,0,1,0)
@@ -14,17 +14,17 @@ Shader "Revealing Under Light"
 	}//Properties end
 	SubShader
 	{
-		Tags{ "RenderType" = "Transparent" "Queue" = "Transparent" }
+		Tags{ "RenderType" = "Transparent" "Queue" = "Transparent"}
 		Blend SrcAlpha OneMinusSrcAlpha
 		LOD 200
 		CGPROGRAM
 #pragma surface SurfaceReveal Standard fullforwardshadows alpha:fade
 #pragma target 3.0
-		sampler2D MyMainTex;
+		sampler2D _MainTex;
 
 		struct Input
 		{
-			float2 UVMainTex;
+			float2 uv_MainTex;
 			float3 worldPos;
 		};//Struct end
 
@@ -42,7 +42,7 @@ Shader "Revealing Under Light"
 			float  Scale    = dot(Dir, MyLightDirection);
 			float  Strength = Scale - cos(MyLightAngle * (3.14 / 360.0));
 			Strength        = min(max(Strength * MyStrengthScalor, 0), 1);
-			fixed4 RC       = tex2D(MyMainTex, input.UVMainTex) * MyColor;
+			fixed4 RC       = tex2D(_MainTex, input.uv_MainTex) * MyColor;
 			R.Albedo        = RC.rgb;
 			R.Emission      = RC.rgb * RC.a * Strength;
 			R.Metallic      = MyMetallic;

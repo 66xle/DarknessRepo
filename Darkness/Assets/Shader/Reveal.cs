@@ -7,20 +7,31 @@ public class Reveal : MonoBehaviour
     [SerializeField] Material Mat;
     [SerializeField] Light SpotLight;
     [SerializeField] Torch torchScript;
-	
-	void Update ()
+
+    
+    public bool canReveal = false;
+
+    private Material newMat;
+
+    private void Start()
     {
-        if (torchScript.isTorchActive)
+        newMat = new Material(Mat);
+        GetComponent<MeshRenderer>().material = newMat;
+    }
+
+    void Update ()
+    {
+        if (torchScript.isUVActive && canReveal)
         {
-            Mat.SetVector("MyLightPosition", SpotLight.transform.position);
-            Mat.SetVector("MyLightDirection", -SpotLight.transform.forward);
-            Mat.SetFloat("MyLightAngle", SpotLight.spotAngle);
+            newMat.SetVector("MyLightPosition", SpotLight.transform.position);
+            newMat.SetVector("MyLightDirection", -SpotLight.transform.forward);
+            newMat.SetFloat("MyLightAngle", SpotLight.spotAngle);
         }
         else
         {
-            Mat.SetVector("MyLightPosition", SpotLight.transform.position);
-            Mat.SetVector("MyLightDirection", -SpotLight.transform.forward);
-            Mat.SetFloat("MyLightAngle", 0f);
+            newMat.SetVector("MyLightPosition", SpotLight.transform.position);
+            newMat.SetVector("MyLightDirection", -SpotLight.transform.forward);
+            newMat.SetFloat("MyLightAngle", 0f);
         }
         
     }//Update() end
