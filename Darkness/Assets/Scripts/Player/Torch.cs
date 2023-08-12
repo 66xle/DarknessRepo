@@ -21,7 +21,8 @@ public class Torch : MonoBehaviour
     private Light torchLight;
     private float currentBattery;
 
-    private bool isTorchActive = false;
+    [HideInInspector]
+    public bool isTorchActive = false;
     private Vector3 hitPos;
 
     // Start is called before the first frame update
