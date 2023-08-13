@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Rendering;
 
 public class Torch : MonoBehaviour
@@ -16,14 +17,16 @@ public class Torch : MonoBehaviour
 
     [Header("References")]
     [SerializeField] GameObject torch;
+    
     [SerializeField] LayerMask groundLayer;
+    
 
     private Light normalTorchLight;
     private Light UVTorchLight;
     private float currentBattery;
 
+    public bool isTorchActive = false, isUVActive = false; // used by reveal script
     
-    public bool isTorchActive = false, isUVActive = false;
     private Vector3 hitPos;
 
     // Start is called before the first frame update
@@ -49,24 +52,24 @@ public class Torch : MonoBehaviour
 
     void ToggleTorch()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !isTorchActive && currentBattery > 0f)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !isTorchActive && !isUVActive && currentBattery > 0f)
         {
             normalTorchLight.enabled = true;
             isTorchActive = true;
         }
-        else if (Input.GetKeyUp(KeyCode.Mouse0) && isTorchActive || currentBattery <= 0f)
+        else if (Input.GetKeyUp(KeyCode.Mouse0) && isTorchActive && !isUVActive || currentBattery <= 0f)
         {
             normalTorchLight.enabled = false;
             isTorchActive = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse1) && !isTorchActive && currentBattery > 0f)
+        if (Input.GetKeyDown(KeyCode.Mouse1) && !isTorchActive && !isUVActive && currentBattery > 0f)
         {
             UVTorchLight.enabled = true;
             isTorchActive = true;
             isUVActive = true;
         }
-        else if (Input.GetKeyUp(KeyCode.Mouse1) && isTorchActive || currentBattery <= 0f)
+        else if (Input.GetKeyUp(KeyCode.Mouse1) && isTorchActive && isUVActive || currentBattery <= 0f)
         {
             UVTorchLight.enabled = false;
             isTorchActive = false;
@@ -105,6 +108,8 @@ public class Torch : MonoBehaviour
             }
         }
     }
+
+    
 
     private void OnDrawGizmos()
     {

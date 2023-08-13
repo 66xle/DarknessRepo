@@ -5,15 +5,17 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float walkSpeed = 5f;
-    [Tooltip("Max force applied to the player")] public float maxVelocityChange = 10f;
+    [SerializeField] float walkSpeed = 5f;
+    [Tooltip("Max force applied to the player")][SerializeField] float maxVelocityChange = 10f;
 
     [Header("Camera Settings")]
-    public float mouseSensitivity = 5f;
+    [SerializeField] float mouseSensitivity = 5f;
 
     
     [Header("References")]
-    public Transform playerHead;
+    [SerializeField] Transform playerHead;
+    
+    
 
     [HideInInspector]
     public Vector3 targetVelocity = Vector3.zero; // Made public for head bobbing
@@ -24,6 +26,8 @@ public class PlayerMovement : MonoBehaviour
 
     float xRotation = 0f;
     Vector2 mouseInput;
+
+   
 
     #endregion
 
@@ -39,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        Vector2 test = Vector2.zero;
     }
 
     void FixedUpdate()
@@ -101,4 +105,6 @@ public class PlayerMovement : MonoBehaviour
         // Look Left/Right
         transform.Rotate(Vector3.up * mouseInput.x);
     }
+
+    
 }
