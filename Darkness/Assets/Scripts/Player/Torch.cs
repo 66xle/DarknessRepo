@@ -49,7 +49,7 @@ public class Torch : MonoBehaviour
 
     void ToggleTorch()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !isTorchActive && currentBattery > 0f)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !isTorchActive && !isUVActive && currentBattery > 0f)
         {
             normalTorchLight.enabled = true;
             isTorchActive = true;
@@ -60,13 +60,13 @@ public class Torch : MonoBehaviour
             isTorchActive = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse1) && !isTorchActive && currentBattery > 0f)
+        if (Input.GetKeyDown(KeyCode.Mouse1) && !isTorchActive && !isUVActive && currentBattery > 0f)
         {
             UVTorchLight.enabled = true;
             isTorchActive = true;
             isUVActive = true;
         }
-        else if (Input.GetKeyUp(KeyCode.Mouse1) && isTorchActive || currentBattery <= 0f)
+        else if (Input.GetKeyUp(KeyCode.Mouse1) && isUVActive || currentBattery <= 0f)
         {
             UVTorchLight.enabled = false;
             isTorchActive = false;
