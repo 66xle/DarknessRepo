@@ -16,7 +16,6 @@ public class Reveal : MonoBehaviour
     private void Start()
     {
         newMat = new Material(Mat);
-        GetComponent<MeshRenderer>().material = newMat;
     }
 
     void Update ()
