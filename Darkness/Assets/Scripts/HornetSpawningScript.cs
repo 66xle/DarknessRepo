@@ -24,12 +24,25 @@ public class HornetSpawningScript : MonoBehaviour
     {
         
         timer += Time.deltaTime;
-        if(timer >= 3)
+        Debug.DrawRay(transform.position, spawnPos.normalized);
+        if (timer >= 0.5f)
         {
-           
+            RaycastHit hitInfo;
             RandomiseSpawnPos();
+            
+            if (Physics.Raycast(transform.position, spawnPos.normalized, out hitInfo, radius))
+            {
+                
+                if (hitInfo.collider.CompareTag("Obstacle"))
+                {
+                    Debug.Log("obstacle is in the way");
+                    timer = 0;
+                    return;
+                }
+            }
 
-            Object.Instantiate(spawnObject, spawnPos, rot);
+            Object.Instantiate(spawnObject, spawnPos + spawnCenter, rot);
+
             timer = 0;
         }
 
@@ -43,6 +56,6 @@ public class HornetSpawningScript : MonoBehaviour
         spawnPos.z = z;
         spawnPos.Normalize();
         spawnPos *= Random.Range(0,radius);
-        spawnPos += spawnCenter;
+        //spawnPos += spawnCenter;
     }
 }
