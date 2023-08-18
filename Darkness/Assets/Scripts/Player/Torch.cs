@@ -17,6 +17,7 @@ public class Torch : MonoBehaviour
     [Header("References")]
     [SerializeField] GameObject torch;
     [SerializeField] LayerMask groundLayer;
+    [SerializeField] FixedHornetSpawn spawnScript;
 
     private Light normalTorchLight;
     private Light UVTorchLight;
@@ -101,6 +102,17 @@ public class Torch : MonoBehaviour
                 if (hit.transform.CompareTag("Enemy"))
                 {
                     hitPos = hit.point + hit.normal * (sphereCastRadius / 2);
+
+                    Enemy enemy = hit.collider.gameObject.GetComponent<Enemy>();
+
+                    if (!enemy.isDead)
+                    {
+                        enemy.isDead = true;
+                        StartCoroutine(enemy.Death(spawnScript));
+                    }
+
+                    
+                    
                 }
             }
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,9 +7,12 @@ public class FixedHornetSpawn : MonoBehaviour
 {
     public Transform playerTransform;
     public GameObject spawnObject;
+    public Material shaderMaterial;
     public List<Transform> spawnPosList;
+    public List<string> spawnedEnemiesList;
     public float timer = 0;
     public float spawnInterval = 10;
+    public int maxSpawnCount = 5;
     Quaternion rot;
     // Start is called before the first frame update
     void Start()
@@ -21,12 +25,18 @@ public class FixedHornetSpawn : MonoBehaviour
     {
         timer += Time.deltaTime;
       
-        if (timer >= spawnInterval)
+        if (timer >= spawnInterval && spawnedEnemiesList.Count < maxSpawnCount)
         {
-            int index = Random.Range(0, spawnPosList.Count);
+            int index = UnityEngine.Random.Range(0, spawnPosList.Count);
 
-            GameObject newEnemy = Instantiate(spawnObject, spawnPosList[index].position, rot);
-            newEnemy.GetComponent<Enemy>().targetTransform = playerTransform;
+            Enemy newEnemy = Instantiate(spawnObject, spawnPosList[index].position, rot).GetComponent<Enemy>();
+            newEnemy.targetTransform = playerTransform;
+            newEnemy.SetupMaterial(new Material(shaderMaterial));
+
+            string newGUID = Guid.NewGuid().ToString();
+            newEnemy.guid = newGUID;
+
+            spawnedEnemiesList.Add(newGUID);
 
             timer = 0;
         }

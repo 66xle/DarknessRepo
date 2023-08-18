@@ -1190,7 +1190,7 @@ GameObject:
   - component: {fileID: 1263798270357781479}
   - component: {fileID: 1797886884863245654}
   m_Layer: 0
-  m_Name: Hornet_Anim_Walkcycle
+  m_Name: Hornet
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1253,8 +1253,8 @@ NavMeshAgent:
   m_GameObject: {fileID: 2110077185420495492}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
+  m_Radius: 1
+  m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -1278,7 +1278,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1bc172189b8ff94db690fe1a77e2a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTransfrom: {fileID: 0}
+  targetTransform: {fileID: 0}
+  deathMat: {fileID: 0}
+  deathTime: 1
 --- !u!1 &2147008515937676057
 GameObject:
   m_ObjectHideFlags: 0
