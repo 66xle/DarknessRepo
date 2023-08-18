@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class FixedHornetSpawn : MonoBehaviour
 {
+    public Transform playerTransform;
     public GameObject spawnObject;
+    public List<Transform> spawnPosList;
     public float timer = 0;
     public float spawnInterval = 10;
     Quaternion rot;
@@ -21,9 +23,10 @@ public class FixedHornetSpawn : MonoBehaviour
       
         if (timer >= spawnInterval)
         {
-     
+            int index = Random.Range(0, spawnPosList.Count);
 
-            Object.Instantiate(spawnObject, transform.position, rot);
+            GameObject newEnemy = Instantiate(spawnObject, spawnPosList[index].position, rot);
+            newEnemy.GetComponent<Enemy>().targetTransform = playerTransform;
 
             timer = 0;
         }
