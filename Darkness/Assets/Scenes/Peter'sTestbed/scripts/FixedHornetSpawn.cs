@@ -5,14 +5,19 @@ using UnityEngine;
 
 public class FixedHornetSpawn : MonoBehaviour
 {
-    public Transform playerTransform;
+    [Header("References")]
     public GameObject spawnObject;
     public Material shaderMaterial;
+    public Transform playerTransform;
     public List<Transform> spawnPosList;
-    public List<string> spawnedEnemiesList;
+    private List<Transform> spawnDistanceList = new List<Transform> ();
+    [HideInInspector] public List<string> spawnedEnemiesList;
+
+    [Header("Spawn Settings")]
     public float timer = 0;
     public float spawnInterval = 10;
     public int maxSpawnCount = 5;
+    public float distance = 20f;
     Quaternion rot;
     // Start is called before the first frame update
     void Start()
@@ -23,16 +28,43 @@ public class FixedHornetSpawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CheckDistance();
+
+        SpawnEnemy();
+    }
+
+    void CheckDistance()
+    {
+        foreach (Transform t in spawnPosList)
+        {
+            float d = Vector3.Distance(playerTransform.position, t.position);
+
+            if (d > distance && !spawnDistanceList.Contains(t))
+            {
+                spawnDistanceList.Add(t);
+            }
+            else if (spawnDistanceList.Contains(t))
+            {
+                spawnDistanceList.Remove(t);
+            }
+        }
+    }
+
+    void SpawnEnemy()
+    {
         timer += Time.deltaTime;
-      
+
         if (timer >= spawnInterval && spawnedEnemiesList.Count < maxSpawnCount)
         {
-            int index = UnityEngine.Random.Range(0, spawnPosList.Count);
+            // Random number
+            int index = UnityEngine.Random.Range(0, spawnDistanceList.Count);
 
+            // Spawn enemy and set variables
             Enemy newEnemy = Instantiate(spawnObject, spawnPosList[index].position, rot).GetComponent<Enemy>();
             newEnemy.targetTransform = playerTransform;
             newEnemy.SetupMaterial(new Material(shaderMaterial));
 
+            // Create and assign guid to enemy to keep track
             string newGUID = Guid.NewGuid().ToString();
             newEnemy.guid = newGUID;
 
