@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TNTC_Disintegration
+  m_Name: Hornet Combined-mat
   m_Shader: {fileID: 4800000, guid: 01d95f10ec7e2894c9d447d0e77c7dbc, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
