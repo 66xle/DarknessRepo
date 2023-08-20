@@ -28,7 +28,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FlowMap:
-        m_Texture: {fileID: 2800000, guid: 007d6f49746fc2c419f03f4630ce2fcc, type: 3}
+        m_Texture: {fileID: 2800000, guid: bec1fbfee40fa80458dc94ad1f0c153a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -42,14 +42,14 @@ Material:
     m_Floats:
     - _BumpStr: 1
     - _DissolveBorder: 0.1
-    - _Exapnd: 0
+    - _Exapnd: 1
     - _Glow: 1
     - _R: 0.05
     - _Weight: 0
     m_Colors:
     - _AmbientColor: {r: 0.3679245, g: 0.3679245, b: 0.3679245, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Direction: {r: 0, g: 0, b: 0, a: 0}
+    - _Direction: {r: 0, g: 2, b: 0, a: 0}
     - _DisintegrationColor: {r: 4.759381, g: 4.759381, b: 4.759381, a: 1}
     - _DissolveColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

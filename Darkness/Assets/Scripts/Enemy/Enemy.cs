@@ -19,6 +19,12 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+
+        SkinnedMeshRenderer meshRend = GetComponentInChildren<SkinnedMeshRenderer>();
+
+        deathMat = new Material(meshRend.material);
+
+        meshRend.material = deathMat;
     }
 
     // Update is called once per frame
@@ -42,25 +48,12 @@ public class Enemy : MonoBehaviour
 
             deathMat.SetFloat("_Weight", Mathf.Clamp01(currentTime / deathTime));
             
-
             yield return null;
         }
 
         
         if (transform.gameObject != null)
-            Destroy(transform.gameObject);
+            Destroy(transform.parent.gameObject);
 
-    }
-
-    public void SetupMaterial(Material newMat)
-    {
-        deathMat = newMat;
-
-        SkinnedMeshRenderer[] meshArr = GetComponentsInChildren<SkinnedMeshRenderer>();
-
-        foreach (SkinnedMeshRenderer mesh in meshArr)
-        {
-            mesh.material = deathMat;
-        }
     }
 }
