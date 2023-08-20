@@ -43,7 +43,7 @@ public class FixedHornetSpawn : MonoBehaviour
             {
                 spawnDistanceList.Add(t);
             }
-            else if (spawnDistanceList.Contains(t))
+            else if (d <= distance && spawnDistanceList.Contains(t))
             {
                 spawnDistanceList.Remove(t);
             }
@@ -59,8 +59,8 @@ public class FixedHornetSpawn : MonoBehaviour
             // Random number
             int index = UnityEngine.Random.Range(0, spawnDistanceList.Count);
 
-            // Spawn enemy and set variables
-            Enemy newEnemy = Instantiate(spawnObject, spawnPosList[index].position, rot).GetComponent<Enemy>();
+            // Spawn enemy and set references
+            Enemy newEnemy = Instantiate(spawnObject, spawnDistanceList[index].position, rot).GetComponent<Enemy>();
             newEnemy.targetTransform = playerTransform;
             newEnemy.SetupMaterial(new Material(shaderMaterial));
 
@@ -71,6 +71,23 @@ public class FixedHornetSpawn : MonoBehaviour
             spawnedEnemiesList.Add(newGUID);
 
             timer = 0;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        foreach (Transform t in spawnPosList)
+        {
+            if (spawnDistanceList.Contains(t))
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawLine(t.position, playerTransform.position);
+            }
+            else
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(t.position, playerTransform.position);
+            }
         }
     }
 }

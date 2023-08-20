@@ -3361,7 +3361,7 @@ MonoBehaviour:
   timer: 0
   spawnInterval: 3
   maxSpawnCount: 4
-  distance: 20
+  distance: 30
 --- !u!1 &1743712083
 GameObject:
   m_ObjectHideFlags: 0
