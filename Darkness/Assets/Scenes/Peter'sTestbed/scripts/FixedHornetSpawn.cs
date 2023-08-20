@@ -7,7 +7,6 @@ public class FixedHornetSpawn : MonoBehaviour
 {
     [Header("References")]
     public GameObject spawnObject;
-    public Material shaderMaterial;
     public Transform playerTransform;
     public List<Transform> spawnPosList;
     private List<Transform> spawnDistanceList = new List<Transform> ();
@@ -60,9 +59,8 @@ public class FixedHornetSpawn : MonoBehaviour
             int index = UnityEngine.Random.Range(0, spawnDistanceList.Count);
 
             // Spawn enemy and set references
-            Enemy newEnemy = Instantiate(spawnObject, spawnDistanceList[index].position, rot).GetComponent<Enemy>();
+            Enemy newEnemy = Instantiate(spawnObject, spawnDistanceList[index].position, rot).GetComponentInChildren<Enemy>();
             newEnemy.targetTransform = playerTransform;
-            newEnemy.SetupMaterial(new Material(shaderMaterial));
 
             // Create and assign guid to enemy to keep track
             string newGUID = Guid.NewGuid().ToString();
