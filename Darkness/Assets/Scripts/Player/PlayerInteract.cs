@@ -2,14 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Experimental.AI;
 using UnityEngine.UI;
 
 public class PlayerInteract : MonoBehaviour
 {
+    [Header("Sphere Cast")]
     [SerializeField] float sphereCastRadius = 2f;
     [SerializeField] float interactDistance = 5f;
     [SerializeField] Transform headCamera;
     [SerializeField] LayerMask interactableLayer;
+    [SerializeField] LayerMask scannerLayer;
+
+    [Header("Scanner")]
+    [SerializeField] float scanMaxProgress = 100f;
+    [SerializeField] float timeToMaxProgress = 10f;
+    [SerializeField] List<Transform> scanList;
+    private List<float> scanProgressList = new List<float>();
 
     [Header("UI")]
     [SerializeField] GameObject interactUI;
@@ -23,12 +32,44 @@ public class PlayerInteract : MonoBehaviour
 
     private Vector3 hitPosition;
 
-
+    private void Start()
+    {
+        foreach (Transform t in scanList)
+        {
+            scanProgressList.Add(0f);
+        }
+    }
 
     // Update is called once per frame
     void Update()
     {
+        ScanRayCast();
         InteractRaycast();
+    }
+
+    void ScanRayCast()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 10f, scannerLayer))
+        {
+            // Get scanner were standing on
+            int index = scanList.IndexOf(hit.transform);
+            Scanner scan = scanList[index].GetComponent<Scanner>();
+
+            
+            float addProgress = scanMaxProgress / timeToMaxProgress;
+            scan.AddProgress(addProgress);
+
+            
+            if (scan.IsScanFinished(scanMaxProgress))
+            {
+                Debug.Log("done");
+            }
+            else
+            {
+                Debug.Log("Scanning : " + scan.CurrentProgress);
+            }
+        }
     }
 
     void InteractRaycast()
