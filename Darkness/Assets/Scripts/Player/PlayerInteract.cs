@@ -20,6 +20,10 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] List<Transform> scanList;
     private List<float> scanProgressList = new List<float>();
 
+    [Header("Door")]
+    [SerializeField] Transform door;
+    private bool isDoorTriggered = false;
+
     [Header("UI")]
     [SerializeField] GameObject interactUI;
     [SerializeField] TextMeshProUGUI interactUIText;
@@ -63,12 +67,35 @@ public class PlayerInteract : MonoBehaviour
             
             if (scan.IsScanFinished(scanMaxProgress))
             {
-                Debug.Log("done");
+                AreAllScannersFinished();
             }
             else
             {
                 Debug.Log("Scanning : " + scan.CurrentProgress);
             }
+        }
+    }
+    
+    void AreAllScannersFinished()
+    {
+        foreach (Transform transform in scanList)
+        {
+            Scanner scan = transform.GetComponent<Scanner>();
+
+            if (scan.IsScanFinished(scanMaxProgress))
+            {
+                continue;
+            }
+
+            return;
+        }
+
+        Debug.Log("Play");
+
+        if (!isDoorTriggered)
+        {
+            isDoorTriggered = true;
+            door.GetComponent<Animation>().Play();
         }
     }
 
