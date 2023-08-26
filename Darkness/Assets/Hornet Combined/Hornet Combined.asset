@@ -15,7 +15,7 @@ MonoBehaviour:
   version: 3252
   resultType: 0
   materialsAndUVRects:
-  - material: {fileID: 2100000, guid: 94065bde98286994580c035d30bab29e, type: 2}
+  - material: {fileID: 2100000, guid: 02c9850594e5410469e7081eeec4033b, type: 2}
     atlasRect:
       serializedVersion: 2
       x: 0
@@ -48,6 +48,6 @@ MonoBehaviour:
   - combinedMaterial: {fileID: 2100000, guid: 963adfe4c88449e47a1e3165a4ed8b0e, type: 2}
     considerMeshUVs: 0
     sourceMaterials:
-    - {fileID: 2100000, guid: 94065bde98286994580c035d30bab29e, type: 2}
+    - {fileID: 2100000, guid: 02c9850594e5410469e7081eeec4033b, type: 2}
   resultMaterialsTexArray: []
   doMultiMaterial: 0
