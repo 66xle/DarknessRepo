@@ -34,6 +34,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 72e8e4b1a0e3e134c84a9f60241d054f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - Texture2D_ecf2c02e67b942cf9e1b93dce52f8ddd:
+        m_Texture: {fileID: 2800000, guid: 8c842b7257764fd4b89e1e72fd8400c9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - Texture2D_fe12c19815104fd291b892f5d9c2cd35:
         m_Texture: {fileID: 2800000, guid: a2d5170f04fb9064e9729fad1b82e595, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -51,8 +55,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_1b71f51c75194b9c8afd5068c4f6add8: 232
     - Vector1_3f503c232be24f369e5cb4c48ccb0bdc: 0
-    - Vector1_8b346784fded4eed86b97ee0ca663cad: 0.036
+    - Vector1_8b346784fded4eed86b97ee0ca663cad: 0.168
     - _AddPrecomputedVelocity: 0
     - _AlphaCutoffEnable: 1
     - _AlphaDstBlend: 0

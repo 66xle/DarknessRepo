@@ -46,14 +46,14 @@ public class Enemy : MonoBehaviour
         {
             currentTime += Time.deltaTime;
 
-            deathMat.SetFloat("_Weight", Mathf.Clamp01(currentTime / deathTime));
+            deathMat.SetFloat("_Dissolve", Mathf.Clamp01(currentTime / deathTime));
             
             yield return null;
         }
 
         
         if (transform.gameObject != null)
-            Destroy(transform.parent.gameObject);
+            Destroy(transform.gameObject);
 
     }
 }

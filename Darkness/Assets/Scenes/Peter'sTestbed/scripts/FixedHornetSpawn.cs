@@ -13,10 +13,10 @@ public class FixedHornetSpawn : MonoBehaviour
     [HideInInspector] public List<string> spawnedEnemiesList;
 
     [Header("Spawn Settings")]
-    public float timer = 0;
     public float spawnInterval = 10;
     public int maxSpawnCount = 5;
     public float distance = 20f;
+    private float timer = 0;
     Quaternion rot;
     // Start is called before the first frame update
     void Start()
