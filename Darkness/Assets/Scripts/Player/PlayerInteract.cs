@@ -24,6 +24,8 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] Transform door;
     private bool isDoorTriggered = false;
 
+    
+
     [Header("UI")]
     [SerializeField] GameObject interactUI;
     [SerializeField] TextMeshProUGUI interactUIText;
@@ -95,6 +97,8 @@ public class PlayerInteract : MonoBehaviour
             return;
         }
 
+        gameManager.FinishTask();
+
         Debug.Log("Play");
 
         if (!isDoorTriggered)
@@ -157,6 +161,7 @@ public class PlayerInteract : MonoBehaviour
             fuse.SetActive(true);
 
             ToggleUI();
+            gameManager.FinishTask();
         }
     }
 
@@ -170,6 +175,8 @@ public class PlayerInteract : MonoBehaviour
             gameManager.areAllTasksComplete = false;
 
             ToggleUI();
+
+            gameManager.FinishTask();
         }
     }
 

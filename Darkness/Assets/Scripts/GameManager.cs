@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,9 +17,17 @@ public class GameManager : MonoBehaviour
         Gate3,
     }
 
+    enum Tasks
+    {
+        Fuse,
+        Scan,
+        StartElevator
+    }
+
     [Header("Settings")]
     [SerializeField] Transform environmentToMove;
     [SerializeField] float timeToReachGate;
+    [SerializeField] float graceTimeWhenElevatorStop = 5f;
     [SerializeField] List<Gate> gateOrderList;
     [SerializeField] FixedHornetSpawn spawnScript;
     [HideInInspector] public Gate currentGate;
@@ -27,6 +37,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] float yAxisGate1;
     [SerializeField] float yAxisGate2;
     [SerializeField] float yAxisGate3;
+
+    [Header("Tasks")]
+    [SerializeField] List<Tasks> queue;
+    [SerializeField] string fuseConsoleText = "Missing Fuse";
+    [SerializeField] string scanConsoleText = "Require Identification";
+    [SerializeField] string startConsoleText = "Start Elevator";
+    [SerializeField] TextMeshProUGUI consoleUI;
+
+    private Tasks currentTask;
 
     private float currentYAxis;
     private float speedtoMove;
@@ -42,6 +61,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        currentTask = Tasks.StartElevator;
+
         navSurface = GetComponent<NavMeshSurface>();
 
         currentGate = gateOrderList[0];
@@ -92,7 +113,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        //SetStatic(true);
+        yield return new WaitForSeconds(graceTimeWhenElevatorStop);
 
         // Bake navmesh here
         navSurface.BuildNavMesh();
@@ -105,19 +126,37 @@ public class GameManager : MonoBehaviour
         spawnScript.SetInList(index - 1);
         canSpawnEnemy = true;
 
+        LoadTask();
+
     }
 
-    void SetStatic(bool setStatic)
+    void LoadTask()
     {
-        // Set Static
-        for (int i = 0; i < environmentToMove.childCount; i++)
-        {
-            GameObject child = environmentToMove.GetChild(i).gameObject;
+        currentTask = queue[0];
 
-            for (int j = 0; j < child.transform.childCount; j++)
-            {
-                child.transform.GetChild(j).gameObject.isStatic = setStatic;
-            }
+        if (currentTask == Tasks.Fuse)
+        {
+            consoleUI.text = fuseConsoleText;
         }
+        else  if (currentTask == Tasks.Scan)
+        {
+            consoleUI.text = scanConsoleText;
+        }
+        else if (currentTask == Tasks.StartElevator)
+        {
+            consoleUI.text = startConsoleText;
+        }
+    }
+
+    public void FinishTask()
+    {
+        queue.Remove(currentTask);
+
+        if (currentTask == Tasks.StartElevator)
+            return;
+
+
+        if (queue.Count > 0)
+            LoadTask();
     }
 }
