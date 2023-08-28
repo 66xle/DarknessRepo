@@ -30,7 +30,7 @@ public class Torch : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        torch.GetComponent<SphereCollider>().radius = (torchDistance + sphereCastRadius) * 2 ;
+        //torch.GetComponent<SphereCollider>().radius = (torchDistance + sphereCastRadius) * 2 ;
 
         normalTorchLight = torch.transform.GetChild(0).GetComponent<Light>();
         UVTorchLight = torch.transform.GetChild(1).GetComponent<Light>();
