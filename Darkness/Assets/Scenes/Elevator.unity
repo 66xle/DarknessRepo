@@ -9154,9 +9154,9 @@ MonoBehaviour:
   - {fileID: 1317165992}
   gameManager: {fileID: 1935889356}
   spawnedEnemiesList: []
-  spawnInterval: 20
+  spawnInterval: 5
   maxSpawnCount: 3
-  distance: 30
+  distance: 10
 --- !u!1 &1738373684
 GameObject:
   m_ObjectHideFlags: 0
@@ -10221,6 +10221,8 @@ MonoBehaviour:
   environmentToMove: {fileID: 447874516}
   timeToReachGate: 1
   gateOrderList: 00000000010000000200000003000000
+  spawnScript: {fileID: 1735768063}
+  currentGate: 0
   yAxisGate1: 105.8
   yAxisGate2: 0
   yAxisGate3: 0

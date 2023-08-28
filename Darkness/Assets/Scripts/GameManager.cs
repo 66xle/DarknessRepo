@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 public class GameManager : MonoBehaviour
 {
-    enum Gate
+    public enum Gate
     {
         Start,
         Gate1,
@@ -19,7 +19,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] Transform environmentToMove;
     [SerializeField] float timeToReachGate;
     [SerializeField] List<Gate> gateOrderList;
-    private Gate currentGate;
+    [SerializeField] FixedHornetSpawn spawnScript;
+    [HideInInspector] public Gate currentGate;
     private Gate nextGate;
 
     [Header("Y Axis")]
@@ -31,6 +32,8 @@ public class GameManager : MonoBehaviour
     private float speedtoMove;
     private float yAxisToStop;
     private NavMeshSurface navSurface;
+
+    
 
     [HideInInspector] public bool areAllTasksComplete = true;
     [HideInInspector] public bool canSpawnEnemy = false;
@@ -96,6 +99,12 @@ public class GameManager : MonoBehaviour
         Debug.Log("build");
 
         currentGate = nextGate;
+
+        int index = gateOrderList.IndexOf(currentGate);
+
+        spawnScript.SetInList(index - 1);
+        canSpawnEnemy = true;
+
     }
 
     void SetStatic(bool setStatic)

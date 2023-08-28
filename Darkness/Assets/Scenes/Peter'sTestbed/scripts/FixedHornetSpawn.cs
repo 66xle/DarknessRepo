@@ -34,10 +34,24 @@ public class FixedHornetSpawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckDistance();
 
         if (gameManager.canSpawnEnemy)
+        {
+            CheckDistance();
             SpawnEnemy();
+        }
+    }
+
+    public void SetInList(int gateNumber)
+    {
+        spawnPosList.Clear();
+
+        Transform gate = gateSpawnList[gateNumber];
+
+        for (int i = 0; i < gate.childCount; i++)
+        {
+            spawnPosList.Add(gate.GetChild(i));
+        }
     }
 
     void CheckDistance()
