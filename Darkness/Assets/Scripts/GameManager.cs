@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,14 +30,17 @@ public class GameManager : MonoBehaviour
     private float currentYAxis;
     private float speedtoMove;
     private float yAxisToStop;
-
+    private NavMeshSurface navSurface;
 
     [HideInInspector] public bool areAllTasksComplete = true;
+    [HideInInspector] public bool canSpawnEnemy = false;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        navSurface = GetComponent<NavMeshSurface>();
+
         currentGate = gateOrderList[0];
         nextGate = gateOrderList[1];
 
@@ -65,7 +69,7 @@ public class GameManager : MonoBehaviour
         // Calculate move speed
         speedtoMove = (yAxisToStop - environmentToMove.position.y) / timeToReachGate;
 
-        SetStatic(false);
+        //SetStatic(false);
 
 
         while (currentYAxis != yAxisToStop)
@@ -73,20 +77,23 @@ public class GameManager : MonoBehaviour
             Vector3 newPosition = new Vector3(environmentToMove.position.x, environmentToMove.position.y + Time.deltaTime * speedtoMove, environmentToMove.position.z);
 
             if (newPosition.y > yAxisToStop)
+            {
                 newPosition.y = yAxisToStop;
-
-            Debug.Log(newPosition.y);
+            }
 
             environmentToMove.position = newPosition;
 
+            currentYAxis = newPosition.y;
 
             yield return null;
 
         }
 
-        SetStatic(true);
+        //SetStatic(true);
 
         // Bake navmesh here
+        navSurface.BuildNavMesh();
+        Debug.Log("build");
 
         currentGate = nextGate;
     }

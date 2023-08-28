@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class FixedHornetSpawn : MonoBehaviour
 {
@@ -9,8 +10,9 @@ public class FixedHornetSpawn : MonoBehaviour
     public GameObject spawnObject;
     public Transform playerTransform;
     public List<Transform> gateSpawnList;
+    public GameManager gameManager;
 
-    public List<Transform> spawnPosList;
+    private List<Transform> spawnPosList = new List<Transform>();
     private List<Transform> spawnDistanceList = new List<Transform> ();
     [HideInInspector] public List<string> spawnedEnemiesList;
 
@@ -20,6 +22,9 @@ public class FixedHornetSpawn : MonoBehaviour
     public float distance = 20f;
     private float timer = 0;
     Quaternion rot;
+
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +36,8 @@ public class FixedHornetSpawn : MonoBehaviour
     {
         CheckDistance();
 
-        SpawnEnemy();
+        if (gameManager.canSpawnEnemy)
+            SpawnEnemy();
     }
 
     void CheckDistance()

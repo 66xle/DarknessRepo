@@ -168,6 +168,8 @@ public class PlayerInteract : MonoBehaviour
             gameManager.StartElevator();
 
             gameManager.areAllTasksComplete = false;
+
+            ToggleUI();
         }
     }
 
