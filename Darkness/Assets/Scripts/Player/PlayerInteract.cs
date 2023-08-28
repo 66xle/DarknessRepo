@@ -29,9 +29,14 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] TextMeshProUGUI interactUIText;
     [SerializeField] string fuseText = "Collect Fuse";
     [SerializeField] string insertFuseText = "Insert Fuse";
+    [SerializeField] string consoleText = "Start Elevator";
     private List<GameObject> fuseList = new List<GameObject>();
 
+    [Header("References")]
+    [SerializeField] GameManager gameManager;
+
     bool isInteractUIActive = false;
+    
 
 
     private Vector3 hitPosition;
@@ -121,6 +126,13 @@ public class PlayerInteract : MonoBehaviour
                 
                 InsertFuse(hit.collider.transform.GetChild(0).gameObject);
             }
+            else if (hit.collider.CompareTag("Console") && gameManager.areAllTasksComplete)
+            {
+                if (!isInteractUIActive)
+                    ToggleUI(consoleText);
+
+                ConsoleInteract();
+            }
         }
         else if (isInteractUIActive)
         {
@@ -145,6 +157,17 @@ public class PlayerInteract : MonoBehaviour
             fuse.SetActive(true);
 
             ToggleUI();
+        }
+    }
+
+
+    void ConsoleInteract()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            gameManager.StartElevator();
+
+            gameManager.areAllTasksComplete = false;
         }
     }
 

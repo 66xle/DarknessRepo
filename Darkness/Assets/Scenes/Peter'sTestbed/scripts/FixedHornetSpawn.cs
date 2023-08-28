@@ -8,6 +8,8 @@ public class FixedHornetSpawn : MonoBehaviour
     [Header("References")]
     public GameObject spawnObject;
     public Transform playerTransform;
+    public List<Transform> gateSpawnList;
+
     public List<Transform> spawnPosList;
     private List<Transform> spawnDistanceList = new List<Transform> ();
     [HideInInspector] public List<string> spawnedEnemiesList;
