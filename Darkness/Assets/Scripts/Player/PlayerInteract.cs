@@ -7,8 +7,9 @@ using UnityEngine.UI;
 
 public class PlayerInteract : MonoBehaviour
 {
-    [Header("Sphere Cast")]
-    [SerializeField] float sphereCastRadius = 2f;
+    [Header("Box Detection")]
+    [SerializeField] Vector3 boxCheckSize;
+    [SerializeField] float boxOffsetFromPlayer = 1f;
     [SerializeField] float interactDistance = 5f;
     [SerializeField] Transform headCamera;
     [SerializeField] LayerMask interactableLayer;
@@ -24,7 +25,8 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] Transform door;
     private bool isDoorTriggered = false;
 
-    
+    [Header("Interactable Objects")]
+    [SerializeField] List<Transform> interactableList;
 
     [Header("UI")]
     [SerializeField] GameObject interactUI;
@@ -35,11 +37,12 @@ public class PlayerInteract : MonoBehaviour
     private List<GameObject> fuseList = new List<GameObject>();
 
     [Header("References")]
+    [SerializeField] Camera interactCamera;
     [SerializeField] GameManager gameManager;
 
     bool isInteractUIActive = false;
-    
 
+    
 
     private Vector3 hitPosition;
 
@@ -110,12 +113,29 @@ public class PlayerInteract : MonoBehaviour
 
     void InteractRaycast()
     {
+
+        Vector3 center = headCamera.position + headCamera.forward * boxOffsetFromPlayer;
+
+        Collider[] colliders = Physics.OverlapBox(center, boxCheckSize / 2, headCamera.rotation, interactableLayer);
+
+        if (colliders.Length == 0)
+        {
+            if (isInteractUIActive)
+            {
+                ToggleUI();
+            }
+
+            return;
+        }
+
+        Debug.Log("hit");
+
+        Vector3 direction = colliders[0].transform.position - headCamera.position;
+
         RaycastHit hit;
 
-        if (Physics.SphereCast(headCamera.position, sphereCastRadius, headCamera.forward, out hit, interactDistance, interactableLayer))
+        if (Physics.Raycast(headCamera.position, direction, out hit, interactDistance, interactableLayer))
         {
-            hitPosition = hit.point + hit.normal * (sphereCastRadius / 2);
-
             if (hit.collider.CompareTag("Fuse"))
             {
                 if (!isInteractUIActive)
@@ -125,37 +145,73 @@ public class PlayerInteract : MonoBehaviour
             }
             else if (hit.collider.CompareTag("FusePlate") && fuseList.Count > 0)
             {
+
                 if (!isInteractUIActive)
                     ToggleUI(insertFuseText);
-                
+
                 InsertFuse(hit.collider.transform.GetChild(0).gameObject);
             }
             else if (hit.collider.CompareTag("Console") && gameManager.areAllTasksComplete)
             {
+
                 if (!isInteractUIActive)
                     ToggleUI(consoleText);
 
                 ConsoleInteract();
             }
+            else if (isInteractUIActive)
+            {
+                ToggleUI();
+            }
         }
-        else if (isInteractUIActive)
+        
+
+        foreach (Transform transform in interactableList)
         {
-            ToggleUI();
+            Collider collider = transform.GetComponent<Collider>();
+
+            
+        }
+    }
+
+    bool IsLookingAtInteractable(Camera camera, Collider collider)
+    {
+        Bounds bounds = collider.bounds;
+
+        Plane[] cameraFustrum = GeometryUtility.CalculateFrustumPlanes(camera);
+
+
+        if (GeometryUtility.TestPlanesAABB(cameraFustrum, bounds))
+        {
+            Debug.Log("yes");
+            return true;
+        }
+        else
+        {
+            if (isInteractUIActive)
+                ToggleUI();
+
+            return false;
         }
     }
 
     void CollectFuse(GameObject fuseObject)
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive)
         {
             fuseList.Add(fuseObject);
-            Destroy(fuseObject);
+
+            if (fuseObject != null)
+            {
+                interactableList.Remove(fuseObject.transform);
+                Destroy(fuseObject);
+            }
         }
     }
 
     void InsertFuse(GameObject fuse)
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive)
         {
             fuseList.Clear();
             fuse.SetActive(true);
@@ -168,7 +224,7 @@ public class PlayerInteract : MonoBehaviour
 
     void ConsoleInteract()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive )
         {
             gameManager.StartElevator();
 
@@ -197,9 +253,17 @@ public class PlayerInteract : MonoBehaviour
         interactUIText.text = text;
     }
 
+
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(hitPosition, sphereCastRadius);
+        Gizmos.color = Color.yellow;
+
+        Vector3 center = headCamera.position + headCamera.forward * boxOffsetFromPlayer;
+        
+        Gizmos.matrix = Matrix4x4.TRS(center, headCamera.rotation, headCamera.lossyScale);
+
+
+        Gizmos.DrawWireCube(Vector3.zero, boxCheckSize);
+       
     }
 }
