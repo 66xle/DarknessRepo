@@ -665,7 +665,7 @@ GameObject:
   m_Component:
   - component: {fileID: 30070191}
   m_Layer: 0
-  m_Name: Part 1 Tunnel and Area (1)
+  m_Name: Part 2 Tunnel and Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1608,6 +1608,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 217469787}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &239561850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 239561851}
+  m_Layer: 0
+  m_Name: Scan Gate 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &239561851
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 239561850}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 26.76, y: -83.91, z: -8.02}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 992491428}
+  m_Father: {fileID: 886108666}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &254171307
 GameObject:
   m_ObjectHideFlags: 0
@@ -3684,25 +3715,25 @@ MonoBehaviour:
   boxCheckSize: {x: 0.5, y: 0.5, z: 2}
   boxOffsetFromPlayer: 1
   interactDistance: 5
-  headCamera: {fileID: 1962180275}
   interactableLayer:
     serializedVersion: 2
     m_Bits: 128
+  scanMaxProgress: 100
+  timeToMaxProgress: 1
   scannerLayer:
     serializedVersion: 2
     m_Bits: 256
-  scanMaxProgress: 100
-  timeToMaxProgress: 1
-  scanList:
-  - {fileID: 1412706181}
-  - {fileID: 979986780}
+  scanListGate1: {fileID: 239561851}
+  scanListGate2: {fileID: 0}
+  scanListGate3: {fileID: 0}
   door: {fileID: 644956382}
-  interactUI: {fileID: 103664880}
-  interactUIText: {fileID: 513356146}
   fuseText: Collect Fuse
   insertFuseText: Insert Fuse
   consoleText: Start Elevator
   gameManager: {fileID: 1935889356}
+  headCamera: {fileID: 1962180275}
+  interactUI: {fileID: 103664880}
+  interactUIText: {fileID: 513356146}
 --- !u!1 &638261029
 GameObject:
   m_ObjectHideFlags: 0
@@ -5148,6 +5179,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 239561851}
   - {fileID: 1317165992}
   - {fileID: 1136261778}
   m_Father: {fileID: 1777739038}
@@ -6145,6 +6177,114 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 982008526}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &992491427
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 992491428}
+  - component: {fileID: 992491432}
+  - component: {fileID: 992491431}
+  - component: {fileID: 992491430}
+  - component: {fileID: 992491429}
+  m_Layer: 8
+  m_Name: Scanner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &992491428
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992491427}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -20.93, y: -2.17, z: 27.33}
+  m_LocalScale: {x: 5, y: 0.5, z: 5}
+  m_Children: []
+  m_Father: {fileID: 239561851}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &992491429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992491427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea3d980e5aa699840b686da88c05ca2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &992491430
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992491427}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &992491431
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992491427}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 257
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 73c176f402d2c2f4d929aa5da7585d17, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &992491432
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992491427}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1007853424
 GameObject:
@@ -7597,7 +7737,7 @@ Transform:
   m_Children:
   - {fileID: 1496954428}
   m_Father: {fileID: 886108666}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1153469021
 GameObject:
@@ -9043,7 +9183,7 @@ Transform:
   - {fileID: 1084514182}
   - {fileID: 928419561}
   m_Father: {fileID: 886108666}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1323225480
 GameObject:
@@ -10673,13 +10813,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnObject: {fileID: 5485398145932230141, guid: 693327212d338c64182fe183eb3bb4ad, type: 3}
   playerTransform: {fileID: 624714302}
-  gateSpawnList:
-  - {fileID: 1317165992}
   gameManager: {fileID: 1935889356}
   spawnedEnemiesList: []
-  spawnInterval: 1
+  spawnInterval: 5
   maxSpawnCount: 3
   distance: 10
+  spawnPointGate1: {fileID: 1317165992}
+  spawnPointGate2: {fileID: 0}
+  spawnPointGate3: {fileID: 0}
 --- !u!1 &1738373684
 GameObject:
   m_ObjectHideFlags: 0
@@ -11932,19 +12073,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   environmentToMove: {fileID: 447874516}
-  timeToReachGate: 1
-  graceTimeWhenElevatorStop: 5
-  currentGate: 0
+  timeToReachGate: 10
+  graceTimeWhenElevatorStop: 2
+  currentGateLevel: {fileID: 0}
   yAxisGate1: 105.7
   yAxisGate2: 181.71
   yAxisGate3: 0
   fuseConsoleText: Missing Fuse
   scanConsoleText: Require Identification
   startConsoleText: Start Elevator
+  movingConsoleText: Continuing Descent
+  reachedConsoleText: Destination Reached
   spawnScript: {fileID: 1735768063}
+  interactScript: {fileID: 624714306}
   consoleUI: {fileID: 1770328103}
-  gateOrderList: 00000000010000000200000003000000
-  queue: 0000000001000000
+  gateOrderList:
+  - {fileID: 11400000, guid: faf1210ab161378419fc6707ee671b6e, type: 2}
+  - {fileID: 11400000, guid: e6c7d7a1e3671734980ab343fb01bd24, type: 2}
+  - {fileID: 11400000, guid: 91241a16905041045968795838791616, type: 2}
   areAllTasksComplete: 1
   canSpawnEnemy: 0
 --- !u!114 &1935889357

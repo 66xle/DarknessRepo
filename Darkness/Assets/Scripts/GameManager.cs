@@ -9,20 +9,6 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public enum Gate
-    {
-        Start,
-        Gate1,
-        Gate2,
-        Gate3,
-    }
-
-    enum Tasks
-    {
-        Fuse,
-        Scan,
-        StartElevator
-    }
 
     [Header("Elevator Setting")]
     [SerializeField] Transform environmentToMove;
@@ -30,8 +16,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] float graceTimeWhenElevatorStop = 5f;
 
 
-    [HideInInspector] public Gate currentGate;
-    private Gate nextGate;
+    [HideInInspector] public GateLevel currentGateLevel;
+    private GateLevel nextGateLevel;
 
     [Header("Y Axis")]
     [SerializeField] float yAxisGate1;
@@ -42,19 +28,22 @@ public class GameManager : MonoBehaviour
     [SerializeField] string fuseConsoleText = "Missing Fuse";
     [SerializeField] string scanConsoleText = "Require Identification";
     [SerializeField] string startConsoleText = "Start Elevator";
+    [SerializeField] string movingConsoleText = "Continuing Descent";
+    [SerializeField] string reachedConsoleText = "Destination Reached";
     
     [Header("References")]
     [SerializeField] FixedHornetSpawn spawnScript;
+    [SerializeField] PlayerInteract interactScript;
     [SerializeField] TextMeshProUGUI consoleUI;
 
     [Header("Gate Order")]
-    [SerializeField] List<Gate> gateOrderList;
+    [SerializeField] List<GateLevel> gateOrderList;
 
-    [Header("Task Order")]
-    [SerializeField] List<Tasks> queue;
+    private List<GateLevel> gateQueue;
+    private List<GateLevel.Tasks> taskQueue;
 
 
-    private Tasks currentTask;
+    private GateLevel.Tasks currentTask;
     private float currentYAxis;
     private float speedtoMove;
     private float yAxisToStop;
@@ -67,28 +56,27 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentTask = Tasks.StartElevator;
-
         navSurface = GetComponent<NavMeshSurface>();
 
-        currentGate = gateOrderList[0];
-        nextGate = gateOrderList[1];
+        gateQueue = gateOrderList;
 
-        currentYAxis = environmentToMove.position.y;
+        currentGateLevel = gateQueue[0];
+        taskQueue = new List<GateLevel.Tasks>(currentGateLevel.taskList);
+
+
+        currentTask = taskQueue[0];
+        currentYAxis = currentGateLevel.yAxis;
     }
 
 
     public void StartElevator()
     {
-        int index = gateOrderList.IndexOf(currentGate);
-        nextGate = gateOrderList[index + 1];
+        consoleUI.text = movingConsoleText;
 
-        if (nextGate == Gate.Gate1)
-            yAxisToStop = yAxisGate1;
-        else if (nextGate == Gate.Gate2)
-            yAxisToStop = yAxisGate2;
-        else if (nextGate == Gate.Gate3)
-            yAxisToStop = yAxisGate3;
+        gateQueue.Remove(currentGateLevel);
+        nextGateLevel = gateQueue[0];
+
+        yAxisToStop = nextGateLevel.yAxis;
 
         StartCoroutine(MoveEnvironment());
     }
@@ -112,21 +100,25 @@ public class GameManager : MonoBehaviour
 
             currentYAxis = newPosition.y;
 
+
+            // Bake navmesh here
+            navSurface.BuildNavMesh();
+            Debug.Log("build");
+
             yield return null;
 
         }
 
+        consoleUI.text = reachedConsoleText;
+
         yield return new WaitForSeconds(graceTimeWhenElevatorStop);
 
-        // Bake navmesh here
-        navSurface.BuildNavMesh();
-        Debug.Log("build");
 
-        currentGate = nextGate;
+        currentGateLevel = nextGateLevel;
+        taskQueue = new List<GateLevel.Tasks>(currentGateLevel.taskList);
 
-        // Get next gate
-        int index = gateOrderList.IndexOf(currentGate);
-        spawnScript.LoadNextGate(index - 1);
+        // Load spawning enemies
+        spawnScript.LoadSpawnPoints(currentGateLevel.currentGate);
         canSpawnEnemy = true;
 
         LoadTask();
@@ -134,31 +126,36 @@ public class GameManager : MonoBehaviour
 
     void LoadTask()
     {
-        currentTask = queue[0];
+        currentTask = taskQueue[0];
 
-        if (currentTask == Tasks.Fuse)
+        if (currentTask == GateLevel.Tasks.Fuse)
         {
             consoleUI.text = fuseConsoleText;
         }
-        else  if (currentTask == Tasks.Scan)
+        else  if (currentTask == GateLevel.Tasks.Scan)
         {
+            interactScript.LoadScanners(currentGateLevel.currentGate);
             consoleUI.text = scanConsoleText;
         }
-        else if (currentTask == Tasks.StartElevator)
+        else if (currentTask == GateLevel.Tasks.StartElevator)
         {
             consoleUI.text = startConsoleText;
+            areAllTasksComplete = true;
         }
     }
 
     public void FinishTask()
     {
-        queue.Remove(currentTask);
+        taskQueue.Remove(currentTask);
 
-        if (currentTask == Tasks.StartElevator)
+        if (currentTask == GateLevel.Tasks.StartElevator)
+        {
+            
             return;
+        }
 
 
-        if (queue.Count > 0)
+        if (taskQueue.Count > 0)
             LoadTask();
     }
 }

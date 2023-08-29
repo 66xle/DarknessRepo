@@ -17,9 +17,12 @@ public class PlayerInteract : MonoBehaviour
     [Header("Scanner")]
     [SerializeField] float scanMaxProgress = 100f;
     [SerializeField] float timeToMaxProgress = 10f;
-    [SerializeField] List<Transform> scanList;
     [SerializeField] LayerMask scannerLayer;
-    private List<float> scanProgressList = new List<float>();
+    [SerializeField] Transform scanListGate1;
+    [SerializeField] Transform scanListGate2;
+    [SerializeField] Transform scanListGate3;
+    private Transform currentScanParent;
+    private List<Transform> currentScanList = new List<Transform>();
 
     [Header("Door")]
     [SerializeField] Transform door;
@@ -42,11 +45,21 @@ public class PlayerInteract : MonoBehaviour
 
     private Vector3 hitPosition;
 
-    private void Start()
+
+    public void LoadScanners(GateLevel.Gate gate)
     {
-        foreach (Transform t in scanList)
+        currentScanList.Clear();
+
+        if (gate == GateLevel.Gate.Gate1)
+            currentScanParent = scanListGate1;
+        else if (gate == GateLevel.Gate.Gate2)
+            currentScanParent = scanListGate2;
+        else if (gate == GateLevel.Gate.Gate3)
+            currentScanParent = scanListGate3;
+
+        for (int i = 0; i < currentScanParent.childCount; i++)
         {
-            scanProgressList.Add(0f);
+            currentScanList.Add(currentScanParent.GetChild(i));
         }
     }
 
@@ -63,8 +76,8 @@ public class PlayerInteract : MonoBehaviour
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 10f, scannerLayer))
         {
             // Get scanner were standing on
-            int index = scanList.IndexOf(hit.transform);
-            Scanner scan = scanList[index].GetComponent<Scanner>();
+            int index = currentScanList.IndexOf(hit.transform);
+            Scanner scan = currentScanList[index].GetComponent<Scanner>();
 
             
             float addProgress = scanMaxProgress / timeToMaxProgress;
@@ -84,7 +97,7 @@ public class PlayerInteract : MonoBehaviour
     
     void AreAllScannersFinished()
     {
-        foreach (Transform transform in scanList)
+        foreach (Transform transform in currentScanList)
         {
             Scanner scan = transform.GetComponent<Scanner>();
 
@@ -97,14 +110,6 @@ public class PlayerInteract : MonoBehaviour
         }
 
         gameManager.FinishTask();
-
-        Debug.Log("Play");
-
-        if (!isDoorTriggered)
-        {
-            isDoorTriggered = true;
-            door.GetComponent<Animation>().Play();
-        }
     }
 
     void InteractRaycast()
@@ -149,7 +154,6 @@ public class PlayerInteract : MonoBehaviour
             }
             else if (hit.collider.CompareTag("Console") && gameManager.areAllTasksComplete)
             {
-
                 if (!isInteractUIActive)
                     ToggleUI(consoleText);
 
@@ -159,27 +163,6 @@ public class PlayerInteract : MonoBehaviour
             {
                 ToggleUI();
             }
-        }
-    }
-
-    bool IsLookingAtInteractable(Camera camera, Collider collider)
-    {
-        Bounds bounds = collider.bounds;
-
-        Plane[] cameraFustrum = GeometryUtility.CalculateFrustumPlanes(camera);
-
-
-        if (GeometryUtility.TestPlanesAABB(cameraFustrum, bounds))
-        {
-            Debug.Log("yes");
-            return true;
-        }
-        else
-        {
-            if (isInteractUIActive)
-                ToggleUI();
-
-            return false;
         }
     }
 
