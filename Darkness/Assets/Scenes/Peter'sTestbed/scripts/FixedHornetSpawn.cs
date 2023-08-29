@@ -42,7 +42,7 @@ public class FixedHornetSpawn : MonoBehaviour
         }
     }
 
-    public void SetInList(int gateNumber)
+    public void LoadNextGate(int gateNumber)
     {
         spawnPosList.Clear();
 

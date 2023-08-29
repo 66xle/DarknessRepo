@@ -11,38 +11,34 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] Vector3 boxCheckSize;
     [SerializeField] float boxOffsetFromPlayer = 1f;
     [SerializeField] float interactDistance = 5f;
-    [SerializeField] Transform headCamera;
     [SerializeField] LayerMask interactableLayer;
-    [SerializeField] LayerMask scannerLayer;
 
+    
     [Header("Scanner")]
     [SerializeField] float scanMaxProgress = 100f;
     [SerializeField] float timeToMaxProgress = 10f;
     [SerializeField] List<Transform> scanList;
+    [SerializeField] LayerMask scannerLayer;
     private List<float> scanProgressList = new List<float>();
 
     [Header("Door")]
     [SerializeField] Transform door;
     private bool isDoorTriggered = false;
 
-    [Header("Interactable Objects")]
-    [SerializeField] List<Transform> interactableList;
-
     [Header("UI")]
-    [SerializeField] GameObject interactUI;
-    [SerializeField] TextMeshProUGUI interactUIText;
+    
     [SerializeField] string fuseText = "Collect Fuse";
     [SerializeField] string insertFuseText = "Insert Fuse";
     [SerializeField] string consoleText = "Start Elevator";
     private List<GameObject> fuseList = new List<GameObject>();
 
     [Header("References")]
-    [SerializeField] Camera interactCamera;
     [SerializeField] GameManager gameManager;
+    [SerializeField] Transform headCamera;
+    [SerializeField] GameObject interactUI;
+    [SerializeField] TextMeshProUGUI interactUIText;
 
     bool isInteractUIActive = false;
-
-    
 
     private Vector3 hitPosition;
 
@@ -164,14 +160,6 @@ public class PlayerInteract : MonoBehaviour
                 ToggleUI();
             }
         }
-        
-
-        foreach (Transform transform in interactableList)
-        {
-            Collider collider = transform.GetComponent<Collider>();
-
-            
-        }
     }
 
     bool IsLookingAtInteractable(Camera camera, Collider collider)
@@ -203,7 +191,6 @@ public class PlayerInteract : MonoBehaviour
 
             if (fuseObject != null)
             {
-                interactableList.Remove(fuseObject.transform);
                 Destroy(fuseObject);
             }
         }

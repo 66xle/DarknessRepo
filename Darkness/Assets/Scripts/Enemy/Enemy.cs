@@ -50,7 +50,6 @@ public class Enemy : MonoBehaviour
             
             yield return null;
         }
-
         
         if (transform.gameObject != null)
             Destroy(transform.gameObject);

@@ -24,12 +24,12 @@ public class GameManager : MonoBehaviour
         StartElevator
     }
 
-    [Header("Settings")]
+    [Header("Elevator Setting")]
     [SerializeField] Transform environmentToMove;
     [SerializeField] float timeToReachGate;
     [SerializeField] float graceTimeWhenElevatorStop = 5f;
-    [SerializeField] List<Gate> gateOrderList;
-    [SerializeField] FixedHornetSpawn spawnScript;
+
+
     [HideInInspector] public Gate currentGate;
     private Gate nextGate;
 
@@ -38,21 +38,27 @@ public class GameManager : MonoBehaviour
     [SerializeField] float yAxisGate2;
     [SerializeField] float yAxisGate3;
 
-    [Header("Tasks")]
-    [SerializeField] List<Tasks> queue;
+    [Header("Console Text")]
     [SerializeField] string fuseConsoleText = "Missing Fuse";
     [SerializeField] string scanConsoleText = "Require Identification";
     [SerializeField] string startConsoleText = "Start Elevator";
+    
+    [Header("References")]
+    [SerializeField] FixedHornetSpawn spawnScript;
     [SerializeField] TextMeshProUGUI consoleUI;
 
-    private Tasks currentTask;
+    [Header("Gate Order")]
+    [SerializeField] List<Gate> gateOrderList;
 
+    [Header("Task Order")]
+    [SerializeField] List<Tasks> queue;
+
+
+    private Tasks currentTask;
     private float currentYAxis;
     private float speedtoMove;
     private float yAxisToStop;
     private NavMeshSurface navSurface;
-
-    
 
     [HideInInspector] public bool areAllTasksComplete = true;
     [HideInInspector] public bool canSpawnEnemy = false;
@@ -93,9 +99,6 @@ public class GameManager : MonoBehaviour
         // Calculate move speed
         speedtoMove = (yAxisToStop - environmentToMove.position.y) / timeToReachGate;
 
-        //SetStatic(false);
-
-
         while (currentYAxis != yAxisToStop)
         {
             Vector3 newPosition = new Vector3(environmentToMove.position.x, environmentToMove.position.y + Time.deltaTime * speedtoMove, environmentToMove.position.z);
@@ -121,13 +124,12 @@ public class GameManager : MonoBehaviour
 
         currentGate = nextGate;
 
+        // Get next gate
         int index = gateOrderList.IndexOf(currentGate);
-
-        spawnScript.SetInList(index - 1);
+        spawnScript.LoadNextGate(index - 1);
         canSpawnEnemy = true;
 
         LoadTask();
-
     }
 
     void LoadTask()

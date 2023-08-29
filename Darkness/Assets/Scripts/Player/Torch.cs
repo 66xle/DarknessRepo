@@ -61,18 +61,18 @@ public class Torch : MonoBehaviour
             isTorchActive = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse1) && !isTorchActive && !isUVActive && currentBattery > 0f)
-        {
-            UVTorchLight.enabled = true;
-            isTorchActive = true;
-            isUVActive = true;
-        }
-        else if (Input.GetKeyUp(KeyCode.Mouse1) && isUVActive || currentBattery <= 0f)
-        {
-            UVTorchLight.enabled = false;
-            isTorchActive = false;
-            isUVActive = false;
-        }
+        //if (Input.GetKeyDown(KeyCode.Mouse1) && !isTorchActive && !isUVActive && currentBattery > 0f)
+        //{
+        //    UVTorchLight.enabled = true;
+        //    isTorchActive = true;
+        //    isUVActive = true;
+        //}
+        //else if (Input.GetKeyUp(KeyCode.Mouse1) && isUVActive || currentBattery <= 0f)
+        //{
+        //    UVTorchLight.enabled = false;
+        //    isTorchActive = false;
+        //    isUVActive = false;
+        //}
     }
 
     void Battery()
