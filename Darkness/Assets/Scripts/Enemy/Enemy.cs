@@ -7,8 +7,10 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
     public float deathTime;
+    public float edgeWidth = 0.5f;
     private Material deathMat;
     private NavMeshAgent agent;
+    private Animator animator;
     AudioSource footSteps;
     public AudioClip otherClip;
     /*[HideInInspector]*/ public bool isDead;
@@ -26,9 +28,6 @@ public class Enemy : MonoBehaviour
         deathMat = new Material(meshRend.material);
 
         meshRend.material = deathMat;
-
-        footSteps = this.GetComponent<AudioSource>();
-        footSteps.Play();
     }
 
     // Update is called once per frame
@@ -61,14 +60,22 @@ public class Enemy : MonoBehaviour
     {
         spawnScript.spawnedEnemiesList.Remove(guid);
 
+        animator.SetTrigger("Death");
+
         float currentTime = 0f;
+
+        deathMat.SetFloat("_EdgeWidth", edgeWidth);
 
         while (currentTime < deathTime)
         {
             currentTime += Time.deltaTime;
 
             deathMat.SetFloat("_Dissolve", Mathf.Clamp01(currentTime / deathTime));
+            float percentage = currentTime / deathTime;
+
             
+
+
             yield return null;
         }
         

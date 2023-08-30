@@ -4111,7 +4111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxBattery: 100
-  drainNormalBattery: 30
+  drainNormalBattery: 20
   rechargeCooldown: 0.5
   rechargeRate: 20
   drainUVBattery: 0
@@ -7414,7 +7414,7 @@ MonoBehaviour:
   clearDepth: 1
   volumeLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   volumeAnchorOverride: {fileID: 0}
   antialiasing: 0
   SMAAQuality: 2
@@ -12075,7 +12075,7 @@ MonoBehaviour:
   playerTransform: {fileID: 624714302}
   gameManager: {fileID: 1935889356}
   spawnedEnemiesList: []
-  spawnInterval: 5
+  spawnInterval: 1
   maxSpawnCount: 3
   distance: 10
   spawnPointGate1: {fileID: 1317165992}
@@ -13333,8 +13333,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   environmentToMove: {fileID: 447874516}
-  timeToReachGate: 10
-  graceTimeWhenElevatorStop: 2
+  timeToReachGate: 1
+  graceTimeWhenElevatorStop: 0
   currentGateLevel: {fileID: 0}
   fuseConsoleText: Missing Fuse
   scanConsoleText: Require Identification

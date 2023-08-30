@@ -1883,7 +1883,7 @@
     },
     "m_Name": "EdgeWidth",
     "m_DefaultReferenceName": "Vector1_8b346784fded4eed86b97ee0ca663cad",
-    "m_OverrideReferenceName": "",
+    "m_OverrideReferenceName": "_EdgeWidth",
     "m_GeneratePropertyBlock": true,
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,

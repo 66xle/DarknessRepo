@@ -2209,7 +2209,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1bc172189b8ff94db690fe1a77e2a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathTime: 1
+  deathTime: 4
+  edgeWidth: 0.2
   otherClip: {fileID: 8300000, guid: 56e3c7d0e7d4fbf4d84577582b3f0581, type: 3}
   isDead: 0
   targetTransform: {fileID: 0}
