@@ -9,8 +9,9 @@ public class Enemy : MonoBehaviour
     public float deathTime;
     private Material deathMat;
     private NavMeshAgent agent;
-
-    [HideInInspector] public bool isDead;
+    AudioSource footSteps;
+    public AudioClip otherClip;
+    /*[HideInInspector]*/ public bool isDead;
 
     [HideInInspector] public Transform targetTransform;
     [HideInInspector] public string guid;
@@ -25,15 +26,35 @@ public class Enemy : MonoBehaviour
         deathMat = new Material(meshRend.material);
 
         meshRend.material = deathMat;
+
+        footSteps = this.GetComponent<AudioSource>();
+        footSteps.Play();
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+    
         if (!isDead && agent.isOnNavMesh)
+        {
             agent.SetDestination(targetTransform.position);
+            if(!footSteps.isPlaying)
+            {
+                //footSteps.Play();
+
+            }
+
+        }
         else if (isDead && agent.isOnNavMesh)
+        {
             agent.SetDestination(transform.position);
+            footSteps.clip = otherClip;
+            footSteps.Play();
+
+        }
+            
+        
     }
 
     public IEnumerator Death(FixedHornetSpawn spawnScript)
