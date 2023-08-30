@@ -5,11 +5,11 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-
     [Header("Elevator Setting")]
     [SerializeField] Transform environmentToMove;
     [SerializeField] float timeToReachGate;
@@ -18,11 +18,6 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector] public GateLevel currentGateLevel;
     private GateLevel nextGateLevel;
-
-    [Header("Y Axis")]
-    [SerializeField] float yAxisGate1;
-    [SerializeField] float yAxisGate2;
-    [SerializeField] float yAxisGate3;
 
     [Header("Console Text")]
     [SerializeField] string fuseConsoleText = "Missing Fuse";
@@ -35,6 +30,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] FixedHornetSpawn spawnScript;
     [SerializeField] PlayerInteract interactScript;
     [SerializeField] TextMeshProUGUI consoleUI;
+    [SerializeField] GameObject pauseMenu;
 
     [Header("Gate Order")]
     [SerializeField] List<GateLevel> gateOrderList;
@@ -52,6 +48,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public bool areAllTasksComplete = true;
     [HideInInspector] public bool canSpawnEnemy = false;
 
+    [HideInInspector] public bool isPaused = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -68,6 +66,43 @@ public class GameManager : MonoBehaviour
         currentYAxis = currentGateLevel.yAxis;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused)
+            {// unpause
+                ResumeGame();
+            }
+            else
+            {// pause
+                PauseGame();
+            }
+        }
+    }
+
+    void PauseGame()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Time.timeScale = 0;
+        pauseMenu.SetActive(true);
+        isPaused = true;
+    }
+
+    public void ResumeGame()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Time.timeScale = 1;
+        pauseMenu.SetActive(false);
+        isPaused = false;
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
 
     public void StartElevator()
     {
@@ -89,6 +124,7 @@ public class GameManager : MonoBehaviour
 
         while (currentYAxis != yAxisToStop)
         {
+
             Vector3 newPosition = new Vector3(environmentToMove.position.x, environmentToMove.position.y + Time.deltaTime * speedtoMove, environmentToMove.position.z);
 
             if (newPosition.y > yAxisToStop)
@@ -103,7 +139,7 @@ public class GameManager : MonoBehaviour
 
             // Bake navmesh here
             navSurface.BuildNavMesh();
-            Debug.Log("build");
+            
 
             yield return null;
 
@@ -113,13 +149,15 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(graceTimeWhenElevatorStop);
 
-
+        // Set gate level
         currentGateLevel = nextGateLevel;
         taskQueue = new List<GateLevel.Tasks>(currentGateLevel.taskList);
 
         // Load spawning enemies
         spawnScript.LoadSpawnPoints(currentGateLevel.currentGate);
         canSpawnEnemy = true;
+
+        Debug.Log("spawn enemies");
 
         LoadTask();
     }

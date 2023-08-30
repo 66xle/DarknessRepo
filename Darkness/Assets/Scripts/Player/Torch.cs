@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,13 +19,14 @@ public class Torch : MonoBehaviour
     [SerializeField] GameObject torch;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] FixedHornetSpawn spawnScript;
+    [SerializeField] GameManager gameManager;
 
     private Light normalTorchLight;
     private Light UVTorchLight;
     private float currentBattery;
 
     
-    public bool isTorchActive = false, isUVActive = false;
+    [HideInInspector] public bool isTorchActive = false, isUVActive = false;
     private Vector3 hitPos;
 
     // Start is called before the first frame update
@@ -39,6 +41,9 @@ public class Torch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gameManager.isPaused)
+            return;
+
         ToggleTorch();
 
         Raycast();

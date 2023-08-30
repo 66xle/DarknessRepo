@@ -37,7 +37,7 @@ public class FixedHornetSpawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameManager.canSpawnEnemy)
+        if (gameManager.canSpawnEnemy && !gameManager.isPaused)
         {
             CheckDistance();
             SpawnEnemy();
