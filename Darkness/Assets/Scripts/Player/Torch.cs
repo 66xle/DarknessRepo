@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Rendering;
 
 public class Torch : MonoBehaviour
@@ -9,7 +10,10 @@ public class Torch : MonoBehaviour
     [Header("Battery")]
     [SerializeField] float maxBattery = 100f;
     [SerializeField] float drainNormalBattery = 1f;
+    [SerializeField] float rechargeCooldown = 3f;
+    [SerializeField] float rechargeRate = 20f;
     [SerializeField] float drainUVBattery = 3f;
+    private float currentRechargeCooldown;
 
     [Header("Sphere Cast")]
     public float torchDistance = 10f;
@@ -20,6 +24,7 @@ public class Torch : MonoBehaviour
     [SerializeField] LayerMask groundLayer;
     [SerializeField] FixedHornetSpawn spawnScript;
     [SerializeField] GameManager gameManager;
+    [SerializeField] Slider batteryPercentage;
 
     private Light normalTorchLight;
     private Light UVTorchLight;
@@ -86,10 +91,23 @@ public class Torch : MonoBehaviour
 
             currentBattery -= drainBattery * Time.deltaTime;
 
+            currentRechargeCooldown = rechargeCooldown;
+          
             //Debug.Log(currentBattery);
+        }
+        else
+        {
+            currentRechargeCooldown -= Time.deltaTime;
+
+            if (currentRechargeCooldown <= 0f)
+            {
+                currentBattery += rechargeRate * Time.deltaTime;
+            }
+
         }
 
         currentBattery = Mathf.Clamp(currentBattery, 0, maxBattery);
+        batteryPercentage.value = currentBattery / maxBattery;
     }
 
     void Raycast()

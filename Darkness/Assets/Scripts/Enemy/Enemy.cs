@@ -30,9 +30,9 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isDead)
+        if (!isDead && agent.isOnNavMesh)
             agent.SetDestination(targetTransform.position);
-        else
+        else if (isDead && agent.isOnNavMesh)
             agent.SetDestination(transform.position);
     }
 
