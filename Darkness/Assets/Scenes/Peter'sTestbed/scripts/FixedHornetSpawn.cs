@@ -37,7 +37,7 @@ public class FixedHornetSpawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameManager.canSpawnEnemy)
+        if (gameManager.canSpawnEnemy && !gameManager.isPaused)
         {
             CheckDistance();
             SpawnEnemy();
@@ -88,7 +88,11 @@ public class FixedHornetSpawn : MonoBehaviour
             int index = UnityEngine.Random.Range(0, spawnDistanceList.Count);
 
             // Spawn enemy and set references
-            Enemy newEnemy = Instantiate(spawnObject, spawnDistanceList[index].position, rot).GetComponentInChildren<Enemy>();
+
+            GameObject enemyObject = Instantiate(spawnObject, spawnDistanceList[index].position, rot);
+            enemyObject.transform.SetParent(transform);
+
+            Enemy newEnemy = enemyObject.GetComponentInChildren<Enemy>();
             newEnemy.targetTransform = playerTransform;
 
             // Create and assign guid to enemy to keep track

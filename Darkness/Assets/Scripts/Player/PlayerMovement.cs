@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     
     [Header("References")]
     public Transform playerHead;
+    public GameManager gameManager;
 
     [HideInInspector]
     public Vector3 targetVelocity = Vector3.zero; // Made public for head bobbing
@@ -36,19 +37,19 @@ public class PlayerMovement : MonoBehaviour
         Cursor.visible = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void FixedUpdate()
     {
+        if (gameManager.isPaused)
+            return;
+
         Movement();
     }
 
     void LateUpdate()
     {
+        if (gameManager.isPaused)
+            return;
+
         LookAround();
     }
 

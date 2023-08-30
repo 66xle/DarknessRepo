@@ -41,6 +41,7 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] GameObject interactUI;
     [SerializeField] TextMeshProUGUI interactUIText;
 
+
     bool isInteractUIActive = false;
 
     private Vector3 hitPosition;
@@ -66,6 +67,9 @@ public class PlayerInteract : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gameManager.isPaused)
+            return;
+
         ScanRayCast();
         InteractRaycast();
     }
@@ -128,8 +132,6 @@ public class PlayerInteract : MonoBehaviour
 
             return;
         }
-
-        Debug.Log("hit");
 
         Vector3 direction = colliders[0].transform.position - headCamera.position;
 

@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &40202047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,9 +203,6 @@ MonoBehaviour:
   timeToReachGate: 10
   graceTimeWhenElevatorStop: 2
   currentGateLevel: {fileID: 0}
-  yAxisGate1: 105.7
-  yAxisGate2: 181.71
-  yAxisGate3: 0
   fuseConsoleText: Missing Fuse
   scanConsoleText: Require Identification
   startConsoleText: Start Elevator
@@ -214,12 +211,14 @@ MonoBehaviour:
   spawnScript: {fileID: 0}
   interactScript: {fileID: 0}
   consoleUI: {fileID: 0}
+  pauseMenu: {fileID: 0}
   gateOrderList:
   - {fileID: 11400000, guid: faf1210ab161378419fc6707ee671b6e, type: 2}
   - {fileID: 11400000, guid: e6c7d7a1e3671734980ab343fb01bd24, type: 2}
   - {fileID: 11400000, guid: 91241a16905041045968795838791616, type: 2}
   areAllTasksComplete: 1
   canSpawnEnemy: 0
+  isPaused: 0
 --- !u!4 &40202050
 Transform:
   m_ObjectHideFlags: 0
@@ -1076,7 +1075,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &719471984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1590,13 +1589,14 @@ GameObject:
   - component: {fileID: 1166058585}
   - component: {fileID: 1166058584}
   - component: {fileID: 1166058582}
+  - component: {fileID: 1166058583}
   m_Layer: 0
   m_Name: AudioSource
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!54 &1166058582
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1613,6 +1613,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1166058583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166058581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71f605d064b79c245ac06b89c111adda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footsteps: {fileID: 0}
+  deadman: {fileID: 8300000, guid: 56e3c7d0e7d4fbf4d84577582b3f0581, type: 3}
+  timer: 0
 --- !u!82 &1166058584
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1624,7 +1639,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 4beb62604deefb9469d31d09c58bbc73, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1634,7 +1649,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 10
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 0
@@ -1883,7 +1898,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1518483551
 Transform:
   m_ObjectHideFlags: 0
