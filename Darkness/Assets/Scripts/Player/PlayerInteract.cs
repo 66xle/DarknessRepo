@@ -7,26 +7,29 @@ using UnityEngine.UI;
 
 public class PlayerInteract : MonoBehaviour
 {
-    [Header("Sphere Cast")]
-    [SerializeField] float sphereCastRadius = 2f;
+    [Header("Box Detection")]
+    [SerializeField] Vector3 boxCheckSize;
+    [SerializeField] float boxOffsetFromPlayer = 1f;
     [SerializeField] float interactDistance = 5f;
-    [SerializeField] Transform headCamera;
     [SerializeField] LayerMask interactableLayer;
-    [SerializeField] LayerMask scannerLayer;
 
+    
     [Header("Scanner")]
     [SerializeField] float scanMaxProgress = 100f;
     [SerializeField] float timeToMaxProgress = 10f;
-    [SerializeField] List<Transform> scanList;
-    private List<float> scanProgressList = new List<float>();
+    [SerializeField] LayerMask scannerLayer;
+    [SerializeField] Transform scanListGate1;
+    [SerializeField] Transform scanListGate2;
+    [SerializeField] Transform scanListGate3;
+    private Transform currentScanParent;
+    private List<Transform> currentScanList = new List<Transform>();
 
     [Header("Door")]
     [SerializeField] Transform door;
     private bool isDoorTriggered = false;
 
     [Header("UI")]
-    [SerializeField] GameObject interactUI;
-    [SerializeField] TextMeshProUGUI interactUIText;
+    
     [SerializeField] string fuseText = "Collect Fuse";
     [SerializeField] string insertFuseText = "Insert Fuse";
     [SerializeField] string consoleText = "Start Elevator";
@@ -34,18 +37,29 @@ public class PlayerInteract : MonoBehaviour
 
     [Header("References")]
     [SerializeField] GameManager gameManager;
+    [SerializeField] Transform headCamera;
+    [SerializeField] GameObject interactUI;
+    [SerializeField] TextMeshProUGUI interactUIText;
 
     bool isInteractUIActive = false;
-    
-
 
     private Vector3 hitPosition;
 
-    private void Start()
+
+    public void LoadScanners(GateLevel.Gate gate)
     {
-        foreach (Transform t in scanList)
+        currentScanList.Clear();
+
+        if (gate == GateLevel.Gate.Gate1)
+            currentScanParent = scanListGate1;
+        else if (gate == GateLevel.Gate.Gate2)
+            currentScanParent = scanListGate2;
+        else if (gate == GateLevel.Gate.Gate3)
+            currentScanParent = scanListGate3;
+
+        for (int i = 0; i < currentScanParent.childCount; i++)
         {
-            scanProgressList.Add(0f);
+            currentScanList.Add(currentScanParent.GetChild(i));
         }
     }
 
@@ -62,8 +76,8 @@ public class PlayerInteract : MonoBehaviour
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 10f, scannerLayer))
         {
             // Get scanner were standing on
-            int index = scanList.IndexOf(hit.transform);
-            Scanner scan = scanList[index].GetComponent<Scanner>();
+            int index = currentScanList.IndexOf(hit.transform);
+            Scanner scan = currentScanList[index].GetComponent<Scanner>();
 
             
             float addProgress = scanMaxProgress / timeToMaxProgress;
@@ -83,7 +97,7 @@ public class PlayerInteract : MonoBehaviour
     
     void AreAllScannersFinished()
     {
-        foreach (Transform transform in scanList)
+        foreach (Transform transform in currentScanList)
         {
             Scanner scan = transform.GetComponent<Scanner>();
 
@@ -95,23 +109,34 @@ public class PlayerInteract : MonoBehaviour
             return;
         }
 
-        Debug.Log("Play");
-
-        if (!isDoorTriggered)
-        {
-            isDoorTriggered = true;
-            door.GetComponent<Animation>().Play();
-        }
+        gameManager.FinishTask();
     }
 
     void InteractRaycast()
     {
+
+        Vector3 center = headCamera.position + headCamera.forward * boxOffsetFromPlayer;
+
+        Collider[] colliders = Physics.OverlapBox(center, boxCheckSize / 2, headCamera.rotation, interactableLayer);
+
+        if (colliders.Length == 0)
+        {
+            if (isInteractUIActive)
+            {
+                ToggleUI();
+            }
+
+            return;
+        }
+
+        Debug.Log("hit");
+
+        Vector3 direction = colliders[0].transform.position - headCamera.position;
+
         RaycastHit hit;
 
-        if (Physics.SphereCast(headCamera.position, sphereCastRadius, headCamera.forward, out hit, interactDistance, interactableLayer))
+        if (Physics.Raycast(headCamera.position, direction, out hit, interactDistance, interactableLayer))
         {
-            hitPosition = hit.point + hit.normal * (sphereCastRadius / 2);
-
             if (hit.collider.CompareTag("Fuse"))
             {
                 if (!isInteractUIActive)
@@ -121,9 +146,10 @@ public class PlayerInteract : MonoBehaviour
             }
             else if (hit.collider.CompareTag("FusePlate") && fuseList.Count > 0)
             {
+
                 if (!isInteractUIActive)
                     ToggleUI(insertFuseText);
-                
+
                 InsertFuse(hit.collider.transform.GetChild(0).gameObject);
             }
             else if (hit.collider.CompareTag("Console") && gameManager.areAllTasksComplete)
@@ -133,43 +159,50 @@ public class PlayerInteract : MonoBehaviour
 
                 ConsoleInteract();
             }
-        }
-        else if (isInteractUIActive)
-        {
-            ToggleUI();
+            else if (isInteractUIActive)
+            {
+                ToggleUI();
+            }
         }
     }
 
     void CollectFuse(GameObject fuseObject)
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive)
         {
             fuseList.Add(fuseObject);
-            Destroy(fuseObject);
+
+            if (fuseObject != null)
+            {
+                Destroy(fuseObject);
+            }
         }
     }
 
     void InsertFuse(GameObject fuse)
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive)
         {
             fuseList.Clear();
             fuse.SetActive(true);
 
             ToggleUI();
+            gameManager.FinishTask();
         }
     }
 
 
     void ConsoleInteract()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive )
         {
             gameManager.StartElevator();
 
             gameManager.areAllTasksComplete = false;
 
             ToggleUI();
+
+            gameManager.FinishTask();
         }
     }
 
@@ -190,9 +223,17 @@ public class PlayerInteract : MonoBehaviour
         interactUIText.text = text;
     }
 
+
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(hitPosition, sphereCastRadius);
+        Gizmos.color = Color.yellow;
+
+        Vector3 center = headCamera.position + headCamera.forward * boxOffsetFromPlayer;
+        
+        Gizmos.matrix = Matrix4x4.TRS(center, headCamera.rotation, headCamera.lossyScale);
+
+
+        Gizmos.DrawWireCube(Vector3.zero, boxCheckSize);
+       
     }
 }

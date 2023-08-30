@@ -1,32 +1,49 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    enum Gate
-    {
-        Start,
-        Gate1,
-        Gate2,
-        Gate3,
-    }
 
-    [Header("Settings")]
+    [Header("Elevator Setting")]
     [SerializeField] Transform environmentToMove;
     [SerializeField] float timeToReachGate;
-    [SerializeField] List<Gate> gateOrderList;
-    private Gate currentGate;
-    private Gate nextGate;
+    [SerializeField] float graceTimeWhenElevatorStop = 5f;
+
+
+    [HideInInspector] public GateLevel currentGateLevel;
+    private GateLevel nextGateLevel;
 
     [Header("Y Axis")]
     [SerializeField] float yAxisGate1;
     [SerializeField] float yAxisGate2;
     [SerializeField] float yAxisGate3;
 
+    [Header("Console Text")]
+    [SerializeField] string fuseConsoleText = "Missing Fuse";
+    [SerializeField] string scanConsoleText = "Require Identification";
+    [SerializeField] string startConsoleText = "Start Elevator";
+    [SerializeField] string movingConsoleText = "Continuing Descent";
+    [SerializeField] string reachedConsoleText = "Destination Reached";
+    
+    [Header("References")]
+    [SerializeField] FixedHornetSpawn spawnScript;
+    [SerializeField] PlayerInteract interactScript;
+    [SerializeField] TextMeshProUGUI consoleUI;
+
+    [Header("Gate Order")]
+    [SerializeField] List<GateLevel> gateOrderList;
+
+    private List<GateLevel> gateQueue;
+    private List<GateLevel.Tasks> taskQueue;
+
+
+    private GateLevel.Tasks currentTask;
     private float currentYAxis;
     private float speedtoMove;
     private float yAxisToStop;
@@ -41,24 +58,25 @@ public class GameManager : MonoBehaviour
     {
         navSurface = GetComponent<NavMeshSurface>();
 
-        currentGate = gateOrderList[0];
-        nextGate = gateOrderList[1];
+        gateQueue = gateOrderList;
 
-        currentYAxis = environmentToMove.position.y;
+        currentGateLevel = gateQueue[0];
+        taskQueue = new List<GateLevel.Tasks>(currentGateLevel.taskList);
+
+
+        currentTask = taskQueue[0];
+        currentYAxis = currentGateLevel.yAxis;
     }
 
 
     public void StartElevator()
     {
-        int index = gateOrderList.IndexOf(currentGate);
-        nextGate = gateOrderList[index + 1];
+        consoleUI.text = movingConsoleText;
 
-        if (nextGate == Gate.Gate1)
-            yAxisToStop = yAxisGate1;
-        else if (nextGate == Gate.Gate2)
-            yAxisToStop = yAxisGate2;
-        else if (nextGate == Gate.Gate3)
-            yAxisToStop = yAxisGate3;
+        gateQueue.Remove(currentGateLevel);
+        nextGateLevel = gateQueue[0];
+
+        yAxisToStop = nextGateLevel.yAxis;
 
         StartCoroutine(MoveEnvironment());
     }
@@ -68,9 +86,6 @@ public class GameManager : MonoBehaviour
     {
         // Calculate move speed
         speedtoMove = (yAxisToStop - environmentToMove.position.y) / timeToReachGate;
-
-        //SetStatic(false);
-
 
         while (currentYAxis != yAxisToStop)
         {
@@ -85,30 +100,62 @@ public class GameManager : MonoBehaviour
 
             currentYAxis = newPosition.y;
 
+
+            // Bake navmesh here
+            navSurface.BuildNavMesh();
+            Debug.Log("build");
+
             yield return null;
 
         }
 
-        //SetStatic(true);
+        consoleUI.text = reachedConsoleText;
 
-        // Bake navmesh here
-        navSurface.BuildNavMesh();
-        Debug.Log("build");
+        yield return new WaitForSeconds(graceTimeWhenElevatorStop);
 
-        currentGate = nextGate;
+
+        currentGateLevel = nextGateLevel;
+        taskQueue = new List<GateLevel.Tasks>(currentGateLevel.taskList);
+
+        // Load spawning enemies
+        spawnScript.LoadSpawnPoints(currentGateLevel.currentGate);
+        canSpawnEnemy = true;
+
+        LoadTask();
     }
 
-    void SetStatic(bool setStatic)
+    void LoadTask()
     {
-        // Set Static
-        for (int i = 0; i < environmentToMove.childCount; i++)
-        {
-            GameObject child = environmentToMove.GetChild(i).gameObject;
+        currentTask = taskQueue[0];
 
-            for (int j = 0; j < child.transform.childCount; j++)
-            {
-                child.transform.GetChild(j).gameObject.isStatic = setStatic;
-            }
+        if (currentTask == GateLevel.Tasks.Fuse)
+        {
+            consoleUI.text = fuseConsoleText;
         }
+        else  if (currentTask == GateLevel.Tasks.Scan)
+        {
+            interactScript.LoadScanners(currentGateLevel.currentGate);
+            consoleUI.text = scanConsoleText;
+        }
+        else if (currentTask == GateLevel.Tasks.StartElevator)
+        {
+            consoleUI.text = startConsoleText;
+            areAllTasksComplete = true;
+        }
+    }
+
+    public void FinishTask()
+    {
+        taskQueue.Remove(currentTask);
+
+        if (currentTask == GateLevel.Tasks.StartElevator)
+        {
+            
+            return;
+        }
+
+
+        if (taskQueue.Count > 0)
+            LoadTask();
     }
 }

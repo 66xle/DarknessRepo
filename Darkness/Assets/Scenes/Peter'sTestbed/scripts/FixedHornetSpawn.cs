@@ -9,10 +9,9 @@ public class FixedHornetSpawn : MonoBehaviour
     [Header("References")]
     public GameObject spawnObject;
     public Transform playerTransform;
-    public List<Transform> gateSpawnList;
     public GameManager gameManager;
 
-    private List<Transform> spawnPosList = new List<Transform>();
+    private List<Transform> currentSpawnPosList = new List<Transform>();
     private List<Transform> spawnDistanceList = new List<Transform> ();
     [HideInInspector] public List<string> spawnedEnemiesList;
 
@@ -23,7 +22,11 @@ public class FixedHornetSpawn : MonoBehaviour
     private float timer = 0;
     Quaternion rot;
 
-    
+    [Header("Spawnpoint")]
+    [SerializeField] Transform spawnPointGate1;
+    [SerializeField] Transform spawnPointGate2;
+    [SerializeField] Transform spawnPointGate3;
+    private Transform gateParent;
 
     // Start is called before the first frame update
     void Start()
@@ -34,15 +37,33 @@ public class FixedHornetSpawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckDistance();
-
         if (gameManager.canSpawnEnemy)
+        {
+            CheckDistance();
             SpawnEnemy();
+        }
+    }
+
+    public void LoadSpawnPoints(GateLevel.Gate gate)
+    {
+        currentSpawnPosList.Clear();
+
+        if (gate == GateLevel.Gate.Gate1)
+            gateParent = spawnPointGate1;
+        else if (gate == GateLevel.Gate.Gate2)
+            gateParent = spawnPointGate2;
+        else if (gate == GateLevel.Gate.Gate3)
+            gateParent = spawnPointGate3;
+
+        for (int i = 0; i < gateParent.childCount; i++)
+        {
+            currentSpawnPosList.Add(gateParent.GetChild(i));
+        }
     }
 
     void CheckDistance()
     {
-        foreach (Transform t in spawnPosList)
+        foreach (Transform t in currentSpawnPosList)
         {
             float d = Vector3.Distance(playerTransform.position, t.position);
 
@@ -82,7 +103,7 @@ public class FixedHornetSpawn : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        foreach (Transform t in spawnPosList)
+        foreach (Transform t in currentSpawnPosList)
         {
             if (spawnDistanceList.Contains(t))
             {
