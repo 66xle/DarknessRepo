@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] PlayerInteract interactScript;
     [SerializeField] TextMeshProUGUI consoleUI;
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject gameoverMenu;
 
     [Header("Gate Order")]
     [SerializeField] List<GateLevel> gateOrderList;
@@ -54,6 +55,10 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        areAllTasksComplete = true;
+        canSpawnEnemy = false;
+        isPaused = false;
+
         navSurface = GetComponent<NavMeshSurface>();
 
         gateQueue = gateOrderList;
@@ -81,6 +86,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void Death()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Time.timeScale = 0;
+
+        isPaused = true;
+
+        gameoverMenu.SetActive(true);
+    }
+
     void PauseGame()
     {
         Cursor.lockState = CursorLockMode.None;
@@ -101,6 +117,8 @@ public class GameManager : MonoBehaviour
 
     public void MainMenu()
     {
+        Time.timeScale = 1;
+
         SceneManager.LoadScene(0);
     }
 

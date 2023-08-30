@@ -102,4 +102,13 @@ public class PlayerMovement : MonoBehaviour
         // Look Left/Right
         transform.Rotate(Vector3.up * mouseInput.x);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Enemy"))
+        {
+            gameManager.Death();
+            // Play animation
+        }
+    }
 }
