@@ -22,6 +22,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponentInChildren<Animator>();
 
         SkinnedMeshRenderer meshRend = GetComponentInChildren<SkinnedMeshRenderer>();
 
@@ -38,18 +39,18 @@ public class Enemy : MonoBehaviour
         if (!isDead && agent.isOnNavMesh)
         {
             agent.SetDestination(targetTransform.position);
-            if(!footSteps.isPlaying)
-            {
-                //footSteps.Play();
+            //if(!footSteps.isPlaying)
+            //{
+            //    //footSteps.Play();
 
-            }
+            //}
 
         }
         else if (isDead && agent.isOnNavMesh)
         {
             agent.SetDestination(transform.position);
-            footSteps.clip = otherClip;
-            footSteps.Play();
+            //footSteps.clip = otherClip;
+            //footSteps.Play();
 
         }
             
