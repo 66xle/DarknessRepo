@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 
 public class Torch : MonoBehaviour
 {
@@ -15,13 +16,16 @@ public class Torch : MonoBehaviour
     [SerializeField] float drainUVBattery = 3f;
     private float currentRechargeCooldown;
 
-    [Header("Sphere Cast")]
+    [Header("Box Cast")]
     public float torchDistance = 10f;
-    [SerializeField] float sphereCastRadius = 2f;
+    [SerializeField] float boxWidth = 1f;
+    [SerializeField] float boxHeight = 1f;
+    [SerializeField] LayerMask enemyLayer;
+    [SerializeField] bool enableBoxGizmos = false;
 
     [Header("References")]
     [SerializeField] GameObject torch;
-    [SerializeField] LayerMask groundLayer;
+    [SerializeField] LayerMask ignoreLayer;
     [SerializeField] FixedHornetSpawn spawnScript;
     [SerializeField] GameManager gameManager;
     [SerializeField] Slider batteryPercentage;
@@ -92,8 +96,6 @@ public class Torch : MonoBehaviour
             currentBattery -= drainBattery * Time.deltaTime;
 
             currentRechargeCooldown = rechargeCooldown;
-          
-            //Debug.Log(currentBattery);
         }
         else
         {
@@ -103,7 +105,6 @@ public class Torch : MonoBehaviour
             {
                 currentBattery += rechargeRate * Time.deltaTime;
             }
-
         }
 
         currentBattery = Mathf.Clamp(currentBattery, 0, maxBattery);
@@ -114,26 +115,39 @@ public class Torch : MonoBehaviour
     {
         if (isTorchActive)
         {
-            hitPos = Vector3.zero;
+            Vector3 center = torch.transform.position + torch.transform.forward * torchDistance / 2;
 
-            RaycastHit hit;
+            Vector3 boxSize = new Vector3(boxWidth, boxHeight, torchDistance);
 
-            if (Physics.SphereCast(torch.transform.position, sphereCastRadius, torch.transform.forward, out hit, torchDistance, ~groundLayer))
+            Collider[] colliders = Physics.OverlapBox(center, boxSize / 2, torch.transform.rotation, enemyLayer);
+
+            if (colliders.Length == 0)
             {
-                if (hit.transform.CompareTag("Enemy"))
+                return;
+            }
+            
+            foreach (Collider collider in colliders)
+            {
+                hitPos = Vector3.zero;
+
+                RaycastHit hit;
+
+                Vector3 direction =  collider.transform.position - transform.position;
+
+                if (Physics.Raycast(torch.transform.position, direction, out hit, torchDistance, ~ignoreLayer))
                 {
-                    hitPos = hit.point + hit.normal * (sphereCastRadius / 2);
+                    Debug.Log(hit.transform.name);
 
-                    Enemy enemy = hit.collider.gameObject.GetComponent<Enemy>();
-
-                    if (!enemy.isDead)
+                    if (hit.transform.CompareTag("Enemy"))
                     {
-                        enemy.isDead = true;
-                        StartCoroutine(enemy.Death(spawnScript));
-                    }
+                        Enemy enemy = hit.collider.gameObject.GetComponent<Enemy>();
 
-                    
-                    
+                        if (!enemy.isDead)
+                        {
+                            enemy.isDead = true;
+                            StartCoroutine(enemy.Death(spawnScript));
+                        }
+                    }
                 }
             }
         }
@@ -141,12 +155,19 @@ public class Torch : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (isTorchActive && hitPos != Vector3.zero)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(hitPos, sphereCastRadius);
-        }
-    }
+        if (!enableBoxGizmos)
+            return;
 
-    
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(torch.transform.position, torch.transform.forward * torchDistance);
+
+        Gizmos.color = Color.blue;
+        Vector3 center = torch.transform.position + torch.transform.forward * torchDistance / 2;
+        Gizmos.matrix = Matrix4x4.TRS(center, torch.transform.rotation, transform.lossyScale);
+
+
+        Vector3 boxSize = new Vector3(boxWidth, boxHeight, torchDistance);
+        Gizmos.DrawWireCube(Vector3.zero, boxSize * 2);
+    }
 }

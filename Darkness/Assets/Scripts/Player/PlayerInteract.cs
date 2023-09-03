@@ -12,6 +12,7 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] float boxHeight = 1f;
     [SerializeField] float interactDistance = 5f;
     [SerializeField] LayerMask interactableLayer;
+    [SerializeField] bool enableBoxGizmos = false;
 
     
     [Header("Scanner")]
@@ -229,6 +230,9 @@ public class PlayerInteract : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (!enableBoxGizmos)
+            return;
+
         Gizmos.color = Color.red;
         Gizmos.DrawRay(headCamera.position, headCamera.forward * interactDistance);
 
@@ -241,9 +245,5 @@ public class PlayerInteract : MonoBehaviour
 
         Vector3 boxSize = new Vector3(boxWidth, boxHeight, interactDistance);
         Gizmos.DrawWireCube(Vector3.zero, boxSize * 2);
-
-
-
-        
     }
 }
