@@ -4140,7 +4140,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxCheckSize: {x: 0.5, y: 0.5, z: 2}
   boxOffsetFromPlayer: 1
-  interactDistance: 5
+  boxWidth: 0.5
+  boxHeight: 0.5
+  interactDistance: 2
   interactableLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -7414,7 +7416,7 @@ MonoBehaviour:
   clearDepth: 1
   volumeLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   volumeAnchorOverride: {fileID: 0}
   antialiasing: 0
   SMAAQuality: 2
@@ -8602,7 +8604,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 374.67993, y: -751.9739}
+  m_AnchoredPosition: {x: 374.67993, y: -752.2589}
   m_SizeDelta: {x: 749.35986, y: 141.72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1153469023
