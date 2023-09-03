@@ -8,8 +8,8 @@ using UnityEngine.UI;
 public class PlayerInteract : MonoBehaviour
 {
     [Header("Box Detection")]
-    [SerializeField] Vector3 boxCheckSize;
-    [SerializeField] float boxOffsetFromPlayer = 1f;
+    [SerializeField] float boxWidth = 1f;
+    [SerializeField] float boxHeight = 1f;
     [SerializeField] float interactDistance = 5f;
     [SerializeField] LayerMask interactableLayer;
 
@@ -118,10 +118,11 @@ public class PlayerInteract : MonoBehaviour
 
     void InteractRaycast()
     {
+        Vector3 center = headCamera.position + headCamera.forward * interactDistance / 2;
 
-        Vector3 center = headCamera.position + headCamera.forward * boxOffsetFromPlayer;
+        Vector3 boxSize = new Vector3(boxWidth, boxHeight, interactDistance);
 
-        Collider[] colliders = Physics.OverlapBox(center, boxCheckSize / 2, headCamera.rotation, interactableLayer);
+        Collider[] colliders = Physics.OverlapBox(center, boxSize / 2, headCamera.rotation, interactableLayer);
 
         if (colliders.Length == 0)
         {
@@ -228,14 +229,21 @@ public class PlayerInteract : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(headCamera.position, headCamera.forward * interactDistance);
+
         Gizmos.color = Color.yellow;
 
-        Vector3 center = headCamera.position + headCamera.forward * boxOffsetFromPlayer;
-        
+        Vector3 center = headCamera.position + headCamera.forward * interactDistance / 2;
+
         Gizmos.matrix = Matrix4x4.TRS(center, headCamera.rotation, headCamera.lossyScale);
 
 
-        Gizmos.DrawWireCube(Vector3.zero, boxCheckSize);
-       
+        Vector3 boxSize = new Vector3(boxWidth, boxHeight, interactDistance);
+        Gizmos.DrawWireCube(Vector3.zero, boxSize * 2);
+
+
+
+        
     }
 }
