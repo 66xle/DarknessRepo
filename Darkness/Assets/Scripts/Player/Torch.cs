@@ -144,8 +144,7 @@ public class Torch : MonoBehaviour
 
                         if (!enemy.isDead)
                         {
-                            enemy.isDead = true;
-                            StartCoroutine(enemy.Death(spawnScript));
+                            enemy.TakeDamage();  
                         }
                     }
                 }

@@ -6,6 +6,11 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] float timeToKill = 5f;
+    [SerializeField] float resetTimer = 1f;
+    private float currentResetTimer;
+    private float currentKillTimer;
+
     public float deathTime;
     public float edgeWidth = 0.5f;
     private Material deathMat;
@@ -17,6 +22,8 @@ public class Enemy : MonoBehaviour
 
     [HideInInspector] public Transform targetTransform;
     [HideInInspector] public string guid;
+
+    [HideInInspector] public FixedHornetSpawn script;
 
     // Start is called before the first frame update
     void Start()
@@ -53,8 +60,32 @@ public class Enemy : MonoBehaviour
             //footSteps.Play();
 
         }
-            
-        
+
+        ResetTimer();
+    }
+     
+    void ResetTimer()
+    {
+        currentResetTimer -= Time.deltaTime;
+
+        if (currentResetTimer <= 0f)
+        {
+            currentKillTimer = timeToKill;
+        }
+    }
+
+    public void TakeDamage()
+    {
+        currentResetTimer = resetTimer;
+
+        currentKillTimer -= Time.deltaTime;
+
+        if (currentKillTimer <= 0f)
+        { 
+            isDead = true;
+
+            StartCoroutine(Death(script));
+        }
     }
 
     public IEnumerator Death(FixedHornetSpawn spawnScript)

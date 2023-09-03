@@ -94,6 +94,7 @@ public class FixedHornetSpawn : MonoBehaviour
 
             Enemy newEnemy = enemyObject.GetComponentInChildren<Enemy>();
             newEnemy.targetTransform = playerTransform;
+            newEnemy.script = this;
 
             // Create and assign guid to enemy to keep track
             string newGUID = Guid.NewGuid().ToString();
