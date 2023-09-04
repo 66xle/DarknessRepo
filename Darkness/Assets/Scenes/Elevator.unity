@@ -2195,7 +2195,7 @@ Transform:
   - {fileID: 27960919}
   - {fileID: 1230062720}
   m_Father: {fileID: 447874516}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &335056118
 GameObject:
@@ -3023,8 +3023,8 @@ Transform:
   m_LocalPosition: {x: 4.23, y: 29.89, z: -108.14468}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 334568757}
   - {fileID: 1181204292}
+  - {fileID: 334568757}
   - {fileID: 1777739038}
   - {fileID: 30070191}
   m_Father: {fileID: 1323225481}
@@ -3867,7 +3867,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 624714298}
   m_LocalRotation: {x: -0.009480839, y: -0.71300626, z: -0.008765619, w: 0.70103884}
-  m_LocalPosition: {x: 0.21, y: 20.36, z: -103.24}
+  m_LocalPosition: {x: 13.09, y: 20.03, z: -106.37}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 1982670520}
@@ -3922,9 +3922,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxBattery: 100
-  drainNormalBattery: 0
+  drainNormalBattery: 5
   rechargeCooldown: 0.5
-  rechargeRate: 20
+  rechargeRate: 1
   drainUVBattery: 0
   torchDistance: 5
   boxWidth: 0.5
@@ -6322,7 +6322,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 975218721}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
@@ -7230,7 +7230,7 @@ MonoBehaviour:
   clearDepth: 1
   volumeLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   volumeAnchorOverride: {fileID: 0}
   antialiasing: 0
   SMAAQuality: 2
@@ -8795,7 +8795,7 @@ Transform:
   - {fileID: 1243283910}
   - {fileID: 1841012250}
   m_Father: {fileID: 447874516}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1208518881
 GameObject:

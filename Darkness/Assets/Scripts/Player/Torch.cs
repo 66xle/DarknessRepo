@@ -14,6 +14,8 @@ public class Torch : MonoBehaviour
     [SerializeField] float rechargeCooldown = 3f;
     [SerializeField] float rechargeRate = 20f;
     [SerializeField] float drainUVBattery = 3f;
+    [SerializeField] float maxIntensity = 600f;
+    [SerializeField] float minIntensity = 10f;
     private float currentRechargeCooldown;
 
     [Header("Box Cast")]
@@ -108,7 +110,18 @@ public class Torch : MonoBehaviour
         }
 
         currentBattery = Mathf.Clamp(currentBattery, 0, maxBattery);
-        batteryPercentage.value = currentBattery / maxBattery;
+        float currentBatteryPercentage = currentBattery / maxBattery;
+        batteryPercentage.value = currentBatteryPercentage;
+
+
+        float currentIntensity = currentBatteryPercentage * maxBattery;
+
+        Debug.Log(currentIntensity);
+
+        if (currentIntensity <= minIntensity)
+            currentIntensity = minIntensity;
+
+        normalTorchLight.intensity = currentIntensity; 
     }
 
     void Raycast()
