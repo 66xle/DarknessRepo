@@ -2212,7 +2212,11 @@ MonoBehaviour:
   resetTimer: 0.1
   deathTime: 2
   edgeWidth: 0.2
-  otherClip: {fileID: 8300000, guid: 56e3c7d0e7d4fbf4d84577582b3f0581, type: 3}
+  deathgroanClip: {fileID: 8300000, guid: 33d559e3ec0892342be4dbfd21996599, type: 3}
+  cringeClip: {fileID: 8300000, guid: 6d2af23390ec7eb4b802400884596fc5, type: 3}
+  hissClip1: {fileID: 8300000, guid: 22d717239a042204db84f22e433d7063, type: 3}
+  hissClip2: {fileID: 8300000, guid: 598cdc31da44b3747a4b363a552a943e, type: 3}
+  hissClip3: {fileID: 8300000, guid: 0ded6964d1226c646ad175ab9f3c7ceb, type: 3}
   isDead: 0
   targetTransform: {fileID: 0}
   guid: 
@@ -2227,7 +2231,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 4beb62604deefb9469d31d09c58bbc73, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 22d717239a042204db84f22e433d7063, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

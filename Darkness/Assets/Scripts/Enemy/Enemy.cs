@@ -14,8 +14,15 @@ public class Enemy : MonoBehaviour
     private Material deathMat;
     private NavMeshAgent agent;
     private Animator animator;
-    AudioSource footSteps;
-    public AudioClip otherClip;
+    AudioSource audioSource;
+    public AudioClip deathgroanClip;
+    public AudioClip cringeClip;
+    public AudioClip hissClip1;
+    public AudioClip hissClip2;
+    public AudioClip hissClip3;
+    int hissClipNumber = 1;
+    float hissTimer = 0;
+    float hissTimerMax = 3;
     /*[HideInInspector]*/ public bool isDead;
     private bool isCringeAnimator 
     { 
@@ -42,28 +49,35 @@ public class Enemy : MonoBehaviour
         deathMat = new Material(meshRend.material);
 
         meshRend.material = deathMat;
+
+        audioSource = this.GetComponent<AudioSource>();
+
+
+        audioSource.clip = RandomiseHissClip();
+        audioSource.Play();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        hissTimer += Time.deltaTime;
     
         if (!isDead && !isCringeAnimator && agent.isOnNavMesh)
         {
             agent.SetDestination(targetTransform.position);
-            //if(!footSteps.isPlaying)
-            //{
-            //    //footSteps.Play();
-
-            //}
+            if(!audioSource.isPlaying && hissTimer >= hissTimerMax)
+            {
+                audioSource.clip = RandomiseHissClip();
+                audioSource.Play();
+                hissTimerMax = Random.Range(2, 4);
+                hissTimer = 0;
+            }
 
         }
         else if (isDead && agent.isOnNavMesh || isCringeAnimator && agent.isOnNavMesh)
         {
             agent.SetDestination(transform.position);
-            //footSteps.clip = otherClip;
-            //footSteps.Play();
+           
 
         }
 
@@ -77,6 +91,12 @@ public class Enemy : MonoBehaviour
         if (currentResetTimer <= 0f)
         {
             animator.SetBool("IsLightStillOn", false);
+            if (!audioSource.isPlaying)
+            {
+                audioSource.clip = cringeClip;
+                audioSource.Play();
+
+            }
         }
     }
 
@@ -86,7 +106,11 @@ public class Enemy : MonoBehaviour
 
         isCringeAnimator = true;
         animator.SetBool("IsLightStillOn", true);
-
+        if (!audioSource.isPlaying)
+        {
+            audioSource.clip = deathgroanClip;
+            audioSource.Play();
+        }
         
     }
 
@@ -120,5 +144,20 @@ public class Enemy : MonoBehaviour
         if (transform.gameObject != null)
             Destroy(transform.gameObject);
 
+    }
+
+    AudioClip RandomiseHissClip()
+    {
+        hissClipNumber = Random.Range(1, 3);
+        if (hissClipNumber == 1)        
+            return hissClip1;
+        
+        if (hissClipNumber == 2)        
+            return hissClip2;
+        
+        if (hissClipNumber == 3)        
+            return hissClip3;
+        
+        return hissClip1;
     }
 }
