@@ -6,10 +6,8 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] float timeToKill = 5f;
     [SerializeField] float resetTimer = 1f;
     private float currentResetTimer;
-    private float currentKillTimer;
 
     public float deathTime;
     public float edgeWidth = 0.5f;
@@ -19,11 +17,19 @@ public class Enemy : MonoBehaviour
     AudioSource footSteps;
     public AudioClip otherClip;
     /*[HideInInspector]*/ public bool isDead;
+    private bool isCringeAnimator 
+    { 
+        get { return animator.GetBool("IsLightShownOn"); } 
+        set { animator.SetBool("IsLightShownOn", value); } 
+    }
+
+
+
 
     [HideInInspector] public Transform targetTransform;
     [HideInInspector] public string guid;
 
-    [HideInInspector] public FixedHornetSpawn script;
+    [HideInInspector] public FixedHornetSpawn spawnScript;
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +49,7 @@ public class Enemy : MonoBehaviour
     {
         
     
-        if (!isDead && agent.isOnNavMesh)
+        if (!isDead && !isCringeAnimator && agent.isOnNavMesh)
         {
             agent.SetDestination(targetTransform.position);
             //if(!footSteps.isPlaying)
@@ -53,7 +59,7 @@ public class Enemy : MonoBehaviour
             //}
 
         }
-        else if (isDead && agent.isOnNavMesh)
+        else if (isDead && agent.isOnNavMesh || isCringeAnimator && agent.isOnNavMesh)
         {
             agent.SetDestination(transform.position);
             //footSteps.clip = otherClip;
@@ -70,7 +76,7 @@ public class Enemy : MonoBehaviour
 
         if (currentResetTimer <= 0f)
         {
-            currentKillTimer = timeToKill;
+            animator.SetBool("IsLightStillOn", false);
         }
     }
 
@@ -78,21 +84,25 @@ public class Enemy : MonoBehaviour
     {
         currentResetTimer = resetTimer;
 
-        currentKillTimer -= Time.deltaTime;
+        isCringeAnimator = true;
+        animator.SetBool("IsLightStillOn", true);
 
-        if (currentKillTimer <= 0f)
-        { 
-            isDead = true;
-
-            StartCoroutine(Death(script));
-        }
+        
     }
 
-    public IEnumerator Death(FixedHornetSpawn spawnScript)
+    public void StartDeathCoroutine()
     {
-        spawnScript.spawnedEnemiesList.Remove(guid);
+        StartCoroutine(Death());
+    }
 
+    IEnumerator Death()
+    {
+        isDead = true;
+        spawnScript.spawnedEnemiesList.Remove(guid);
         animator.SetTrigger("Death");
+
+        GetComponent<BoxCollider>().enabled = false;
+
 
         float currentTime = 0f;
 
@@ -103,10 +113,6 @@ public class Enemy : MonoBehaviour
             currentTime += Time.deltaTime;
 
             deathMat.SetFloat("_Dissolve", Mathf.Clamp01(currentTime / deathTime));
-            float percentage = currentTime / deathTime;
-
-            
-
 
             yield return null;
         }

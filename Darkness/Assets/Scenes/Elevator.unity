@@ -7230,7 +7230,7 @@ MonoBehaviour:
   clearDepth: 1
   volumeLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   volumeAnchorOverride: {fileID: 0}
   antialiasing: 0
   SMAAQuality: 2
@@ -11893,7 +11893,7 @@ MonoBehaviour:
   spawnedEnemiesList: []
   spawnInterval: 1
   maxSpawnCount: 3
-  distance: 10
+  distance: 20
   spawnPointGate1: {fileID: 1317165992}
   spawnPointGate2: {fileID: 0}
   spawnPointGate3: {fileID: 0}
