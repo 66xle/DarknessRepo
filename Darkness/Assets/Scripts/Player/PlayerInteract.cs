@@ -24,6 +24,7 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] Transform scanListGate3;
     private Transform currentScanParent;
     private List<Transform> currentScanList = new List<Transform>();
+    private bool isScanTaskActive = false;
 
     [Header("Door")]
     [SerializeField] Transform door;
@@ -50,6 +51,8 @@ public class PlayerInteract : MonoBehaviour
 
     public void LoadScanners(GateLevel.Gate gate)
     {
+        isScanTaskActive = true;
+
         currentScanList.Clear();
 
         if (gate == GateLevel.Gate.Gate1)
@@ -77,6 +80,9 @@ public class PlayerInteract : MonoBehaviour
 
     void ScanRayCast()
     {
+        if (!isScanTaskActive)
+            return;
+
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 10f, scannerLayer))
         {
@@ -114,6 +120,7 @@ public class PlayerInteract : MonoBehaviour
             return;
         }
 
+        isScanTaskActive = false;
         gameManager.FinishTask();
     }
 
