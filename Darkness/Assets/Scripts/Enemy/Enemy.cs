@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Experimental.GlobalIllumination;
 
 public class Enemy : MonoBehaviour
 {
@@ -38,11 +39,14 @@ public class Enemy : MonoBehaviour
 
     [HideInInspector] public FixedHornetSpawn spawnScript;
 
+    private Light pointLight;
+
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
+        pointLight = GetComponentInChildren<Light>();
 
         SkinnedMeshRenderer meshRend = GetComponentInChildren<SkinnedMeshRenderer>();
 
@@ -122,6 +126,10 @@ public class Enemy : MonoBehaviour
     IEnumerator Death()
     {
         isDead = true;
+        pointLight.enabled = true;
+
+        float currentIntensity = pointLight.intensity;
+
         spawnScript.spawnedEnemiesList.Remove(guid);
         animator.SetTrigger("Death");
 
@@ -137,6 +145,10 @@ public class Enemy : MonoBehaviour
             currentTime += Time.deltaTime;
 
             deathMat.SetFloat("_Dissolve", Mathf.Clamp01(currentTime / deathTime));
+
+            currentIntensity -= Time.deltaTime;
+
+            pointLight.intensity = Mathf.Clamp01(currentTime / deathTime);
 
             yield return null;
         }

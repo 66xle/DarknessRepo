@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] Transform environmentToMove;
     [SerializeField] float timeToReachGate;
     [SerializeField] float graceTimeWhenElevatorStop = 5f;
+    [SerializeField] float lowerPlatformYAxis = 5f;
     [HideInInspector] public GateLevel currentGateLevel;
     private GateLevel nextGateLevel;
 
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] FixedHornetSpawn spawnScript;
     [SerializeField] PlayerInteract interactScript;
     [SerializeField] TextMeshProUGUI consoleUI;
+    [SerializeField] Transform lowerPlatform;
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject gameoverMenu;
     [SerializeField] Animator animController;
@@ -50,6 +52,8 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector] public bool isPaused = false;
 
+    private bool isLowerPlatformReached = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -57,6 +61,7 @@ public class GameManager : MonoBehaviour
         areAllTasksComplete = true;
         canSpawnEnemy = false;
         isPaused = false;
+        isLowerPlatformReached = false;
 
         navSurface = GetComponent<NavMeshSurface>();
 
@@ -130,20 +135,46 @@ public class GameManager : MonoBehaviour
 
         yAxisToStop = nextGateLevel.yAxis;
 
-        StartCoroutine(MoveEnvironment());
-
-        //if (!animController.GetBool("LowerPlatform"))
-        //{
-        //    animController.SetBool("LowerPlatform", true);
-        //}
-        //else
-        //{
-        //    StartCoroutine(MoveEnvironment());
-        //}
+        if (!isLowerPlatformReached)
+        {
+            StartCoroutine(MoveLowerPlatform());
+        }
+        else
+        {
+            StartCoroutine(MoveEnvironment());
+        }
     }
 
-    public void ElevatorFinishAnimation()
+
+    IEnumerator MoveLowerPlatform()
     {
+        float currentPlatformYAxis = lowerPlatform.transform.position.y;
+
+        speedtoMove = (yAxisToStop - environmentToMove.position.y) / timeToReachGate;
+
+        while (currentPlatformYAxis != lowerPlatformYAxis)
+        {
+            Vector3 newEnvironmentPosition = new Vector3(environmentToMove.position.x, environmentToMove.position.y + Time.deltaTime * speedtoMove, environmentToMove.position.z);
+            Vector3 newPlatformPosition = new Vector3(lowerPlatform.position.x, lowerPlatform.position.y + Time.deltaTime * speedtoMove, lowerPlatform.position.z);
+
+            if (newPlatformPosition.y > lowerPlatformYAxis)
+            {
+                newPlatformPosition.y = lowerPlatformYAxis;
+            }
+
+            Debug.Log(newPlatformPosition.y);
+
+            environmentToMove.position = newEnvironmentPosition;
+            lowerPlatform.position = newPlatformPosition;
+
+            currentPlatformYAxis = newPlatformPosition.y;
+            currentYAxis = newEnvironmentPosition.y;
+
+            yield return null;
+        }
+
+        isLowerPlatformReached = true;
+
         StartCoroutine(MoveEnvironment());
     }
 
