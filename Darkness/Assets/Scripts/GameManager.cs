@@ -141,10 +141,11 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(MoveEnvironment());
+            animController.SetBool("isConsoleOpen", false);
         }
     }
 
+    
 
     IEnumerator MoveLowerPlatform()
     {
@@ -162,8 +163,6 @@ public class GameManager : MonoBehaviour
                 newPlatformPosition.y = lowerPlatformYAxis;
             }
 
-            Debug.Log(newPlatformPosition.y);
-
             environmentToMove.position = newEnvironmentPosition;
             lowerPlatform.position = newPlatformPosition;
 
@@ -178,7 +177,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(MoveEnvironment());
     }
 
-    IEnumerator MoveEnvironment()
+    public IEnumerator MoveEnvironment()
     {
         // Calculate move speed
         speedtoMove = (yAxisToStop - environmentToMove.position.y) / timeToReachGate;
@@ -219,6 +218,8 @@ public class GameManager : MonoBehaviour
         canSpawnEnemy = true;
 
         Debug.Log("spawn enemies");
+
+        animController.SetBool("isConsoleOpen", true);
 
         LoadTask();
     }

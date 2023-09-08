@@ -116,7 +116,6 @@ public class Torch : MonoBehaviour
 
         float currentIntensity = currentBatteryPercentage * maxBattery;
 
-        Debug.Log(currentIntensity);
 
         if (currentIntensity <= minIntensity)
             currentIntensity = minIntensity;

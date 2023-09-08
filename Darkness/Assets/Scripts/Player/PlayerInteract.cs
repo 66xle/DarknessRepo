@@ -142,12 +142,16 @@ public class PlayerInteract : MonoBehaviour
             return;
         }
 
-        Vector3 direction = colliders[0].transform.position - headCamera.position;
+        Vector3 direction = colliders[0].bounds.center - headCamera.position;
+
+        Debug.DrawRay(headCamera.position, direction * interactDistance);
 
         RaycastHit hit;
 
         if (Physics.Raycast(headCamera.position, direction, out hit, interactDistance, interactableLayer))
         {
+            Debug.Log(hit.collider.tag);
+
             if (hit.collider.CompareTag("Fuse"))
             {
                 if (!isInteractUIActive)
@@ -161,7 +165,8 @@ public class PlayerInteract : MonoBehaviour
                 if (!isInteractUIActive)
                     ToggleUI(insertFuseText);
 
-                InsertFuse(hit.collider.transform.GetChild(0).gameObject);
+                //InsertFuse(hit.collider.transform.GetChild(0).gameObject);
+                InsertFuse();
             }
             else if (hit.collider.CompareTag("Console") && gameManager.areAllTasksComplete)
             {
@@ -190,12 +195,12 @@ public class PlayerInteract : MonoBehaviour
         }
     }
 
-    void InsertFuse(GameObject fuse)
+    void InsertFuse(GameObject fuse = null)
     {
         if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive)
         {
             fuseList.Clear();
-            fuse.SetActive(true);
+            //fuse.SetActive(true);
 
             ToggleUI();
             gameManager.FinishTask();
