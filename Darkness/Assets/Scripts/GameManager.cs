@@ -14,8 +14,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] Transform environmentToMove;
     [SerializeField] float timeToReachGate;
     [SerializeField] float graceTimeWhenElevatorStop = 5f;
-
-
     [HideInInspector] public GateLevel currentGateLevel;
     private GateLevel nextGateLevel;
 
@@ -32,6 +30,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI consoleUI;
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject gameoverMenu;
+    [SerializeField] Animator animController;
 
     [Header("Gate Order")]
     [SerializeField] List<GateLevel> gateOrderList;
@@ -132,8 +131,21 @@ public class GameManager : MonoBehaviour
         yAxisToStop = nextGateLevel.yAxis;
 
         StartCoroutine(MoveEnvironment());
+
+        //if (!animController.GetBool("LowerPlatform"))
+        //{
+        //    animController.SetBool("LowerPlatform", true);
+        //}
+        //else
+        //{
+        //    StartCoroutine(MoveEnvironment());
+        //}
     }
 
+    public void ElevatorFinishAnimation()
+    {
+        StartCoroutine(MoveEnvironment());
+    }
 
     IEnumerator MoveEnvironment()
     {
