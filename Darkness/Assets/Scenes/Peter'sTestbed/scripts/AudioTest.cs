@@ -18,11 +18,11 @@ public class AudioTest : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        if (timer > 5)
-        {
-            footsteps.clip = deadman;
-            footsteps.Play();
-            timer = -100;
-        }
+        //if (timer > 5)
+        //{
+        //    footsteps.clip = deadman;
+        //    footsteps.Play();
+        //    timer = -100;
+        //}
     }
 }

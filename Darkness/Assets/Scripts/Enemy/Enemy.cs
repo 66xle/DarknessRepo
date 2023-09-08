@@ -23,8 +23,8 @@ public class Enemy : MonoBehaviour
     public AudioClip hissClip2;
     public AudioClip hissClip3;
     int hissClipNumber = 1;
-    float hissTimer = 0;
-    float hissTimerMax = 3;
+    public float hissTimer = 0;
+    public float hissTimerMax = 4;
     /*[HideInInspector]*/ public bool isDead;
     private bool isCringeAnimator 
     { 
@@ -74,7 +74,7 @@ public class Enemy : MonoBehaviour
             {
                 audioSource.clip = RandomiseHissClip();
                 audioSource.Play();
-                hissTimerMax = Random.Range(2, 4);
+                hissTimerMax = Random.Range(4, 6);
                 hissTimer = 0;
             }
 
@@ -96,12 +96,7 @@ public class Enemy : MonoBehaviour
         if (currentResetTimer <= 0f)
         {
             animator.SetBool("IsLightStillOn", false);
-            if (!audioSource.isPlaying)
-            {
-                audioSource.clip = cringeClip;
-                audioSource.Play();
-
-            }
+          
         }
     }
 
