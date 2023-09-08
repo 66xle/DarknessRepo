@@ -126,32 +126,30 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Death()
     {
-        isDead = true;
+        // Light init
         pointLight.enabled = true;
-
         float currentIntensity = pointLight.intensity;
 
+        // Death init
+        isDead = true;
         spawnScript.spawnedEnemiesList.Remove(guid);
         animator.SetTrigger("Death");
 
+        // Disable colldier to not trigger player death
         GetComponent<BoxCollider>().enabled = false;
 
-
+        // Shader init
         float currentTime = 0f;
-
         deathMat.SetFloat("_EdgeWidth", edgeWidth);
 
         while (currentTime < deathTime)
         {
+            // Dissolve
             currentTime += Time.deltaTime;
-
             deathMat.SetFloat("_Dissolve", Mathf.Clamp01(currentTime / deathTime));
 
-
+            // Fade light
             currentIntensity = (lightTime - currentTime) / lightTime;
-
-            Debug.Log(currentIntensity);
-
             pointLight.intensity = Mathf.Clamp01(currentIntensity);
 
             yield return null;

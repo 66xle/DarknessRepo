@@ -13,7 +13,6 @@ public class Torch : MonoBehaviour
     [SerializeField] float drainNormalBattery = 1f;
     [SerializeField] float rechargeCooldown = 3f;
     [SerializeField] float rechargeRate = 20f;
-    [SerializeField] float drainUVBattery = 3f;
     [SerializeField] float maxIntensity = 600f;
     [SerializeField] float minIntensity = 10f;
     private float currentRechargeCooldown;
@@ -28,23 +27,23 @@ public class Torch : MonoBehaviour
     [Header("References")]
     [SerializeField] GameObject torch;
     [SerializeField] LayerMask ignoreLayer;
-    [SerializeField] FixedHornetSpawn spawnScript;
     [SerializeField] GameManager gameManager;
     [SerializeField] Slider batteryPercentage;
 
+    #region Internal Variables
+
     private Light normalTorchLight;
-    private Light UVTorchLight;
     private float currentBattery;
 
-    
     [HideInInspector] public bool isTorchActive = false, isUVActive = false;
-    private Vector3 hitPos;
+
+    #endregion
 
     // Start is called before the first frame update
     void Start()
     {
         normalTorchLight = torch.transform.GetChild(0).GetComponent<Light>();
-        UVTorchLight = torch.transform.GetChild(1).GetComponent<Light>();
+        normalTorchLight.intensity = maxIntensity;
 
         currentBattery = maxBattery;
     }
@@ -64,7 +63,7 @@ public class Torch : MonoBehaviour
 
     void ToggleTorch()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !isTorchActive && !isUVActive && currentBattery > 0f)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !isTorchActive && currentBattery > 0f)
         {
             normalTorchLight.enabled = true;
             isTorchActive = true;
@@ -74,29 +73,15 @@ public class Torch : MonoBehaviour
             normalTorchLight.enabled = false;
             isTorchActive = false;
         }
-
-        //if (Input.GetKeyDown(KeyCode.Mouse1) && !isTorchActive && !isUVActive && currentBattery > 0f)
-        //{
-        //    UVTorchLight.enabled = true;
-        //    isTorchActive = true;
-        //    isUVActive = true;
-        //}
-        //else if (Input.GetKeyUp(KeyCode.Mouse1) && isUVActive || currentBattery <= 0f)
-        //{
-        //    UVTorchLight.enabled = false;
-        //    isTorchActive = false;
-        //    isUVActive = false;
-        //}
     }
 
     void Battery()
     {
         if (isTorchActive)
         {
-            float drainBattery = isUVActive ? drainUVBattery : drainNormalBattery; 
+            currentBattery -= drainNormalBattery * Time.deltaTime;
 
-            currentBattery -= drainBattery * Time.deltaTime;
-
+            // Reset recharge timer when active
             currentRechargeCooldown = rechargeCooldown;
         }
         else
@@ -109,13 +94,16 @@ public class Torch : MonoBehaviour
             }
         }
 
+        // Clamp
         currentBattery = Mathf.Clamp(currentBattery, 0, maxBattery);
+
+        // Get percentage of battery, set to ui
         float currentBatteryPercentage = currentBattery / maxBattery;
         batteryPercentage.value = currentBatteryPercentage;
 
 
+        // Reduce intensity depending on battery
         float currentIntensity = currentBatteryPercentage * maxBattery;
-
 
         if (currentIntensity <= minIntensity)
             currentIntensity = minIntensity;
@@ -127,6 +115,8 @@ public class Torch : MonoBehaviour
     {
         if (isTorchActive)
         {
+            #region BoxCheck
+
             Vector3 center = torch.transform.position + torch.transform.forward * torchDistance / 2;
 
             Vector3 boxSize = new Vector3(boxWidth, boxHeight, torchDistance);
@@ -137,19 +127,20 @@ public class Torch : MonoBehaviour
             {
                 return;
             }
-            
+
+            #endregion
+
+            // Loop every enemy hit
             foreach (Collider collider in colliders)
             {
                 hitPos = Vector3.zero;
 
                 RaycastHit hit;
+                Vector3 direction = collider.transform.position - transform.position;
 
-                Vector3 direction =  collider.transform.position - transform.position;
-
+                // If there is nothing blocking
                 if (Physics.Raycast(torch.transform.position, direction, out hit, torchDistance, ~ignoreLayer))
                 {
-                    Debug.Log(hit.transform.name);
-
                     if (hit.transform.CompareTag("Enemy"))
                     {
                         Enemy enemy = hit.collider.gameObject.GetComponent<Enemy>();

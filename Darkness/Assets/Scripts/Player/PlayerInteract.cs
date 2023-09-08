@@ -14,7 +14,6 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] LayerMask interactableLayer;
     [SerializeField] bool enableBoxGizmos = false;
 
-    
     [Header("Scanner")]
     [SerializeField] float scanMaxProgress = 100f;
     [SerializeField] float timeToMaxProgress = 10f;
@@ -31,7 +30,6 @@ public class PlayerInteract : MonoBehaviour
     private bool isDoorTriggered = false;
 
     [Header("UI")]
-    
     [SerializeField] string fuseText = "Collect Fuse";
     [SerializeField] string insertFuseText = "Insert Fuse";
     [SerializeField] string consoleText = "Start Elevator";
@@ -45,9 +43,6 @@ public class PlayerInteract : MonoBehaviour
 
 
     bool isInteractUIActive = false;
-
-    private Vector3 hitPosition;
-
 
     public void LoadScanners(GateLevel.Gate gate)
     {
