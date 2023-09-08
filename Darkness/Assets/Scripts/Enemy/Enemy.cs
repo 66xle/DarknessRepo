@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     private float currentResetTimer;
 
     public float deathTime;
+    public float lightTime;
     public float edgeWidth = 0.5f;
     private Material deathMat;
     private NavMeshAgent agent;
@@ -146,9 +147,12 @@ public class Enemy : MonoBehaviour
 
             deathMat.SetFloat("_Dissolve", Mathf.Clamp01(currentTime / deathTime));
 
-            currentIntensity -= Time.deltaTime;
 
-            pointLight.intensity = Mathf.Clamp01(currentTime / deathTime);
+            currentIntensity = (lightTime - currentTime) / lightTime;
+
+            Debug.Log(currentIntensity);
+
+            pointLight.intensity = Mathf.Clamp01(currentIntensity);
 
             yield return null;
         }

@@ -2428,6 +2428,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resetTimer: 0.1
   deathTime: 2
+  lightTime: 1.5
   edgeWidth: 0.2
   deathgroanClip: {fileID: 8300000, guid: 33d559e3ec0892342be4dbfd21996599, type: 3}
   cringeClip: {fileID: 8300000, guid: 6d2af23390ec7eb4b802400884596fc5, type: 3}

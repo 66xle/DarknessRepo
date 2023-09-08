@@ -3387,8 +3387,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxBattery: 100
   drainNormalBattery: 5
-  rechargeCooldown: 0.5
-  rechargeRate: 1
+  rechargeCooldown: 0.2
+  rechargeRate: 2
   drainUVBattery: 0
   maxIntensity: 600
   minIntensity: 10
@@ -6008,7 +6008,7 @@ MonoBehaviour:
   clearDepth: 1
   volumeLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   volumeAnchorOverride: {fileID: 0}
   antialiasing: 0
   SMAAQuality: 2
