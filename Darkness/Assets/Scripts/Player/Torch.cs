@@ -133,7 +133,6 @@ public class Torch : MonoBehaviour
             // Loop every enemy hit
             foreach (Collider collider in colliders)
             {
-                hitPos = Vector3.zero;
 
                 RaycastHit hit;
                 Vector3 direction = collider.transform.position - transform.position;
