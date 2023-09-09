@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] float timeToReachGate;
     [SerializeField] float graceTimeWhenElevatorStop = 5f;
     [SerializeField] float lowerPlatformYAxis = 5f;
+    [SerializeField] float clearColldierMaxRadius = 1f;
     [HideInInspector] public GateLevel currentGateLevel;
     private GateLevel nextGateLevel;
 
@@ -33,6 +34,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject gameoverMenu;
     [SerializeField] Animator animController;
+    [SerializeField] BoxCollider hatchA;
+    [SerializeField] BoxCollider hatchB;
+    [SerializeField] SphereCollider clearCollider;
 
     [Header("Gate Order")]
     [SerializeField] List<GateLevel> gateOrderList;
@@ -172,6 +176,8 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
+        
+
         isLowerPlatformReached = true;
 
         StartCoroutine(MoveEnvironment());
@@ -205,6 +211,22 @@ public class GameManager : MonoBehaviour
 
         }
 
+        clearCollider.enabled = true;
+        animController.SetBool("isConsoleOpen", true);
+
+        while (clearCollider.radius < clearColldierMaxRadius)
+        {
+            float raduis = clearCollider.radius + Time.deltaTime * 5f;
+
+            clearCollider.radius = raduis;
+
+            Debug.Log(raduis);
+
+            yield return null;
+        }
+
+        clearCollider.enabled = false;
+
         consoleUI.text = reachedConsoleText;
 
         yield return new WaitForSeconds(graceTimeWhenElevatorStop);
@@ -217,9 +239,9 @@ public class GameManager : MonoBehaviour
         spawnScript.LoadSpawnPoints(currentGateLevel.currentGate);
         canSpawnEnemy = true;
 
-        Debug.Log("spawn enemies");
-
-        animController.SetBool("isConsoleOpen", true);
+        hatchA.enabled = true;
+        hatchB.enabled = true;
+        
 
         LoadTask();
     }
