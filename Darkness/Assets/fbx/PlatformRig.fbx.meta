@@ -158,7 +158,7 @@ ModelImporter:
       - time: 0.042121686
         functionName: ConsoleClosedAnimation
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: e3bb769e7f4aa064fa37924bda10e2f7, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: f998fb8c3910c2f46aae459bdf37c209, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
