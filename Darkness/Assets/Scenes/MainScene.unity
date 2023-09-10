@@ -8374,7 +8374,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &972831091
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12993,7 +12993,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1570844001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13016,7 +13016,7 @@ MonoBehaviour:
   m_AreaLightShape: 0
   m_Intensity: 223183.1
   m_EnableSpotReflector: 1
-  m_LuxAtDistance: 5.27
+  m_LuxAtDistance: 25
   m_InnerSpotPercent: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
@@ -13128,7 +13128,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 6198441.5
+  m_Intensity: 139489440
   m_Range: 76.53
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -13186,7 +13186,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1570844000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21.462135, y: -164, z: 16.312775}
+  m_LocalPosition: {x: 21.462135, y: -103.8, z: 16.312775}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
