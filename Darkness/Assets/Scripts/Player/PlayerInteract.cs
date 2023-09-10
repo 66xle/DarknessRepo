@@ -14,6 +14,10 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] LayerMask interactableLayer;
     [SerializeField] bool enableBoxGizmos = false;
 
+    [Header("Restart Elevator")]
+    [SerializeField] float restartTimer = 20f;
+    private float currentRestartTimer = 20f;
+
     [Header("Scanner")]
     [SerializeField] float scanMaxProgress = 100f;
     [SerializeField] float timeToMaxProgress = 10f;
@@ -210,14 +214,33 @@ public class PlayerInteract : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive )
         {
+            currentRestartTimer = restartTimer;
+
             gameManager.areAllTasksComplete = false;
 
             ToggleUI();
 
             gameManager.FinishTask();
 
-            gameManager.StartElevator();
+            if (gameManager.isElevatorBroken)
+                StartCoroutine(RestartingElevator());
+            else
+                gameManager.StartElevator();
         }
+    }
+
+    IEnumerator RestartingElevator()
+    {
+        while (currentRestartTimer > 0f)
+        {
+            gameManager.SetConsoleUI((int)currentRestartTimer);
+
+            currentRestartTimer -= Time.deltaTime;
+
+            yield return null;
+        }
+
+        gameManager.StartElevator();
     }
 
     void ToggleUI(string text = null)

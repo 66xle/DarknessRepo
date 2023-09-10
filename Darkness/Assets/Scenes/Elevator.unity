@@ -3764,6 +3764,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   enableBoxGizmos: 0
+  restartTimer: 21
   scanMaxProgress: 100
   timeToMaxProgress: 1
   scannerLayer:
@@ -11267,7 +11268,6 @@ MonoBehaviour:
   fuseConsoleText: Missing Fuse
   scanConsoleText: Require Identification
   startConsoleText: Start Elevator
-  movingConsoleText: Continuing Descent
   reachedConsoleText: Destination Reached
   restartConsoleText: Restarting
   errorConsoleText: Error!
@@ -11325,7 +11325,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1935889354}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35e95dc5ff2b64380880dd7ac5922847, type: 3}
   m_Name: 

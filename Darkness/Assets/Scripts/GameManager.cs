@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] string fuseConsoleText = "Missing Fuse";
     [SerializeField] string scanConsoleText = "Require Identification";
     [SerializeField] string startConsoleText = "Start Elevator";
-    [SerializeField] string movingConsoleText = "Continuing Descent";
     [SerializeField] string reachedConsoleText = "Destination Reached";
     [SerializeField] string restartConsoleText = "Restarting";
     [SerializeField] string errorConsoleText = "Error!";
@@ -32,7 +31,7 @@ public class GameManager : MonoBehaviour
     [Header("References")]
     [SerializeField] FixedHornetSpawn spawnScript;
     [SerializeField] PlayerInteract interactScript;
-    [SerializeField] TextMeshProUGUI consoleUI;
+    public TextMeshProUGUI consoleUI;
     [SerializeField] Transform lowerPlatform;
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject gameoverMenu;
@@ -147,7 +146,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        consoleUI.text = movingConsoleText;
+        consoleUI.text = " ";
 
         gateQueue.Remove(currentGateLevel);
         nextGateLevel = gateQueue[0];
@@ -319,7 +318,10 @@ public class GameManager : MonoBehaviour
 
     public void FinishTask()
     {
-        if (isElevatorBroken) return;
+        if (isElevatorBroken)
+        {
+            return;
+        }
 
         taskQueue.Remove(currentTask);
 
@@ -330,5 +332,10 @@ public class GameManager : MonoBehaviour
 
         if (taskQueue.Count > 0)
             LoadTask();
+    }
+
+    public void SetConsoleUI(int time)
+    { 
+        consoleUI.text = restartConsoleText + " (" + time.ToString() + ")";
     }
 }
