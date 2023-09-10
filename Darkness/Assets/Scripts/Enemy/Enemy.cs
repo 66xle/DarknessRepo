@@ -188,14 +188,11 @@ public class Enemy : MonoBehaviour
             // Rotation speed
             float speed = angle / rotationAngle;
 
-            Debug.Log(speed);
-
             if (speed > 6f)
             {
                 speed = 6f;
             }
 
-            Debug.Log("rotate");
 
             // Get Rotation
             Quaternion targetRot = Quaternion.LookRotation(dir);
