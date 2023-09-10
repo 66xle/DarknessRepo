@@ -135,7 +135,7 @@ public class Enemy : MonoBehaviour
     {
         // Light init
         pointLight.enabled = true;
-        float currentIntensity = pointLight.intensity;
+        float maxIntensity = pointLight.intensity;
 
         // Death init
         isDead = true;
@@ -156,8 +156,8 @@ public class Enemy : MonoBehaviour
             deathMat.SetFloat("_Dissolve", Mathf.Clamp01(currentTime / deathTime));
 
             // Fade light
-            currentIntensity = (lightTime - currentTime) / lightTime;
-            pointLight.intensity = Mathf.Clamp01(currentIntensity);
+            float currentIntensity = maxIntensity / lightTime;
+            pointLight.intensity -= currentIntensity * Time.deltaTime;
 
             yield return null;
         }

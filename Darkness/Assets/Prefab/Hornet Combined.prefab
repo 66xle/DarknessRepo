@@ -1211,8 +1211,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.39788735
-  m_Range: 5
+  m_Intensity: 75000
+  m_Range: 15
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -1281,14 +1281,14 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
-  m_Intensity: 5
+  m_Intensity: 3000
   m_EnableSpotReflector: 1
-  m_LuxAtDistance: 1
+  m_LuxAtDistance: 5
   m_InnerSpotPercent: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1
   m_VolumetricDimmer: 1
-  m_LightUnit: 0
+  m_LightUnit: 2
   m_FadeDistance: 10000
   m_VolumetricFadeDistance: 10000
   m_AffectDiffuse: 1
@@ -2436,8 +2436,8 @@ MonoBehaviour:
   scuttle2: {fileID: 8300000, guid: 7fabd1ad30ac9ad45a8ea7162edfdea1, type: 3}
   scuttle3: {fileID: 8300000, guid: 1e1cc398130773d4f84bbf37bd24fcd4, type: 3}
   hissClip: {fileID: 8300000, guid: 33d559e3ec0892342be4dbfd21996599, type: 3}
-  hissTimer: 0
-  hissTimerMax: 4
+  scuttleTimer: 0
+  scuttleTimerMax: 4
   isDead: 0
   targetTransform: {fileID: 0}
   guid: 

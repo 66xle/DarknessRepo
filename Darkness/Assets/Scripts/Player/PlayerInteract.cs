@@ -180,7 +180,6 @@ public class PlayerInteract : MonoBehaviour
                     else
                         ToggleUI(fixConsoleText);
                 }
-
                 ConsoleInteract();
             }
             else if (isInteractUIActive)

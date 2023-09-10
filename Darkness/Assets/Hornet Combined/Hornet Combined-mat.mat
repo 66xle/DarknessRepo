@@ -121,7 +121,7 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - Color_78200a445bb242f2ac2cf7080dcf89d1: {r: 766.9961, g: 766.9961, b: 766.9961, a: 0}
+    - Color_78200a445bb242f2ac2cf7080dcf89d1: {r: 9.494952e+29, g: 9.494952e+29, b: 9.494952e+29, a: 0}
     - Color_e60c15b86f3b482193cbb04a3fdb9357: {r: 1, g: 1, b: 1, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}

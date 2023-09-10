@@ -177,13 +177,14 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            CalculateStopPoint();
             animController.SetBool("isConsoleOpen", false);
         }
     }
 
     void CalculateStopPoint()
     {
-        yAxisBreakDown = UnityEngine.Random.Range(currentYAxis + 10f, yAxisToStop - 20f);
+        yAxisBreakDown = UnityEngine.Random.Range(currentYAxis + 30f, yAxisToStop - 50f);
 
     }
 
@@ -240,7 +241,6 @@ public class GameManager : MonoBehaviour
 
         while (currentYAxis != yAxisToStop)
         {
-
             #region Move Elevator
 
             Vector3 newPosition = new Vector3(environmentToMove.position.x, environmentToMove.position.y + Time.deltaTime * speedtoMove, environmentToMove.position.z);
