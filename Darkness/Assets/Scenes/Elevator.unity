@@ -3692,12 +3692,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9c0dccace213f4429ddf67a61131d16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxBattery: 100
-  drainNormalBattery: 5
-  rechargeCooldown: 0.1
-  rechargeRate: 3
+  maxBattery: 30
+  drainNormalBattery: 10
+  rechargeCooldown: 0.5
+  rechargeRate: 10
   maxIntensity: 600
-  minIntensity: 50
+  fadeInTime: 1
+  fadeOutTime: 0.5
+  emptyCooldown: 1
   torchDistance: 5
   boxWidth: 0.5
   boxHeight: 0.5
@@ -5531,7 +5533,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 600
+  m_Intensity: 0
   m_Range: 25
   m_SpotAngle: 90
   m_InnerSpotAngle: 5
@@ -5601,7 +5603,7 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
-  m_Intensity: 600
+  m_Intensity: 0
   m_EnableSpotReflector: 1
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -6750,7 +6752,7 @@ MonoBehaviour:
   clearDepth: 1
   volumeLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 0
   volumeAnchorOverride: {fileID: 0}
   antialiasing: 0
   SMAAQuality: 2

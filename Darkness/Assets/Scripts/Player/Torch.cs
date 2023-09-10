@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
+using UnityEditor.ShaderGraph.Internal;
 
 public class Torch : MonoBehaviour
 {
@@ -14,8 +15,15 @@ public class Torch : MonoBehaviour
     [SerializeField] float rechargeCooldown = 3f;
     [SerializeField] float rechargeRate = 20f;
     [SerializeField] float maxIntensity = 600f;
-    [SerializeField] float minIntensity = 10f;
+    [SerializeField] float fadeInTime = 1;
+    [SerializeField] float fadeOutTime = 1;
     private float currentRechargeCooldown;
+
+    [Header("Flicker")]
+    [SerializeField] float emptyCooldown = 2f;
+    private float currentEmptyCooldown;
+    private bool isFlickering;
+    private bool disableTorch;
 
     [Header("Box Cast")]
     public float torchDistance = 10f;
@@ -42,6 +50,9 @@ public class Torch : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        isFlickering = false;
+        disableTorch = false;
+
         normalTorchLight = torch.transform.GetChild(0).GetComponent<Light>();
         normalTorchLight.intensity = maxIntensity;
 
@@ -59,21 +70,91 @@ public class Torch : MonoBehaviour
         Raycast();
 
         Battery();
+
+        Flicker();
     }
 
     void ToggleTorch()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !isTorchActive && currentBattery > 0f)
+        if (Input.GetKey(KeyCode.Mouse0) && isFlickering)
+        {
+            disableTorch = true;
+        }
+        else if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            disableTorch = false;
+        }
+
+        if (Input.GetKey(KeyCode.Mouse0) && currentBattery > 0f && !disableTorch && !isFlickering)
         {
             normalTorchLight.enabled = true;
             isTorchActive = true;
+
+            float speed = maxIntensity / fadeInTime;
+            float currentIntensity = normalTorchLight.intensity + Time.deltaTime * speed;
+
+            if (currentIntensity >= maxIntensity)
+                currentIntensity = maxIntensity;
+
+            normalTorchLight.intensity = currentIntensity;
+
         }
-        else if (Input.GetKeyUp(KeyCode.Mouse0) && isTorchActive || currentBattery <= 0f)
+        else if (isTorchActive || currentBattery <= 0f)
         {
-            normalTorchLight.enabled = false;
-            isTorchActive = false;
+            float speed = maxIntensity / fadeOutTime;
+            float currentIntensity = normalTorchLight.intensity - Time.deltaTime * speed;
+
+            if (currentIntensity <= 0f)
+            {
+                normalTorchLight.enabled = false;
+                isTorchActive = false;
+                currentIntensity = 0f;
+            }
+
+            normalTorchLight.intensity = currentIntensity;
         }
     }
+
+    void Flicker()
+    {
+        if (currentBattery <= 0f)
+        {
+            isTorchActive = false;
+            currentEmptyCooldown = emptyCooldown;
+        }
+
+        if (currentEmptyCooldown > 0f)
+        {
+            currentEmptyCooldown -= Time.deltaTime;
+
+            if (!isFlickering)
+            {
+                StartCoroutine(FlickerTorch());
+            }
+        }
+    }
+
+    IEnumerator FlickerTorch()
+    {
+        isFlickering = true;
+        normalTorchLight.intensity = 50f;
+        normalTorchLight.color = Color.red;
+
+        normalTorchLight.enabled = true;
+
+        yield return new WaitForSeconds(emptyCooldown / 10f);
+
+        normalTorchLight.enabled = false;
+
+        yield return new WaitForSeconds(emptyCooldown / 10f);
+
+        normalTorchLight.intensity = 0f;
+        normalTorchLight.color = Color.white;
+        isFlickering = false;
+
+        Debug.Log("done");
+    }
+
 
     void Battery()
     {
@@ -101,14 +182,6 @@ public class Torch : MonoBehaviour
         float currentBatteryPercentage = currentBattery / maxBattery;
         batteryPercentage.value = currentBatteryPercentage;
 
-
-        // Reduce intensity depending on battery
-        float currentIntensity = currentBatteryPercentage * maxBattery;
-
-        if (currentIntensity <= minIntensity)
-            currentIntensity = minIntensity;
-
-        normalTorchLight.intensity = currentIntensity; 
     }
 
     void Raycast()
