@@ -1515,6 +1515,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5009034311754289442}
+  - component: {fileID: 8662373094683510226}
   m_Layer: 9
   m_Name: WOTW_HornetRig:Root_JNT
   m_TagString: Untagged
@@ -1548,6 +1549,21 @@ Transform:
   m_Father: {fileID: 7270655896900212303}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8662373094683510226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3194121285205048365}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
 --- !u!1 &3215775705483386358
 GameObject:
   m_ObjectHideFlags: 0
@@ -2054,6 +2070,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8267585463926767244}
   - component: {fileID: 4204124842700237292}
+  - component: {fileID: 4959881324431271302}
   m_Layer: 9
   m_Name: Hornet_Anim_Walkcycle(Clone)
   m_TagString: Untagged
@@ -2097,6 +2114,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4959881324431271302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4714734650365024418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c070497241c92bb4f9c551b8203fb4e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetTransform: {fileID: 0}
 --- !u!1 &4831956597128537685
 GameObject:
   m_ObjectHideFlags: 0
@@ -2439,6 +2469,7 @@ MonoBehaviour:
   scuttleTimer: 0
   scuttleTimerMax: 4
   isDead: 0
+  rootJnt: {fileID: 0}
   targetTransform: {fileID: 0}
   guid: 
   spawnScript: {fileID: 0}
