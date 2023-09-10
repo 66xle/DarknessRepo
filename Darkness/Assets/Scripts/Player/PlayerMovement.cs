@@ -118,7 +118,15 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-          
+            Vector3 dir = other.transform.position - transform.position;
+
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, dir, out hit, 10f))
+            {
+                if (!hit.collider.CompareTag("Enemy"))
+                    return;
+            }
 
             for(int i = 0; i < spawnSystem.transform.childCount; i++)
             {
@@ -136,8 +144,12 @@ public class PlayerMovement : MonoBehaviour
             disablePlayerMovement = true;
             transform.GetComponent<CapsuleCollider>().enabled = false;
 
+            Enemy enemy = other.gameObject.GetComponent<Enemy>();
+            enemy.rotateToPlayer = true;
 
-            StartCoroutine(LookAtHornet(animController, other.transform.position));
+            StartCoroutine(LookAtHornet(enemy, animController, other.transform.position));
+
+            StartCoroutine(enemy.RotateToPlayer());
 
             //gameManager.Death();
             // Play animation
@@ -145,7 +157,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    IEnumerator LookAtHornet(Animator animController, Vector3 enemyPos)
+    IEnumerator LookAtHornet(Enemy script, Animator animController, Vector3 enemyPos)
     {
         // AI
         Vector3 targetDir = enemyPos - transform.position;
@@ -167,7 +179,6 @@ public class PlayerMovement : MonoBehaviour
             if (RendererExtensions.IsVisibleFrom(transform.GetComponent<Renderer>(), transform.GetComponentInChildren<Camera>()) && !startAttackAnim || angle < 5f && !startAttackAnim)
             {
                 animController.speed = 1f;
-                Debug.Log("yes");
                 startAttackAnim = true;
             }
 
@@ -188,7 +199,6 @@ public class PlayerMovement : MonoBehaviour
 
         } while (angle > 2f);
 
-        
 
         animController.speed = 1f;
         startAttackAnim = true;

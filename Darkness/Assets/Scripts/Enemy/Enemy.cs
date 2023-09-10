@@ -27,6 +27,7 @@ public class Enemy : MonoBehaviour
     int scuttleClipNumber = 1;
     public float scuttleTimer = 0;
     public float scuttleTimerMax = 4;
+    public float rotationAngle = 50;
 
     float distanceToPlayer;
     /*[HideInInspector]*/ public bool isDead;
@@ -36,6 +37,8 @@ public class Enemy : MonoBehaviour
         set { animator.SetBool("IsLightShownOn", value); } 
     }
 
+
+    [HideInInspector] public bool rotateToPlayer;
 
     [HideInInspector] public Transform rootJnt;
 
@@ -171,7 +174,39 @@ public class Enemy : MonoBehaviour
 
     }
 
-    
+    public IEnumerator RotateToPlayer()
+    {
+        agent.updateRotation = false;
+
+        while (rotateToPlayer)
+        {
+            Vector3 dir = targetTransform.position - transform.position;
+
+            // Calculate angle from hornet to player
+            float angle = Mathf.Acos(Vector3.Dot(transform.forward, dir.normalized)) * Mathf.Rad2Deg;
+
+            // Rotation speed
+            float speed = angle / rotationAngle;
+
+            Debug.Log(speed);
+
+            if (speed > 6f)
+            {
+                speed = 6f;
+            }
+
+            Debug.Log("rotate");
+
+            // Get Rotation
+            Quaternion targetRot = Quaternion.LookRotation(dir);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * speed);
+
+            yield return null;
+        }
+
+
+        agent.updateRotation = true;
+    }
 
     AudioClip RandomiseScuttleClip()
     {
