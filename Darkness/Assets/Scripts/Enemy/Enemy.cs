@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] float resetTimer = 1f;
     private float currentResetTimer;
-
+    public float disabletime;
     public float deathTime;
     public float lightTime;
     public float edgeWidth = 0.5f;
@@ -19,7 +19,7 @@ public class Enemy : MonoBehaviour
     private Animator animator;
     AudioSource audioSource;
     public AudioClip deathgroanClip;
-    public AudioClip cringeClip;
+    public AudioClip killClip;
     public AudioClip scuttle1;
     public AudioClip scuttle2;
     public AudioClip scuttle3;
@@ -222,4 +222,20 @@ public class Enemy : MonoBehaviour
         
         return scuttle1;
     }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            audioSource.clip = killClip;
+
+        }
+    }
+
+ 
+
+
+
+    
 }

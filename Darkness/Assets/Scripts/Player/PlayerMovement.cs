@@ -119,6 +119,8 @@ public class PlayerMovement : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             Vector3 dir = other.transform.position - transform.position;
+            other.GetComponent<AudioSource>().clip = other.GetComponent<Enemy>().killClip;
+            StartCoroutine(DisableAudioSource());
 
             RaycastHit hit;
 
@@ -203,4 +205,16 @@ public class PlayerMovement : MonoBehaviour
         animController.speed = 1f;
         startAttackAnim = true;
     }
+
+
+    IEnumerator DisableAudioSource()
+    {
+        yield return new WaitForSeconds(4.0f);
+
+        for (int i = 0; i < spawnSystem.transform.childCount; i++)
+        {
+            spawnSystem.transform.GetChild(i).GetComponent<AudioSource>().enabled = false;
+        }
+    }
+
 }

@@ -66,6 +66,13 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.6663839
+        functionName: Bite
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: c070497241c92bb4f9c551b8203fb4e4, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
