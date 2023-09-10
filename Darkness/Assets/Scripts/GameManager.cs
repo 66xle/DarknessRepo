@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [Header("Elevator Setting")]
     [SerializeField] Transform environmentToMove;
     [SerializeField] float timeToReachGate;
+    [SerializeField] float timeToReachPlatform;
     [SerializeField] float graceTimeWhenElevatorStop = 5f;
     [SerializeField] float lowerPlatformYAxis = 5f;
     [SerializeField] float clearColldierMaxRadius = 1f;
@@ -193,7 +194,7 @@ public class GameManager : MonoBehaviour
         elevatorShake = CameraShaker.Instance.StartShake(magnitude, roughness, fadeIn);
 
         float currentPlatformYAxis = lowerPlatform.transform.position.y;
-        speedtoMove = (yAxisToStop - environmentToMove.position.y) / timeToReachGate;
+        speedtoMove = (lowerPlatformYAxis - environmentToMove.position.y) / timeToReachPlatform;
 
         while (currentPlatformYAxis != lowerPlatformYAxis)
         {
