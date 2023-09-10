@@ -98,6 +98,8 @@ public class Torch : MonoBehaviour
 
             normalTorchLight.intensity = currentIntensity;
 
+            Debug.Log(normalTorchLight.intensity);
+
         }
         else if (isTorchActive || currentBattery <= 0f)
         {
@@ -137,7 +139,7 @@ public class Torch : MonoBehaviour
     IEnumerator FlickerTorch()
     {
         isFlickering = true;
-        normalTorchLight.intensity = 50f;
+        normalTorchLight.intensity = maxIntensity;
         normalTorchLight.color = Color.red;
 
         normalTorchLight.enabled = true;

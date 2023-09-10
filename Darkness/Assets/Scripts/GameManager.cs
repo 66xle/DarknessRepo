@@ -173,8 +173,6 @@ public class GameManager : MonoBehaviour
 
         if (!isLowerPlatformReached)
         {
-            
-
             StartCoroutine(MoveLowerPlatform());
         }
         else
@@ -194,7 +192,7 @@ public class GameManager : MonoBehaviour
         elevatorShake = CameraShaker.Instance.StartShake(magnitude, roughness, fadeIn);
 
         float currentPlatformYAxis = lowerPlatform.transform.position.y;
-        speedtoMove = (lowerPlatformYAxis - environmentToMove.position.y) / timeToReachPlatform;
+        speedtoMove = (lowerPlatformYAxis - lowerPlatform.transform.position.y) / timeToReachPlatform;
 
         while (currentPlatformYAxis != lowerPlatformYAxis)
         {
@@ -218,7 +216,7 @@ public class GameManager : MonoBehaviour
 
             yield return null;
         }
-
+            
         isLowerPlatformReached = true;
 
         elevatorShake.StartFadeOut(fadeOut);
@@ -345,6 +343,9 @@ public class GameManager : MonoBehaviour
         if (currentTask == GateLevel.Tasks.Fuse)
         {
             consoleUI.text = fuseConsoleText;
+            interactScript.canCollectFuse = true;
+
+            Debug.Log("collect fuse");
         }
         else  if (currentTask == GateLevel.Tasks.Scan)
         {

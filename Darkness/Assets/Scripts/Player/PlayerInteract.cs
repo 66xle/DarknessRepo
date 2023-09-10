@@ -48,6 +48,7 @@ public class PlayerInteract : MonoBehaviour
 
 
     bool isInteractUIActive = false;
+    [HideInInspector] public bool canCollectFuse = false;
 
     public void LoadScanners(GateLevel.Gate gate)
     {
@@ -66,6 +67,12 @@ public class PlayerInteract : MonoBehaviour
         {
             currentScanList.Add(currentScanParent.GetChild(i));
         }
+    }
+
+    private void Start()
+    {
+        isInteractUIActive = false;
+        canCollectFuse = false;
     }
 
     // Update is called once per frame
@@ -150,8 +157,7 @@ public class PlayerInteract : MonoBehaviour
 
         if (Physics.Raycast(headCamera.position, direction, out hit, interactDistance, interactableLayer))
         {
-
-            if (hit.collider.CompareTag("Fuse"))
+            if (hit.collider.CompareTag("Fuse") && canCollectFuse)
             {
                 if (!isInteractUIActive)
                     ToggleUI(fuseText);
@@ -206,6 +212,8 @@ public class PlayerInteract : MonoBehaviour
 
             ToggleUI();
             gameManager.FinishTask();
+
+            canCollectFuse = true;
         }
     }
 

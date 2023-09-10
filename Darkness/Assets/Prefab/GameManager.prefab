@@ -1,0 +1,174 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6255428112110955743
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6255428112110955742}
+  - component: {fileID: 6255428112110955737}
+  - component: {fileID: 6255428112110955738}
+  - component: {fileID: 6255428112110955736}
+  - component: {fileID: 6255428112110955739}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6255428112110955742
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6255428112110955743}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.6, y: 20.07, z: -105.62}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6255428112110955737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6255428112110955743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3bb769e7f4aa064fa37924bda10e2f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  environmentToMove: {fileID: 0}
+  timeToReachGate: 1
+  timeToReachPlatform: 1
+  graceTimeWhenElevatorStop: 0
+  lowerPlatformYAxis: 39
+  clearColldierMaxRadius: 3
+  currentGateLevel: {fileID: 0}
+  fuseConsoleText: Missing Fuse
+  scanConsoleText: Require Identification
+  startConsoleText: Start Elevator
+  reachedConsoleText: Destination Reached
+  restartConsoleText: Restarting
+  errorConsoleText: Error!
+  magnitude: 0.7
+  roughness: 1
+  fadeIn: 0.5
+  fadeOut: 0.5
+  mag: 4
+  rough: 2
+  fIn: 0.5
+  fOut: 0.5
+  spawnScript: {fileID: 0}
+  interactScript: {fileID: 0}
+  consoleUI: {fileID: 0}
+  lowerPlatform: {fileID: 0}
+  pauseMenu: {fileID: 0}
+  gameoverMenu: {fileID: 0}
+  animController: {fileID: 0}
+  hatchA: {fileID: 0}
+  hatchB: {fileID: 0}
+  clearCollider: {fileID: 0}
+  gateOrderList:
+  - {fileID: 11400000, guid: faf1210ab161378419fc6707ee671b6e, type: 2}
+  - {fileID: 11400000, guid: e6c7d7a1e3671734980ab343fb01bd24, type: 2}
+  - {fileID: 11400000, guid: 91241a16905041045968795838791616, type: 2}
+  isElevatorBroken: 0
+  areAllTasksComplete: 1
+  canSpawnEnemy: 0
+  isPaused: 0
+--- !u!114 &6255428112110955738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6255428112110955743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_RawSignal: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+    m_AmplitudeGain: 0.5
+    m_FrequencyGain: 0.5
+    m_RepeatMode: 0
+    m_Randomize: 0
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 100
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 1000
+    m_PropagationSpeed: 343
+--- !u!114 &6255428112110955736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6255428112110955743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 1
+  m_Size: {x: 77.180664, y: 5.3229446, z: 75.41939}
+  m_Center: {x: 5.9999466, y: -0.33852768, z: 0.46492004}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 959
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_BuildHeightMesh: 0
+  m_NavMeshData: {fileID: 0}
+--- !u!114 &6255428112110955739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6255428112110955743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35e95dc5ff2b64380880dd7ac5922847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Size: {x: 5.06, y: 3.15, z: 5.81}
+  m_Center: {x: 3.05, y: 0.34000003, z: -0.53}
+  m_Area: 1
+  m_AffectedAgents: ffffffff
