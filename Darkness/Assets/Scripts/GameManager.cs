@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
 
     void CalculateStopPoint()
     {
-        yAxisBreakDown = UnityEngine.Random.Range(currentYAxis + 30f, yAxisToStop - 50f);
+        yAxisBreakDown = UnityEngine.Random.Range(currentYAxis + 50f, yAxisToStop - 100f);
 
     }
 

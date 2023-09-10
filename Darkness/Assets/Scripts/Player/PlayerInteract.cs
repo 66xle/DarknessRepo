@@ -169,7 +169,7 @@ public class PlayerInteract : MonoBehaviour
                 if (!isInteractUIActive)
                     ToggleUI(fuseText);
 
-                CollectFuse(hit.collider.gameObject);
+                CollectFuse(hit.collider.transform.parent.gameObject);
             }
             else if (hit.collider.CompareTag("Console") && fuseList.Count > 0)
             {
