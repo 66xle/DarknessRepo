@@ -18,7 +18,8 @@ public class GateLevel : ScriptableObject
     {
         Fuse,
         Scan,
-        StartElevator
+        StartElevator,
+        RestartElevator
     }
 
     public float yAxis;

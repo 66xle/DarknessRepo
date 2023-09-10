@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -25,6 +26,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] string startConsoleText = "Start Elevator";
     [SerializeField] string movingConsoleText = "Continuing Descent";
     [SerializeField] string reachedConsoleText = "Destination Reached";
+    [SerializeField] string restartConsoleText = "Restarting";
+    [SerializeField] string errorConsoleText = "Error!";
     
     [Header("References")]
     [SerializeField] FixedHornetSpawn spawnScript;
@@ -49,8 +52,10 @@ public class GameManager : MonoBehaviour
     private float currentYAxis;
     private float speedtoMove;
     private float yAxisToStop;
+    private float yAxisBreakDown;
     private NavMeshSurface navSurface;
 
+    [HideInInspector] public bool isElevatorBroken;
     [HideInInspector] public bool areAllTasksComplete = true;
     [HideInInspector] public bool canSpawnEnemy = false;
 
@@ -66,6 +71,8 @@ public class GameManager : MonoBehaviour
         canSpawnEnemy = false;
         isPaused = false;
         isLowerPlatformReached = false;
+        isElevatorBroken = false;
+        yAxisBreakDown = 10000f;
 
         navSurface = GetComponent<NavMeshSurface>();
 
@@ -132,6 +139,14 @@ public class GameManager : MonoBehaviour
 
     public void StartElevator()
     {
+        if (isElevatorBroken)
+        {
+            animController.SetBool("isConsoleOpen", false);
+            isElevatorBroken = false;
+            yAxisBreakDown = 10000f;
+            return;
+        }
+
         consoleUI.text = movingConsoleText;
 
         gateQueue.Remove(currentGateLevel);
@@ -149,7 +164,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+    void CalculateStopPoint()
+    {
+        yAxisBreakDown = UnityEngine.Random.Range(currentYAxis + 10f, yAxisToStop - 20f);
+
+    }
 
     IEnumerator MoveLowerPlatform()
     {
@@ -176,10 +195,9 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        
-
         isLowerPlatformReached = true;
 
+        CalculateStopPoint();
         StartCoroutine(MoveEnvironment());
     }
 
@@ -190,6 +208,7 @@ public class GameManager : MonoBehaviour
 
         while (currentYAxis != yAxisToStop)
         {
+            #region Move Elevator
 
             Vector3 newPosition = new Vector3(environmentToMove.position.x, environmentToMove.position.y + Time.deltaTime * speedtoMove, environmentToMove.position.z);
 
@@ -202,14 +221,23 @@ public class GameManager : MonoBehaviour
 
             currentYAxis = newPosition.y;
 
+            #endregion
 
             // Bake navmesh here
             navSurface.BuildNavMesh();
-            
+
+            if (currentYAxis >= yAxisBreakDown)
+            {
+                Debug.Log(yAxisBreakDown);
+
+                isElevatorBroken = true;
+                break;
+            }
 
             yield return null;
-
         }
+
+        #region Open Console
 
         clearCollider.enabled = true;
         animController.SetBool("isConsoleOpen", true);
@@ -229,25 +257,47 @@ public class GameManager : MonoBehaviour
 
         consoleUI.text = reachedConsoleText;
 
+        #endregion
+
         yield return new WaitForSeconds(graceTimeWhenElevatorStop);
 
-        // Set gate level
-        currentGateLevel = nextGateLevel;
-        taskQueue = new List<GateLevel.Tasks>(currentGateLevel.taskList);
+        #region Is Elevator Broken
 
-        // Load spawning enemies
-        spawnScript.LoadSpawnPoints(currentGateLevel.currentGate);
-        canSpawnEnemy = true;
+        if (!isElevatorBroken)
+        {
+            // Set gate level
+            currentGateLevel = nextGateLevel;
+            taskQueue = new List<GateLevel.Tasks>(currentGateLevel.taskList);
+
+            // Load spawning enemies
+            spawnScript.LoadSpawnPoints(currentGateLevel.currentGate);
+            canSpawnEnemy = true;
+        }
+        else
+        {
+            spawnScript.LoadElevatorSpawnPoint();
+            canSpawnEnemy = true;
+            areAllTasksComplete = true;
+        }
+
+        #endregion
 
         hatchA.enabled = true;
         hatchB.enabled = true;
-        
 
         LoadTask();
     }
 
     void LoadTask()
     {
+        if (isElevatorBroken)
+        {
+            currentTask = GateLevel.Tasks.RestartElevator;
+            consoleUI.text = errorConsoleText;
+
+            return;
+        }
+
         currentTask = taskQueue[0];
 
         if (currentTask == GateLevel.Tasks.Fuse)
@@ -263,19 +313,20 @@ public class GameManager : MonoBehaviour
         {
             consoleUI.text = startConsoleText;
             areAllTasksComplete = true;
+            spawnScript.CanSpawnHornet = false;
         }
     }
 
     public void FinishTask()
     {
+        if (isElevatorBroken) return;
+
         taskQueue.Remove(currentTask);
 
         if (currentTask == GateLevel.Tasks.StartElevator)
         {
-            
             return;
         }
-
 
         if (taskQueue.Count > 0)
             LoadTask();

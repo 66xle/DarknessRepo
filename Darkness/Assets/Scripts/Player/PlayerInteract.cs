@@ -33,6 +33,7 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] string fuseText = "Collect Fuse";
     [SerializeField] string insertFuseText = "Insert Fuse";
     [SerializeField] string consoleText = "Start Elevator";
+    [SerializeField] string fixConsoleText = "Restart Elevator";
     private List<GameObject> fuseList = new List<GameObject>();
 
     [Header("References")]
@@ -145,7 +146,6 @@ public class PlayerInteract : MonoBehaviour
 
         if (Physics.Raycast(headCamera.position, direction, out hit, interactDistance, interactableLayer))
         {
-            Debug.Log(hit.collider.tag);
 
             if (hit.collider.CompareTag("Fuse"))
             {
@@ -156,17 +156,20 @@ public class PlayerInteract : MonoBehaviour
             }
             else if (hit.collider.CompareTag("FusePlate") && fuseList.Count > 0)
             {
-
                 if (!isInteractUIActive)
                     ToggleUI(insertFuseText);
 
-                //InsertFuse(hit.collider.transform.GetChild(0).gameObject);
                 InsertFuse();
             }
             else if (hit.collider.CompareTag("Console") && gameManager.areAllTasksComplete)
             {
                 if (!isInteractUIActive)
-                    ToggleUI(consoleText);
+                {
+                    if (!gameManager.isElevatorBroken)
+                        ToggleUI(consoleText);
+                    else
+                        ToggleUI(fixConsoleText);
+                }
 
                 ConsoleInteract();
             }
@@ -207,13 +210,13 @@ public class PlayerInteract : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive )
         {
-            gameManager.StartElevator();
-
             gameManager.areAllTasksComplete = false;
 
             ToggleUI();
 
             gameManager.FinishTask();
+
+            gameManager.StartElevator();
         }
     }
 
