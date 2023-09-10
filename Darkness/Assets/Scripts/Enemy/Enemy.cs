@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 using UnityEngine.Experimental.GlobalIllumination;
 
 public class Enemy : MonoBehaviour
@@ -36,6 +37,7 @@ public class Enemy : MonoBehaviour
     }
 
 
+    [HideInInspector] public Transform rootJnt;
 
 
     [HideInInspector] public Transform targetTransform;
@@ -48,6 +50,8 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GetComponentInChildren<Mount>().targetTransform = targetTransform;
+
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
         pointLight = GetComponentInChildren<Light>();
@@ -135,7 +139,7 @@ public class Enemy : MonoBehaviour
     {
         // Light init
         pointLight.enabled = true;
-        float currentIntensity = pointLight.intensity;
+        float maxIntensity = pointLight.intensity;
 
         // Death init
         isDead = true;
@@ -156,8 +160,8 @@ public class Enemy : MonoBehaviour
             deathMat.SetFloat("_Dissolve", Mathf.Clamp01(currentTime / deathTime));
 
             // Fade light
-            currentIntensity = (lightTime - currentTime) / lightTime;
-            pointLight.intensity = Mathf.Clamp01(currentIntensity);
+            float currentIntensity = maxIntensity / lightTime;
+            pointLight.intensity -= currentIntensity * Time.deltaTime;
 
             yield return null;
         }
@@ -166,6 +170,8 @@ public class Enemy : MonoBehaviour
             Destroy(transform.gameObject);
 
     }
+
+    
 
     AudioClip RandomiseScuttleClip()
     {
