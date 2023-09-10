@@ -6,15 +6,19 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
+using EZCameraShake;
 
 public class GameManager : MonoBehaviour
 {
     [Header("Elevator Setting")]
     [SerializeField] Transform environmentToMove;
     [SerializeField] float timeToReachGate;
+    [SerializeField] float timeToReachPlatform;
     [SerializeField] float graceTimeWhenElevatorStop = 5f;
     [SerializeField] float lowerPlatformYAxis = 5f;
+    [SerializeField] float clearColldierMaxRadius = 1f;
     [HideInInspector] public GateLevel currentGateLevel;
     private GateLevel nextGateLevel;
 
@@ -22,17 +26,35 @@ public class GameManager : MonoBehaviour
     [SerializeField] string fuseConsoleText = "Missing Fuse";
     [SerializeField] string scanConsoleText = "Require Identification";
     [SerializeField] string startConsoleText = "Start Elevator";
-    [SerializeField] string movingConsoleText = "Continuing Descent";
     [SerializeField] string reachedConsoleText = "Destination Reached";
-    
+    [SerializeField] string restartConsoleText = "Restarting";
+    [SerializeField] string errorConsoleText = "Error!";
+
+    [Header("Camera Shake Moving")]
+    [SerializeField] float magnitude = 1f;
+    [SerializeField] float roughness = 1f;
+    [SerializeField] float fadeIn = 1f;
+    [SerializeField] float fadeOut = 1f;
+
+    [Header("Camera Shake Stopping")]
+    [SerializeField] float mag = 1f;
+    [SerializeField] float rough = 1f;
+    [SerializeField] float fIn = 1f;
+    [SerializeField] float fOut = 1f;
+
+
     [Header("References")]
     [SerializeField] FixedHornetSpawn spawnScript;
     [SerializeField] PlayerInteract interactScript;
-    [SerializeField] TextMeshProUGUI consoleUI;
+    public TextMeshProUGUI consoleUI;
     [SerializeField] Transform lowerPlatform;
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject gameoverMenu;
     [SerializeField] Animator animController;
+    [SerializeField] BoxCollider hatchA;
+    [SerializeField] BoxCollider hatchB;
+    [SerializeField] SphereCollider clearCollider;
+    
 
     [Header("Gate Order")]
     [SerializeField] List<GateLevel> gateOrderList;
@@ -45,8 +67,10 @@ public class GameManager : MonoBehaviour
     private float currentYAxis;
     private float speedtoMove;
     private float yAxisToStop;
+    private float yAxisBreakDown;
     private NavMeshSurface navSurface;
 
+    [HideInInspector] public bool isElevatorBroken;
     [HideInInspector] public bool areAllTasksComplete = true;
     [HideInInspector] public bool canSpawnEnemy = false;
 
@@ -55,6 +79,8 @@ public class GameManager : MonoBehaviour
     private bool isLowerPlatformReached = false;
 
 
+    CameraShakeInstance elevatorShake;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -62,6 +88,8 @@ public class GameManager : MonoBehaviour
         canSpawnEnemy = false;
         isPaused = false;
         isLowerPlatformReached = false;
+        isElevatorBroken = false;
+        yAxisBreakDown = 10000f;
 
         navSurface = GetComponent<NavMeshSurface>();
 
@@ -128,7 +156,15 @@ public class GameManager : MonoBehaviour
 
     public void StartElevator()
     {
-        consoleUI.text = movingConsoleText;
+        if (isElevatorBroken)
+        {
+            animController.SetBool("isConsoleOpen", false);
+            isElevatorBroken = false;
+            yAxisBreakDown = 10000f;
+            return;
+        }
+
+        consoleUI.text = " ";
 
         gateQueue.Remove(currentGateLevel);
         nextGateLevel = gateQueue[0];
@@ -137,6 +173,8 @@ public class GameManager : MonoBehaviour
 
         if (!isLowerPlatformReached)
         {
+            
+
             StartCoroutine(MoveLowerPlatform());
         }
         else
@@ -145,16 +183,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+    void CalculateStopPoint()
+    {
+        yAxisBreakDown = UnityEngine.Random.Range(currentYAxis + 10f, yAxisToStop - 20f);
+
+    }
 
     IEnumerator MoveLowerPlatform()
     {
-        float currentPlatformYAxis = lowerPlatform.transform.position.y;
+        elevatorShake = CameraShaker.Instance.StartShake(magnitude, roughness, fadeIn);
 
-        speedtoMove = (yAxisToStop - environmentToMove.position.y) / timeToReachGate;
+        float currentPlatformYAxis = lowerPlatform.transform.position.y;
+        speedtoMove = (lowerPlatformYAxis - environmentToMove.position.y) / timeToReachPlatform;
 
         while (currentPlatformYAxis != lowerPlatformYAxis)
         {
+            #region Move Elevator
+
             Vector3 newEnvironmentPosition = new Vector3(environmentToMove.position.x, environmentToMove.position.y + Time.deltaTime * speedtoMove, environmentToMove.position.z);
             Vector3 newPlatformPosition = new Vector3(lowerPlatform.position.x, lowerPlatform.position.y + Time.deltaTime * speedtoMove, lowerPlatform.position.z);
 
@@ -169,21 +214,36 @@ public class GameManager : MonoBehaviour
             currentPlatformYAxis = newPlatformPosition.y;
             currentYAxis = newEnvironmentPosition.y;
 
+            #endregion
+
             yield return null;
         }
 
         isLowerPlatformReached = true;
 
+        elevatorShake.StartFadeOut(fadeOut);
+
+        // Big shake here
+        CameraShaker.Instance.ShakeOnce(mag, rough, fIn, fOut);
+
+
+        CalculateStopPoint();
+
+        yield return new WaitForSeconds(2f);
         StartCoroutine(MoveEnvironment());
     }
 
     public IEnumerator MoveEnvironment()
     {
+        elevatorShake = CameraShaker.Instance.StartShake(magnitude, roughness, fadeIn);
+
         // Calculate move speed
         speedtoMove = (yAxisToStop - environmentToMove.position.y) / timeToReachGate;
 
         while (currentYAxis != yAxisToStop)
         {
+
+            #region Move Elevator
 
             Vector3 newPosition = new Vector3(environmentToMove.position.x, environmentToMove.position.y + Time.deltaTime * speedtoMove, environmentToMove.position.z);
 
@@ -196,36 +256,90 @@ public class GameManager : MonoBehaviour
 
             currentYAxis = newPosition.y;
 
+            #endregion
 
             // Bake navmesh here
             navSurface.BuildNavMesh();
-            
+
+            if (currentYAxis >= yAxisBreakDown)
+            {
+                Debug.Log(yAxisBreakDown);
+
+                isElevatorBroken = true;
+                break;
+            }
 
             yield return null;
-
         }
+
+        elevatorShake.StartFadeOut(fadeOut);
+
+        // Big shake here
+        CameraShaker.Instance.ShakeOnce(mag, rough, fIn, fOut);
+
+        #region Open Console
+
+        yield return new WaitForSeconds(2f);
+
+        clearCollider.enabled = true;
+        animController.SetBool("isConsoleOpen", true);
+
+        while (clearCollider.radius < clearColldierMaxRadius)
+        {
+            float raduis = clearCollider.radius + Time.deltaTime * 5f;
+
+            clearCollider.radius = raduis;
+
+            Debug.Log(raduis);
+
+            yield return null;
+        }
+
+        clearCollider.enabled = false;
 
         consoleUI.text = reachedConsoleText;
 
+        #endregion
+
         yield return new WaitForSeconds(graceTimeWhenElevatorStop);
 
-        // Set gate level
-        currentGateLevel = nextGateLevel;
-        taskQueue = new List<GateLevel.Tasks>(currentGateLevel.taskList);
+        #region Is Elevator Broken
 
-        // Load spawning enemies
-        spawnScript.LoadSpawnPoints(currentGateLevel.currentGate);
-        canSpawnEnemy = true;
+        if (!isElevatorBroken)
+        {
+            // Set gate level
+            currentGateLevel = nextGateLevel;
+            taskQueue = new List<GateLevel.Tasks>(currentGateLevel.taskList);
 
-        Debug.Log("spawn enemies");
+            // Load spawning enemies
+            spawnScript.LoadSpawnPoints(currentGateLevel.currentGate);
+            canSpawnEnemy = true;
+        }
+        else
+        {
+            spawnScript.LoadElevatorSpawnPoint();
+            canSpawnEnemy = true;
+            areAllTasksComplete = true;
+        }
 
-        animController.SetBool("isConsoleOpen", true);
+        #endregion
+
+        hatchA.enabled = true;
+        hatchB.enabled = true;
 
         LoadTask();
     }
 
     void LoadTask()
     {
+        if (isElevatorBroken)
+        {
+            currentTask = GateLevel.Tasks.RestartElevator;
+            consoleUI.text = errorConsoleText;
+
+            return;
+        }
+
         currentTask = taskQueue[0];
 
         if (currentTask == GateLevel.Tasks.Fuse)
@@ -241,21 +355,30 @@ public class GameManager : MonoBehaviour
         {
             consoleUI.text = startConsoleText;
             areAllTasksComplete = true;
+            spawnScript.CanSpawnHornet = false;
         }
     }
 
     public void FinishTask()
     {
+        if (isElevatorBroken)
+        {
+            return;
+        }
+
         taskQueue.Remove(currentTask);
 
         if (currentTask == GateLevel.Tasks.StartElevator)
         {
-            
             return;
         }
 
-
         if (taskQueue.Count > 0)
             LoadTask();
+    }
+
+    public void SetConsoleUI(int time)
+    { 
+        consoleUI.text = restartConsoleText + " (" + time.ToString() + ")";
     }
 }
