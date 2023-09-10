@@ -49,6 +49,7 @@ public class PlayerInteract : MonoBehaviour
 
 
     bool isInteractUIActive = false;
+    bool hasIntercomActivated = false;
     [HideInInspector] public bool canCollectFuse = false;
 
 
@@ -58,6 +59,7 @@ public class PlayerInteract : MonoBehaviour
     public void LoadScanners(GateLevel.Gate gate)
     {
         isScanTaskActive = true;
+        hasIntercomActivated = false;
 
         currentScanList.Clear();
 
@@ -187,7 +189,7 @@ public class PlayerInteract : MonoBehaviour
                 }
                 ConsoleInteract();
             }
-            else if (hit.collider.CompareTag("Intercom"))
+            else if (hit.collider.CompareTag("Intercom") && !hasIntercomActivated)
             {
                 if (!isInteractUIActive)
                 {
@@ -207,6 +209,10 @@ public class PlayerInteract : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive)
         {
+            hasIntercomActivated = true;
+
+            ToggleUI();
+
             if (script.restartCount == 0)
             {
                 script.audioSource.clip = script.clipList[0];

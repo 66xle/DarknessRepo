@@ -15,7 +15,6 @@ public class Intercom : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         initialize = PlayerPrefs.GetInt("Initialize");
         if(initialize == 0)
         {
