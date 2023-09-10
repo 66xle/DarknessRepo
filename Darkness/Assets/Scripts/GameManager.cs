@@ -173,8 +173,6 @@ public class GameManager : MonoBehaviour
 
         if (!isLowerPlatformReached)
         {
-            
-
             StartCoroutine(MoveLowerPlatform());
         }
         else
@@ -194,7 +192,7 @@ public class GameManager : MonoBehaviour
         elevatorShake = CameraShaker.Instance.StartShake(magnitude, roughness, fadeIn);
 
         float currentPlatformYAxis = lowerPlatform.transform.position.y;
-        speedtoMove = (lowerPlatformYAxis - environmentToMove.position.y) / timeToReachPlatform;
+        speedtoMove = (lowerPlatformYAxis - lowerPlatform.transform.position.y) / timeToReachPlatform;
 
         while (currentPlatformYAxis != lowerPlatformYAxis)
         {
@@ -312,13 +310,13 @@ public class GameManager : MonoBehaviour
             taskQueue = new List<GateLevel.Tasks>(currentGateLevel.taskList);
 
             // Load spawning enemies
-            spawnScript.LoadSpawnPoints(currentGateLevel.currentGate);
-            canSpawnEnemy = true;
+            //spawnScript.LoadSpawnPoints(currentGateLevel.currentGate);
+            //canSpawnEnemy = true;
         }
         else
         {
-            spawnScript.LoadElevatorSpawnPoint();
-            canSpawnEnemy = true;
+            //spawnScript.LoadElevatorSpawnPoint();
+            //canSpawnEnemy = true;
             areAllTasksComplete = true;
         }
 
