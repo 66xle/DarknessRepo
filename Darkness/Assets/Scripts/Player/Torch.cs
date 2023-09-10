@@ -98,6 +98,8 @@ public class Torch : MonoBehaviour
 
             normalTorchLight.intensity = currentIntensity;
 
+            Debug.Log(normalTorchLight.intensity);
+
         }
         else if (isTorchActive || currentBattery <= 0f)
         {

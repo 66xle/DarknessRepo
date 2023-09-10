@@ -234,7 +234,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 19044811}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchRimB_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -381,7 +381,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 52654279}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ConsoleUpper_OFFSET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1056,7 +1056,7 @@ GameObject:
   - component: {fileID: 147911501}
   - component: {fileID: 147911502}
   - component: {fileID: 147911503}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: OuterPlatform_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1666,7 +1666,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 202377639}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorOrb_OFFSET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1978,7 +1978,7 @@ GameObject:
   - component: {fileID: 307830764}
   - component: {fileID: 307830766}
   - component: {fileID: 307830765}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: DriverRail_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2655,7 +2655,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 362872035}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Root_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2688,7 +2688,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 390727438}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2754,7 +2754,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 406734568}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorOrb_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3564,7 +3564,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 473102313}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchRimB_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3594,7 +3594,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 482332896}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorBase_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3705,7 +3705,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 516038808}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Root_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4109,7 +4109,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 605916017}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: InnerPlatform_OFFSET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4358,7 +4358,7 @@ GameObject:
   - component: {fileID: 621561979}
   - component: {fileID: 621561981}
   - component: {fileID: 621561980}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: DriverRail_GEO (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4437,7 +4437,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 646710497}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SidePlatform_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4699,7 +4699,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 702830029}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Root_OFFSET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4731,7 +4731,7 @@ GameObject:
   m_Component:
   - component: {fileID: 721852436}
   - component: {fileID: 721852437}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GearWheel_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4814,7 +4814,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 739424283}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorBase_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5104,7 +5104,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 770590510}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorOrb_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5134,7 +5134,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 780846800}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchA_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5167,7 +5167,7 @@ GameObject:
   - component: {fileID: 796295885}
   - component: {fileID: 796295884}
   - component: {fileID: 796295883}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7605,7 +7605,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 878063533}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ConsoleUpper_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7636,7 +7636,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 878324229}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchRimB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8026,7 +8026,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 913050060}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SidePlatform_OFFSET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8058,7 +8058,7 @@ GameObject:
   m_Component:
   - component: {fileID: 933479080}
   - component: {fileID: 933479081}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PlatformDriver_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8401,7 +8401,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 957843625}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchRimA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8656,7 +8656,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 998599585}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorLid_OFFSET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8687,7 +8687,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1005004630}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SidePlatform_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8798,7 +8798,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1039064907}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Lower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9512,7 +9512,7 @@ GameObject:
   - component: {fileID: 1128654536}
   - component: {fileID: 1128654538}
   - component: {fileID: 1128654537}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10523,6 +10523,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6255428112110955736, guid: fe0c142358108024b85efb26f006b6e3, type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6255428112110955736, guid: fe0c142358108024b85efb26f006b6e3, type: 3}
+      propertyPath: m_LayerMask.m_Bits
+      value: 3006
+      objectReference: {fileID: 0}
     - target: {fileID: 6255428112110955737, guid: fe0c142358108024b85efb26f006b6e3, type: 3}
       propertyPath: hatchA
       value: 
@@ -10589,11 +10597,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6255428112110955742, guid: fe0c142358108024b85efb26f006b6e3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 20.07
+      value: -35.89
       objectReference: {fileID: 0}
     - target: {fileID: 6255428112110955742, guid: fe0c142358108024b85efb26f006b6e3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -105.62
+      value: 12.9
       objectReference: {fileID: 0}
     - target: {fileID: 6255428112110955742, guid: fe0c142358108024b85efb26f006b6e3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10627,7 +10635,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6255428112110955738, guid: fe0c142358108024b85efb26f006b6e3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fe0c142358108024b85efb26f006b6e3, type: 3}
 --- !u!114 &1211488204 stripped
 MonoBehaviour:
@@ -10730,7 +10739,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1221885370}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: InnerPlatform_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11140,7 +11149,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1251324341}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ConsoleLower_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11170,7 +11179,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1269531933}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ConsoleLower_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11200,7 +11209,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1290274803}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchRimA_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11311,7 +11320,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1297132411}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ConsoleLower_OFFSET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11504,7 +11513,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1340391648}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorBase_OFFSET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11967,7 +11976,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1395448270}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: InnerPlatform_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12004,7 +12013,7 @@ GameObject:
   - component: {fileID: 1399041018}
   - component: {fileID: 1399041019}
   - component: {fileID: 1399041020}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SidePlatform_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12434,7 +12443,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1417631464}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorLid_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12688,7 +12697,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1459458150}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ConsoleUpper_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12930,7 +12939,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1498315245}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchB_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13041,7 +13050,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1508312268}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchRimA_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13152,7 +13161,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1528209015}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorLid_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14540,7 +14549,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1698905151}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchB_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15176,6 +15185,46 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3222856241124839412, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: m_Intensity
+      value: 56544.918
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222856241124839412, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: m_LightUnit
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222856241124839412, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: m_LuxAtDistance
+      value: 160.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222856241124839415, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: m_Range
+      value: 50.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222856241124839415, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222856241124839415, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222856241124839415, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222856241124839415, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: m_Intensity
+      value: 1.4620617e+9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222856241124839415, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: m_AreaSize.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222856241124839415, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: m_AreaSize.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3222856241816068272, guid: fed9adccde103624ab43cc3479050d20, type: 3}
       propertyPath: interactUI
       value: 
@@ -15188,6 +15237,10 @@ PrefabInstance:
       propertyPath: interactUIText
       value: 
       objectReference: {fileID: 7930072632308434366}
+    - target: {fileID: 3222856241816068272, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: enableBoxGizmos
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3222856241816068274, guid: fed9adccde103624ab43cc3479050d20, type: 3}
       propertyPath: m_UseGravity
       value: 1
@@ -15198,7 +15251,7 @@ PrefabInstance:
       objectReference: {fileID: 1211488204}
     - target: {fileID: 3222856241816068275, guid: fed9adccde103624ab43cc3479050d20, type: 3}
       propertyPath: maxIntensity
-      value: 40000
+      value: 1000000
       objectReference: {fileID: 0}
     - target: {fileID: 3222856241816068275, guid: fed9adccde103624ab43cc3479050d20, type: 3}
       propertyPath: batteryPercentage
@@ -15256,6 +15309,18 @@ PrefabInstance:
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 1211488204}
+    - target: {fileID: 3222856241831488208, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222856241831488208, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222856241831488208, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.274
+      objectReference: {fileID: 0}
     - target: {fileID: 3222856241831488209, guid: fed9adccde103624ab43cc3479050d20, type: 3}
       propertyPath: m_Range
       value: 25
@@ -15268,17 +15333,33 @@ PrefabInstance:
       propertyPath: m_Intensity
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3222856241831488209, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: m_SpotAngle
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222856241831488209, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3222856241831488214, guid: fed9adccde103624ab43cc3479050d20, type: 3}
       propertyPath: m_Intensity
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3222856241831488214, guid: fed9adccde103624ab43cc3479050d20, type: 3}
       propertyPath: m_LightUnit
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3222856241831488214, guid: fed9adccde103624ab43cc3479050d20, type: 3}
       propertyPath: m_LuxAtDistance
-      value: 10014.3
+      value: 4149
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222856241831488214, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: m_CustomSpotLightShadowCone
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222856241943583297, guid: fed9adccde103624ab43cc3479050d20, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 3007
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fed9adccde103624ab43cc3479050d20, type: 3}
@@ -15722,7 +15803,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1927838126}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchA_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15833,7 +15914,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1957863198}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GEO_GRP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16079,7 +16160,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2020417444}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16110,7 +16191,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2044342771}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16821,7 +16902,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1952496959723491701}
   - component: {fileID: 5927021642361584076}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorOrb_High:GeneratorOrb_High1:polySurface2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16914,7 +16995,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6378530582825339884}
   - component: {fileID: 4425349050454738796}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorBaseRing_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16944,7 +17025,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 811581089342170843}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SidePlatform_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17056,7 +17137,7 @@ GameObject:
   - component: {fileID: 919132148644935443}
   - component: {fileID: 919132148644935442}
   - component: {fileID: 919132148644935441}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Upper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17118,7 +17199,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2860091485805529923}
   - component: {fileID: 931604007807307186}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ConsoleLower_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17177,7 +17258,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8226984149230274198}
   - component: {fileID: 8395312750539464827}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HingeCageA_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17261,7 +17342,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5404875935698281217}
   - component: {fileID: 5707893656000074298}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchHinge1_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17278,7 +17359,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3132901748713259767}
   - component: {fileID: 7414974798333384469}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ConsoleUpper_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17294,7 +17375,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 451077744228021057}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorLid_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17310,7 +17391,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7392809882903443837}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SidePlatform_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17342,7 +17423,7 @@ GameObject:
   - component: {fileID: 8415770094456863474}
   - component: {fileID: 6143538955038827426}
   - component: {fileID: 1442993739600672130}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: InnerPlatform_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17372,7 +17453,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9047196701324345886}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorBase_GRP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17389,7 +17470,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7177907328387413398}
   - component: {fileID: 1512365119956445710}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchA_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17447,7 +17528,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1671910152659933739}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ConsoleLower_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17463,7 +17544,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 222649454794195458}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchB_GRP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17493,7 +17574,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5501269521830268224}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchRimB_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17523,7 +17604,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1006301006748162073}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17583,7 +17664,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1579199565447578267}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SidePlatform_OFFSET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17683,7 +17764,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2001982799716212300}
   - component: {fileID: 7853577276944075103}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorBase_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17699,7 +17780,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2207389667920316003}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchRimA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17715,7 +17796,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4889778900699614797}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Hatch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17813,7 +17894,7 @@ GameObject:
   m_Component:
   - component: {fileID: 373356023263288171}
   - component: {fileID: 3169508783760938071}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchHinge3_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17829,7 +17910,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6267572441346343130}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorBase_OFFSET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17912,7 +17993,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1149885825272272706}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorLid_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17929,7 +18010,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8463590024908116412}
   - component: {fileID: 2906380153895008538}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ConsoleLower_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18067,7 +18148,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 112948432109243246}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ConsoleUpper_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18085,7 +18166,7 @@ GameObject:
   - component: {fileID: 5839393044952434366}
   - component: {fileID: 6329197492230176255}
   - component: {fileID: 3533297783392738109}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchRimB_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18116,7 +18197,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8209656193093763467}
   - component: {fileID: 6816545479176955599}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorTubes_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18185,7 +18266,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5363169776666388693}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18201,7 +18282,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5927070189022064135}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: InnerPlatform_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18247,7 +18328,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4370425941493489311}
   - component: {fileID: 3994829797560087828}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchB_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18482,7 +18563,7 @@ GameObject:
   - component: {fileID: 4035747593161127585}
   - component: {fileID: 4035747593161127599}
   - component: {fileID: 4035747593161127584}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18546,7 +18627,7 @@ GameObject:
   - component: {fileID: 4035747593559744814}
   - component: {fileID: 4035747593559744815}
   - component: {fileID: 4035747593559744800}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18806,7 +18887,7 @@ GameObject:
   - component: {fileID: 4035747593570154515}
   - component: {fileID: 4035747593570154513}
   - component: {fileID: 4035747593570154514}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18903,7 +18984,7 @@ GameObject:
   - component: {fileID: 4035747593704936875}
   - component: {fileID: 4035747593704936876}
   - component: {fileID: 4035747593704936877}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Console
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18972,7 +19053,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8444213741463521010}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ConsoleUpper_OFFSET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18989,7 +19070,7 @@ GameObject:
   m_Component:
   - component: {fileID: 84604557634131119}
   - component: {fileID: 4343189188178601250}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorBase_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19086,7 +19167,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1811273590712227132}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorOrb_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19102,7 +19183,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6118019831956327370}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchRimA_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19119,7 +19200,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6779235240036030262}
   - component: {fileID: 4049101227248910564}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchDoorA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19136,7 +19217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 140926869831116514}
   - component: {fileID: 2614629752371375076}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchHinge4_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19153,7 +19234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5050873236914532680}
   - component: {fileID: 4736267319037448822}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: InnerPlatform_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19212,7 +19293,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7353104034445835525}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GEO_GRP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19367,7 +19448,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6807376919866408621}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Root_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19383,7 +19464,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 317687494116047281}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchB_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19452,7 +19533,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3896089671409681554}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchA_GRP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19582,7 +19663,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2256067923115762339}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchRimB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19600,7 +19681,7 @@ GameObject:
   - component: {fileID: 7451200084420290675}
   - component: {fileID: 3021957821499825168}
   - component: {fileID: 6067970501200279985}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchRimA_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19780,7 +19861,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5875705928237674760}
   - component: {fileID: 3679949442014594314}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: InnerPlatformRing_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19810,7 +19891,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 166731666852213863}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ConsoleLower_OFFSET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19826,7 +19907,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2931715280466654478}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchA_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19843,7 +19924,7 @@ GameObject:
   m_Component:
   - component: {fileID: 931844425421488335}
   - component: {fileID: 7261646140450236993}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HingeCageB_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19956,7 +20037,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3346280231962237228}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ConsoleUpper_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20025,7 +20106,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6117196884693374598}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchRimA_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20041,7 +20122,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7749064524070963921}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Root_OFFSET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20089,7 +20170,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1370256722063377019}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorOrb_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20172,7 +20253,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 830599247840521200}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorOrb_OFFSET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20271,7 +20352,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 824000432574684725}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorBase_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22460,7 +22541,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5944145984437277218}
   - component: {fileID: 5475678492957596504}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorLid_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22505,7 +22586,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3969750781352147881}
   - component: {fileID: 9178630065050174359}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchDoorB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22521,7 +22602,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5037261061423605233}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Root_JNT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22590,7 +22671,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4915829329612517619}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchRimB_CTRL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22664,7 +22745,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2576012686242520108}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22680,7 +22761,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2423737071290365302}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorLid_OFFSET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22696,7 +22777,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8598972492121866782}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: InnerPlatform_OFFSET
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22713,7 +22794,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7861507350845192384}
   - component: {fileID: 3342270710235716180}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: GeneratorOrb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22730,7 +22811,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8022619323453311791}
   - component: {fileID: 1215340453874721322}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HatchHinge2_GEO
   m_TagString: Untagged
   m_Icon: {fileID: 0}

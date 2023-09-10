@@ -216,7 +216,7 @@ public class GameManager : MonoBehaviour
 
             yield return null;
         }
-
+            
         isLowerPlatformReached = true;
 
         elevatorShake.StartFadeOut(fadeOut);
