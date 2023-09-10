@@ -315,8 +315,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            //spawnScript.LoadElevatorSpawnPoint();
-            //canSpawnEnemy = true;
+            spawnScript.LoadElevatorSpawnPoint();
+            canSpawnEnemy = true;
             areAllTasksComplete = true;
         }
 
