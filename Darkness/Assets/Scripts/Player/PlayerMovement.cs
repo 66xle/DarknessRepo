@@ -32,6 +32,8 @@ public class PlayerMovement : MonoBehaviour
     float xRotation = 0f;
     Vector2 mouseInput;
 
+    public GameObject spawnSystem;
+
     #endregion
 
     // Start is called before the first frame update
@@ -116,6 +118,13 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
+          
+
+            for(int i = 0; i < spawnSystem.transform.childCount; i++)
+            {
+                spawnSystem.transform.GetChild(i).GetComponent<AudioSource>().enabled = false;
+            }
+
             other.gameObject.GetComponent<BoxCollider>().enabled = false;
             other.gameObject.GetComponent<NavMeshAgent>().enabled = false;
 
@@ -132,6 +141,7 @@ public class PlayerMovement : MonoBehaviour
 
             //gameManager.Death();
             // Play animation
+
         }
     }
 

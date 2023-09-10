@@ -38,6 +38,7 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] string insertFuseText = "Insert Fuse";
     [SerializeField] string consoleText = "Start Elevator";
     [SerializeField] string fixConsoleText = "Restart Elevator";
+    [SerializeField] string intercomText = "Interact with intercom";
     private List<GameObject> fuseList = new List<GameObject>();
 
     [Header("References")]
@@ -49,6 +50,10 @@ public class PlayerInteract : MonoBehaviour
 
     bool isInteractUIActive = false;
     [HideInInspector] public bool canCollectFuse = false;
+
+
+    public GameObject intercom;
+
 
     public void LoadScanners(GateLevel.Gate gate)
     {
@@ -182,10 +187,81 @@ public class PlayerInteract : MonoBehaviour
                 }
                 ConsoleInteract();
             }
+            else if (hit.collider.CompareTag("Intercom"))
+            {
+                if (!isInteractUIActive)
+                {
+                    ToggleUI(intercomText);
+                }
+
+                IntercomInteract(hit.collider.GetComponent<Intercom>());
+            }
             else if (isInteractUIActive)
             {
                 ToggleUI();
             }
+        }
+    }
+
+    void IntercomInteract(Intercom script)
+    {
+        if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive)
+        {
+            if (script.restartCount == 0)
+            {
+                script.audioSource.clip = script.clipList[0];
+                script.audioSource.Play();
+
+            }
+            if (script.restartCount == 1)
+            {
+                script.audioSource.clip = script.clipList[1];
+                script.audioSource.Play();
+
+            }
+            if (script.restartCount == 2)
+            {
+                script.audioSource.clip = script.clipList[2];
+                script.audioSource.Play();
+
+            }
+            if (script.restartCount == 3)
+            {
+                script.audioSource.clip = script.clipList[3];
+                script.audioSource.Play();
+
+            }
+            if (script.restartCount == 4)
+            {
+                script.audioSource.clip = script.clipList[4];
+                script.audioSource.Play();
+
+            }
+            if (script.restartCount == 5)
+            {
+                script.audioSource.clip = script.clipList[5];
+                script.audioSource.Play();
+
+            }
+            if (script.restartCount == 6)
+            {
+                script.audioSource.clip = script.clipList[6];
+                script.audioSource.Play();
+
+            }
+            if (script.restartCount == 7)
+            {
+                script.audioSource.clip = script.clipList[7];
+                script.audioSource.Play();
+
+            }
+            if (script.restartCount == 8)
+            {
+                script.audioSource.clip = script.clipList[8];
+                script.audioSource.Play();
+
+            }
+
         }
     }
 

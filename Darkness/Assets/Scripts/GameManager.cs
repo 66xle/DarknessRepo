@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour
 
     private bool isLowerPlatformReached = false;
 
+    public GameObject stairs;
 
     CameraShakeInstance elevatorShake;
 
@@ -180,6 +181,8 @@ public class GameManager : MonoBehaviour
             CalculateStopPoint();
             animController.SetBool("isConsoleOpen", false);
         }
+
+        stairs.GetComponent<MeshCollider>().enabled = false;
     }
 
     void CalculateStopPoint()
