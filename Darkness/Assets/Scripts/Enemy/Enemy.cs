@@ -19,12 +19,15 @@ public class Enemy : MonoBehaviour
     AudioSource audioSource;
     public AudioClip deathgroanClip;
     public AudioClip cringeClip;
-    public AudioClip hissClip1;
-    public AudioClip hissClip2;
-    public AudioClip hissClip3;
-    int hissClipNumber = 1;
-    public float hissTimer = 0;
-    public float hissTimerMax = 4;
+    public AudioClip scuttle1;
+    public AudioClip scuttle2;
+    public AudioClip scuttle3;
+    public AudioClip hissClip;
+    int scuttleClipNumber = 1;
+    public float scuttleTimer = 0;
+    public float scuttleTimerMax = 4;
+
+    float distanceToPlayer;
     /*[HideInInspector]*/ public bool isDead;
     private bool isCringeAnimator 
     { 
@@ -58,25 +61,33 @@ public class Enemy : MonoBehaviour
         audioSource = this.GetComponent<AudioSource>();
 
 
-        audioSource.clip = RandomiseHissClip();
+        audioSource.clip = RandomiseScuttleClip();
         audioSource.Play();
     }
 
     // Update is called once per frame
     void Update()
     {
-        hissTimer += Time.deltaTime;
-    
+        scuttleTimer += Time.deltaTime;
+
+        distanceToPlayer = Vector3.Distance(targetTransform.position, this.transform.position);
+
         if (!isDead && !isCringeAnimator && agent.isOnNavMesh)
         {
             agent.SetDestination(targetTransform.position);
-            if(!audioSource.isPlaying && hissTimer >= hissTimerMax)
+            if(!audioSource.isPlaying && distanceToPlayer <= 4)
             {
-                audioSource.clip = RandomiseHissClip();
+                audioSource.clip = hissClip;
                 audioSource.Play();
-                hissTimerMax = Random.Range(4, 6);
-                hissTimer = 0;
             }
+            else if(!audioSource.isPlaying && scuttleTimer >= scuttleTimerMax)
+            {
+                audioSource.clip = RandomiseScuttleClip();
+                audioSource.Play();
+                scuttleTimerMax = Random.Range(4, 6);
+                scuttleTimer = 0;
+            }
+           
 
         }
         else if (isDead && agent.isOnNavMesh || isCringeAnimator && agent.isOnNavMesh)
@@ -85,6 +96,7 @@ public class Enemy : MonoBehaviour
            
 
         }
+
 
         ResetTimer();
     }
@@ -155,18 +167,18 @@ public class Enemy : MonoBehaviour
 
     }
 
-    AudioClip RandomiseHissClip()
+    AudioClip RandomiseScuttleClip()
     {
-        hissClipNumber = Random.Range(1, 3);
-        if (hissClipNumber == 1)        
-            return hissClip1;
+        scuttleClipNumber = Random.Range(1, 3);
+        if (scuttleClipNumber == 1)        
+            return scuttle1;
         
-        if (hissClipNumber == 2)        
-            return hissClip2;
+        if (scuttleClipNumber == 2)        
+            return scuttle2;
         
-        if (hissClipNumber == 3)        
-            return hissClip3;
+        if (scuttleClipNumber == 3)        
+            return scuttle3;
         
-        return hissClip1;
+        return scuttle1;
     }
 }

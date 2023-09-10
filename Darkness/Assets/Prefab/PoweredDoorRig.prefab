@@ -1478,7 +1478,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openSound: {fileID: 8300000, guid: f0c9c40f1c5bd284c8e639db11dc1444, type: 3}
-  closeSound: {fileID: 8300000, guid: 90d314ba7d01aa1428d9d9f36fdefac2, type: 3}
+  closeSound: {fileID: 8300000, guid: dcb21bd9ee789844393b940ab7d13148, type: 3}
 --- !u!1 &6126064431926432331
 GameObject:
   m_ObjectHideFlags: 0
