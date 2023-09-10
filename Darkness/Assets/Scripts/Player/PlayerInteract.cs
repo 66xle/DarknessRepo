@@ -14,7 +14,10 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] LayerMask interactableLayer;
     [SerializeField] bool enableBoxGizmos = false;
 
-    
+    [Header("Restart Elevator")]
+    [SerializeField] float restartTimer = 20f;
+    private float currentRestartTimer = 20f;
+
     [Header("Scanner")]
     [SerializeField] float scanMaxProgress = 100f;
     [SerializeField] float timeToMaxProgress = 10f;
@@ -31,10 +34,10 @@ public class PlayerInteract : MonoBehaviour
     private bool isDoorTriggered = false;
 
     [Header("UI")]
-    
     [SerializeField] string fuseText = "Collect Fuse";
     [SerializeField] string insertFuseText = "Insert Fuse";
     [SerializeField] string consoleText = "Start Elevator";
+    [SerializeField] string fixConsoleText = "Restart Elevator";
     private List<GameObject> fuseList = new List<GameObject>();
 
     [Header("References")]
@@ -45,9 +48,6 @@ public class PlayerInteract : MonoBehaviour
 
 
     bool isInteractUIActive = false;
-
-    private Vector3 hitPosition;
-
 
     public void LoadScanners(GateLevel.Gate gate)
     {
@@ -142,12 +142,15 @@ public class PlayerInteract : MonoBehaviour
             return;
         }
 
-        Vector3 direction = colliders[0].transform.position - headCamera.position;
+        Vector3 direction = colliders[0].bounds.center - headCamera.position;
+
+        Debug.DrawRay(headCamera.position, direction * interactDistance);
 
         RaycastHit hit;
 
         if (Physics.Raycast(headCamera.position, direction, out hit, interactDistance, interactableLayer))
         {
+
             if (hit.collider.CompareTag("Fuse"))
             {
                 if (!isInteractUIActive)
@@ -155,18 +158,22 @@ public class PlayerInteract : MonoBehaviour
 
                 CollectFuse(hit.collider.gameObject);
             }
-            else if (hit.collider.CompareTag("FusePlate") && fuseList.Count > 0)
+            else if (hit.collider.CompareTag("Console") && fuseList.Count > 0)
             {
-
                 if (!isInteractUIActive)
                     ToggleUI(insertFuseText);
 
-                InsertFuse(hit.collider.transform.GetChild(0).gameObject);
+                InsertFuse();
             }
             else if (hit.collider.CompareTag("Console") && gameManager.areAllTasksComplete)
             {
                 if (!isInteractUIActive)
-                    ToggleUI(consoleText);
+                {
+                    if (!gameManager.isElevatorBroken)
+                        ToggleUI(consoleText);
+                    else
+                        ToggleUI(fixConsoleText);
+                }
 
                 ConsoleInteract();
             }
@@ -190,12 +197,12 @@ public class PlayerInteract : MonoBehaviour
         }
     }
 
-    void InsertFuse(GameObject fuse)
+    void InsertFuse(GameObject fuse = null)
     {
         if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive)
         {
             fuseList.Clear();
-            fuse.SetActive(true);
+            //fuse.SetActive(true);
 
             ToggleUI();
             gameManager.FinishTask();
@@ -207,14 +214,33 @@ public class PlayerInteract : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive )
         {
-            gameManager.StartElevator();
+            currentRestartTimer = restartTimer;
 
             gameManager.areAllTasksComplete = false;
 
             ToggleUI();
 
             gameManager.FinishTask();
+
+            if (gameManager.isElevatorBroken)
+                StartCoroutine(RestartingElevator());
+            else
+                gameManager.StartElevator();
         }
+    }
+
+    IEnumerator RestartingElevator()
+    {
+        while (currentRestartTimer > 0f)
+        {
+            gameManager.SetConsoleUI((int)currentRestartTimer);
+
+            currentRestartTimer -= Time.deltaTime;
+
+            yield return null;
+        }
+
+        gameManager.StartElevator();
     }
 
     void ToggleUI(string text = null)
