@@ -10888,7 +10888,7 @@ PrefabInstance:
     - target: {fileID: 6255428112110955736, guid: fe0c142358108024b85efb26f006b6e3, type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: 72fdcf4b5eb742c4eaabd7f96e1ab8c5, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 6255428112110955736, guid: fe0c142358108024b85efb26f006b6e3, type: 3}
       propertyPath: m_LayerMask.m_Bits
       value: 3006
@@ -11003,6 +11003,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6255428112110955738, guid: fe0c142358108024b85efb26f006b6e3, type: 3}
+    - {fileID: 6255428112110955739, guid: fe0c142358108024b85efb26f006b6e3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fe0c142358108024b85efb26f006b6e3, type: 3}
 --- !u!114 &1211488204 stripped
 MonoBehaviour:
