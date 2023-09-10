@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Experimental.GlobalIllumination;
 
 public class Enemy : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Enemy : MonoBehaviour
     private float currentResetTimer;
 
     public float deathTime;
+    public float lightTime;
     public float edgeWidth = 0.5f;
     private Material deathMat;
     private NavMeshAgent agent;
@@ -17,12 +19,15 @@ public class Enemy : MonoBehaviour
     AudioSource audioSource;
     public AudioClip deathgroanClip;
     public AudioClip cringeClip;
-    public AudioClip hissClip1;
-    public AudioClip hissClip2;
-    public AudioClip hissClip3;
-    int hissClipNumber = 1;
-    float hissTimer = 0;
-    float hissTimerMax = 3;
+    public AudioClip scuttle1;
+    public AudioClip scuttle2;
+    public AudioClip scuttle3;
+    public AudioClip hissClip;
+    int scuttleClipNumber = 1;
+    public float scuttleTimer = 0;
+    public float scuttleTimerMax = 4;
+
+    float distanceToPlayer;
     /*[HideInInspector]*/ public bool isDead;
     private bool isCringeAnimator 
     { 
@@ -38,11 +43,14 @@ public class Enemy : MonoBehaviour
 
     [HideInInspector] public FixedHornetSpawn spawnScript;
 
+    private Light pointLight;
+
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
+        pointLight = GetComponentInChildren<Light>();
 
         SkinnedMeshRenderer meshRend = GetComponentInChildren<SkinnedMeshRenderer>();
 
@@ -53,25 +61,33 @@ public class Enemy : MonoBehaviour
         audioSource = this.GetComponent<AudioSource>();
 
 
-        audioSource.clip = RandomiseHissClip();
+        audioSource.clip = RandomiseScuttleClip();
         audioSource.Play();
     }
 
     // Update is called once per frame
     void Update()
     {
-        hissTimer += Time.deltaTime;
-    
+        scuttleTimer += Time.deltaTime;
+
+        distanceToPlayer = Vector3.Distance(targetTransform.position, this.transform.position);
+
         if (!isDead && !isCringeAnimator && agent.isOnNavMesh)
         {
             agent.SetDestination(targetTransform.position);
-            if(!audioSource.isPlaying && hissTimer >= hissTimerMax)
+            if(!audioSource.isPlaying && distanceToPlayer <= 4)
             {
-                audioSource.clip = RandomiseHissClip();
+                audioSource.clip = hissClip;
                 audioSource.Play();
-                hissTimerMax = Random.Range(2, 4);
-                hissTimer = 0;
             }
+            else if(!audioSource.isPlaying && scuttleTimer >= scuttleTimerMax)
+            {
+                audioSource.clip = RandomiseScuttleClip();
+                audioSource.Play();
+                scuttleTimerMax = Random.Range(4, 6);
+                scuttleTimer = 0;
+            }
+           
 
         }
         else if (isDead && agent.isOnNavMesh || isCringeAnimator && agent.isOnNavMesh)
@@ -80,6 +96,7 @@ public class Enemy : MonoBehaviour
            
 
         }
+
 
         ResetTimer();
     }
@@ -91,12 +108,7 @@ public class Enemy : MonoBehaviour
         if (currentResetTimer <= 0f)
         {
             animator.SetBool("IsLightStillOn", false);
-            if (!audioSource.isPlaying)
-            {
-                audioSource.clip = cringeClip;
-                audioSource.Play();
-
-            }
+          
         }
     }
 
@@ -121,22 +133,31 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Death()
     {
+        // Light init
+        pointLight.enabled = true;
+        float currentIntensity = pointLight.intensity;
+
+        // Death init
         isDead = true;
         spawnScript.spawnedEnemiesList.Remove(guid);
         animator.SetTrigger("Death");
 
+        // Disable colldier to not trigger player death
         GetComponent<BoxCollider>().enabled = false;
 
-
+        // Shader init
         float currentTime = 0f;
-
         deathMat.SetFloat("_EdgeWidth", edgeWidth);
 
         while (currentTime < deathTime)
         {
+            // Dissolve
             currentTime += Time.deltaTime;
-
             deathMat.SetFloat("_Dissolve", Mathf.Clamp01(currentTime / deathTime));
+
+            // Fade light
+            currentIntensity = (lightTime - currentTime) / lightTime;
+            pointLight.intensity = Mathf.Clamp01(currentIntensity);
 
             yield return null;
         }
@@ -146,18 +167,18 @@ public class Enemy : MonoBehaviour
 
     }
 
-    AudioClip RandomiseHissClip()
+    AudioClip RandomiseScuttleClip()
     {
-        hissClipNumber = Random.Range(1, 3);
-        if (hissClipNumber == 1)        
-            return hissClip1;
+        scuttleClipNumber = Random.Range(1, 3);
+        if (scuttleClipNumber == 1)        
+            return scuttle1;
         
-        if (hissClipNumber == 2)        
-            return hissClip2;
+        if (scuttleClipNumber == 2)        
+            return scuttle2;
         
-        if (hissClipNumber == 3)        
-            return hissClip3;
+        if (scuttleClipNumber == 3)        
+            return scuttle3;
         
-        return hissClip1;
+        return scuttle1;
     }
 }

@@ -11,27 +11,35 @@ public class FixedHornetSpawn : MonoBehaviour
     public Transform playerTransform;
     public GameManager gameManager;
 
-    private List<Transform> currentSpawnPosList = new List<Transform>();
-    private List<Transform> spawnDistanceList = new List<Transform> ();
-    [HideInInspector] public List<string> spawnedEnemiesList;
-
     [Header("Spawn Settings")]
     public float spawnInterval = 10;
     public int maxSpawnCount = 5;
     public float distance = 20f;
     private float timer = 0;
-    Quaternion rot;
+
+    private List<Transform> currentSpawnPosList = new List<Transform>();
+    private List<Transform> spawnDistanceList = new List<Transform>();
+    [HideInInspector] public List<string> spawnedEnemiesList;
 
     [Header("Spawnpoint")]
+    [SerializeField] Transform elevatorSpawnPoint;
     [SerializeField] Transform spawnPointGate1;
     [SerializeField] Transform spawnPointGate2;
     [SerializeField] Transform spawnPointGate3;
     private Transform gateParent;
 
+    private bool canSpawnHornet;
+
+    public bool CanSpawnHornet
+    {
+        set { canSpawnHornet = value;  }
+    }
+    
+
     // Start is called before the first frame update
     void Start()
     {
-        rot = spawnObject.transform.rotation;
+        canSpawnHornet = false;
     }
 
     // Update is called once per frame
@@ -44,8 +52,22 @@ public class FixedHornetSpawn : MonoBehaviour
         }
     }
 
+    public void LoadElevatorSpawnPoint()
+    {
+        canSpawnHornet = true;
+
+        currentSpawnPosList.Clear();
+
+        for (int i = 0; i < elevatorSpawnPoint.childCount; i++)
+        {
+            currentSpawnPosList.Add(elevatorSpawnPoint.GetChild(i));
+        }
+    }
+
     public void LoadSpawnPoints(GateLevel.Gate gate)
     {
+        canSpawnHornet = true;
+
         currentSpawnPosList.Clear();
 
         if (gate == GateLevel.Gate.Gate1)
@@ -80,6 +102,8 @@ public class FixedHornetSpawn : MonoBehaviour
 
     void SpawnEnemy()
     {
+        if (!canSpawnHornet) return;
+
         timer += Time.deltaTime;
 
         if (timer >= spawnInterval && spawnedEnemiesList.Count < maxSpawnCount)
@@ -88,7 +112,7 @@ public class FixedHornetSpawn : MonoBehaviour
             int index = UnityEngine.Random.Range(0, spawnDistanceList.Count);
 
             // Spawn enemy and set references
-
+            Quaternion rot = Quaternion.LookRotation(spawnObject.transform.position - playerTransform.position);
             GameObject enemyObject = Instantiate(spawnObject, spawnDistanceList[index].position, rot);
             enemyObject.transform.SetParent(transform);
 

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
+using UnityEditor.ShaderGraph.Internal;
 
 public class Torch : MonoBehaviour
 {
@@ -13,10 +14,16 @@ public class Torch : MonoBehaviour
     [SerializeField] float drainNormalBattery = 1f;
     [SerializeField] float rechargeCooldown = 3f;
     [SerializeField] float rechargeRate = 20f;
-    [SerializeField] float drainUVBattery = 3f;
     [SerializeField] float maxIntensity = 600f;
-    [SerializeField] float minIntensity = 10f;
+    [SerializeField] float fadeInTime = 1;
+    [SerializeField] float fadeOutTime = 1;
     private float currentRechargeCooldown;
+
+    [Header("Flicker")]
+    [SerializeField] float emptyCooldown = 2f;
+    private float currentEmptyCooldown;
+    private bool isFlickering;
+    private bool disableTorch;
 
     [Header("Box Cast")]
     public float torchDistance = 10f;
@@ -28,23 +35,26 @@ public class Torch : MonoBehaviour
     [Header("References")]
     [SerializeField] GameObject torch;
     [SerializeField] LayerMask ignoreLayer;
-    [SerializeField] FixedHornetSpawn spawnScript;
     [SerializeField] GameManager gameManager;
     [SerializeField] Slider batteryPercentage;
 
+    #region Internal Variables
+
     private Light normalTorchLight;
-    private Light UVTorchLight;
     private float currentBattery;
 
-    
     [HideInInspector] public bool isTorchActive = false, isUVActive = false;
-    private Vector3 hitPos;
+
+    #endregion
 
     // Start is called before the first frame update
     void Start()
     {
+        isFlickering = false;
+        disableTorch = false;
+
         normalTorchLight = torch.transform.GetChild(0).GetComponent<Light>();
-        UVTorchLight = torch.transform.GetChild(1).GetComponent<Light>();
+        normalTorchLight.intensity = maxIntensity;
 
         currentBattery = maxBattery;
     }
@@ -60,43 +70,99 @@ public class Torch : MonoBehaviour
         Raycast();
 
         Battery();
+
+        Flicker();
     }
 
     void ToggleTorch()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !isTorchActive && !isUVActive && currentBattery > 0f)
+        if (Input.GetKey(KeyCode.Mouse0) && isFlickering)
+        {
+            disableTorch = true;
+        }
+        else if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            disableTorch = false;
+        }
+
+        if (Input.GetKey(KeyCode.Mouse0) && currentBattery > 0f && !disableTorch && !isFlickering)
         {
             normalTorchLight.enabled = true;
             isTorchActive = true;
+
+            float speed = maxIntensity / fadeInTime;
+            float currentIntensity = normalTorchLight.intensity + Time.deltaTime * speed;
+
+            if (currentIntensity >= maxIntensity)
+                currentIntensity = maxIntensity;
+
+            normalTorchLight.intensity = currentIntensity;
+
         }
-        else if (Input.GetKeyUp(KeyCode.Mouse0) && isTorchActive || currentBattery <= 0f)
+        else if (isTorchActive || currentBattery <= 0f)
         {
-            normalTorchLight.enabled = false;
+            float speed = maxIntensity / fadeOutTime;
+            float currentIntensity = normalTorchLight.intensity - Time.deltaTime * speed;
+
+            if (currentIntensity <= 0f)
+            {
+                normalTorchLight.enabled = false;
+                isTorchActive = false;
+                currentIntensity = 0f;
+            }
+
+            normalTorchLight.intensity = currentIntensity;
+        }
+    }
+
+    void Flicker()
+    {
+        if (currentBattery <= 0f)
+        {
             isTorchActive = false;
+            currentEmptyCooldown = emptyCooldown;
         }
 
-        //if (Input.GetKeyDown(KeyCode.Mouse1) && !isTorchActive && !isUVActive && currentBattery > 0f)
-        //{
-        //    UVTorchLight.enabled = true;
-        //    isTorchActive = true;
-        //    isUVActive = true;
-        //}
-        //else if (Input.GetKeyUp(KeyCode.Mouse1) && isUVActive || currentBattery <= 0f)
-        //{
-        //    UVTorchLight.enabled = false;
-        //    isTorchActive = false;
-        //    isUVActive = false;
-        //}
+        if (currentEmptyCooldown > 0f)
+        {
+            currentEmptyCooldown -= Time.deltaTime;
+
+            if (!isFlickering)
+            {
+                StartCoroutine(FlickerTorch());
+            }
+        }
     }
+
+    IEnumerator FlickerTorch()
+    {
+        isFlickering = true;
+        normalTorchLight.intensity = 50f;
+        normalTorchLight.color = Color.red;
+
+        normalTorchLight.enabled = true;
+
+        yield return new WaitForSeconds(emptyCooldown / 10f);
+
+        normalTorchLight.enabled = false;
+
+        yield return new WaitForSeconds(emptyCooldown / 10f);
+
+        normalTorchLight.intensity = 0f;
+        normalTorchLight.color = Color.white;
+        isFlickering = false;
+
+        Debug.Log("done");
+    }
+
 
     void Battery()
     {
         if (isTorchActive)
         {
-            float drainBattery = isUVActive ? drainUVBattery : drainNormalBattery; 
+            currentBattery -= drainNormalBattery * Time.deltaTime;
 
-            currentBattery -= drainBattery * Time.deltaTime;
-
+            // Reset recharge timer when active
             currentRechargeCooldown = rechargeCooldown;
         }
         else
@@ -109,25 +175,21 @@ public class Torch : MonoBehaviour
             }
         }
 
+        // Clamp
         currentBattery = Mathf.Clamp(currentBattery, 0, maxBattery);
+
+        // Get percentage of battery, set to ui
         float currentBatteryPercentage = currentBattery / maxBattery;
         batteryPercentage.value = currentBatteryPercentage;
 
-
-        float currentIntensity = currentBatteryPercentage * maxBattery;
-
-        Debug.Log(currentIntensity);
-
-        if (currentIntensity <= minIntensity)
-            currentIntensity = minIntensity;
-
-        normalTorchLight.intensity = currentIntensity; 
     }
 
     void Raycast()
     {
         if (isTorchActive)
         {
+            #region BoxCheck
+
             Vector3 center = torch.transform.position + torch.transform.forward * torchDistance / 2;
 
             Vector3 boxSize = new Vector3(boxWidth, boxHeight, torchDistance);
@@ -138,19 +200,19 @@ public class Torch : MonoBehaviour
             {
                 return;
             }
-            
+
+            #endregion
+
+            // Loop every enemy hit
             foreach (Collider collider in colliders)
             {
-                hitPos = Vector3.zero;
 
                 RaycastHit hit;
+                Vector3 direction = collider.transform.position - transform.position;
 
-                Vector3 direction =  collider.transform.position - transform.position;
-
+                // If there is nothing blocking
                 if (Physics.Raycast(torch.transform.position, direction, out hit, torchDistance, ~ignoreLayer))
                 {
-                    Debug.Log(hit.transform.name);
-
                     if (hit.transform.CompareTag("Enemy"))
                     {
                         Enemy enemy = hit.collider.gameObject.GetComponent<Enemy>();
