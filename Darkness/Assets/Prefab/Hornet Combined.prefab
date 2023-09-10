@@ -2430,11 +2430,14 @@ MonoBehaviour:
   deathTime: 2
   lightTime: 1.5
   edgeWidth: 0.2
-  deathgroanClip: {fileID: 8300000, guid: 33d559e3ec0892342be4dbfd21996599, type: 3}
+  deathgroanClip: {fileID: 8300000, guid: 6d2af23390ec7eb4b802400884596fc5, type: 3}
   cringeClip: {fileID: 8300000, guid: 6d2af23390ec7eb4b802400884596fc5, type: 3}
-  hissClip1: {fileID: 8300000, guid: 22d717239a042204db84f22e433d7063, type: 3}
-  hissClip2: {fileID: 8300000, guid: 598cdc31da44b3747a4b363a552a943e, type: 3}
-  hissClip3: {fileID: 8300000, guid: 0ded6964d1226c646ad175ab9f3c7ceb, type: 3}
+  scuttle1: {fileID: 8300000, guid: 2fb9aa8afc0181b418909d14483648a6, type: 3}
+  scuttle2: {fileID: 8300000, guid: 7fabd1ad30ac9ad45a8ea7162edfdea1, type: 3}
+  scuttle3: {fileID: 8300000, guid: 1e1cc398130773d4f84bbf37bd24fcd4, type: 3}
+  hissClip: {fileID: 8300000, guid: 33d559e3ec0892342be4dbfd21996599, type: 3}
+  hissTimer: 0
+  hissTimerMax: 4
   isDead: 0
   targetTransform: {fileID: 0}
   guid: 
@@ -2460,9 +2463,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 10
+  MaxDistance: 5
   Pan2D: 0
-  rolloffMode: 1
+  rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
