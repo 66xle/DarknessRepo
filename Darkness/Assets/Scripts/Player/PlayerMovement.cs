@@ -118,12 +118,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-          
-
-            for(int i = 0; i < spawnSystem.transform.childCount; i++)
-            {
-                spawnSystem.transform.GetChild(i).GetComponent<AudioSource>().enabled = false;
-            }
+            other.GetComponent<AudioSource>().clip = other.GetComponent<Enemy>().killClip;
+            StartCoroutine(DisableAudioSource());
 
             other.gameObject.GetComponent<BoxCollider>().enabled = false;
             other.gameObject.GetComponent<NavMeshAgent>().enabled = false;
@@ -193,4 +189,16 @@ public class PlayerMovement : MonoBehaviour
         animController.speed = 1f;
         startAttackAnim = true;
     }
+
+
+    IEnumerator DisableAudioSource()
+    {
+        yield return new WaitForSeconds(4.0f);
+
+        for (int i = 0; i < spawnSystem.transform.childCount; i++)
+        {
+            spawnSystem.transform.GetChild(i).GetComponent<AudioSource>().enabled = false;
+        }
+    }
+
 }

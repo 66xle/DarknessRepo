@@ -16,4 +16,9 @@ public class Mount : MonoBehaviour
         camTransform.SetParent(camGuide);
         camTransform.rotation = Quaternion.Euler(0, 180f, 0);
     }
+
+    void Bite()
+    {
+        this.GetComponentInParent<AudioSource>().Play();
+    }
 }
