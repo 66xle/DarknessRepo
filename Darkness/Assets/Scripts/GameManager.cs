@@ -310,8 +310,8 @@ public class GameManager : MonoBehaviour
             taskQueue = new List<GateLevel.Tasks>(currentGateLevel.taskList);
 
             // Load spawning enemies
-            //spawnScript.LoadSpawnPoints(currentGateLevel.currentGate);
-            //canSpawnEnemy = true;
+            spawnScript.LoadSpawnPoints(currentGateLevel.currentGate);
+            canSpawnEnemy = true;
         }
         else
         {
@@ -343,6 +343,9 @@ public class GameManager : MonoBehaviour
         if (currentTask == GateLevel.Tasks.Fuse)
         {
             consoleUI.text = fuseConsoleText;
+            interactScript.canCollectFuse = true;
+
+            Debug.Log("collect fuse");
         }
         else  if (currentTask == GateLevel.Tasks.Scan)
         {
