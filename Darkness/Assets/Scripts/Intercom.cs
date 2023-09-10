@@ -4,27 +4,42 @@ using UnityEngine;
 
 public class Intercom : MonoBehaviour
 {
-    int restartCount = 0;
-    AudioClip intercomGreet1;
-    AudioClip intercomGreet2;
-    AudioClip intercomGreet3;
-    AudioClip intercomGreet4;
-    AudioClip intercomGreet5;
-    AudioClip intercomGreet6;
-    AudioClip intercomGreet7;
-    AudioClip intercomGreet8;
-    AudioClip intercomGreet9;
+    int initialize = 0;
+    public int restartCount = 0;
+    bool hasPlayed = false;
 
+    public List<AudioClip> clipList;
+    public AudioSource audioSource;
 
+    public AudioClip hailClip;
     // Start is called before the first frame update
     void Start()
     {
+
+        initialize = PlayerPrefs.GetInt("Initialize");
+        if(initialize == 0)
+        {
+            PlayerPrefs.SetInt("Initialize", 1);
+
+        }
+        else
+        {
+            restartCount = PlayerPrefs.GetInt("restartCount");
+            restartCount++;
+            PlayerPrefs.SetInt("restartCount", restartCount);
+        }
         
+        audioSource = this.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(!audioSource.isPlaying && restartCount == 0 && !hasPlayed)
+        {
+            audioSource.clip = hailClip;
+            audioSource.Play();
+            hasPlayed = true;
+        }
     }
 }
