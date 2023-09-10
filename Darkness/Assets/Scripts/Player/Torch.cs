@@ -137,7 +137,7 @@ public class Torch : MonoBehaviour
     IEnumerator FlickerTorch()
     {
         isFlickering = true;
-        normalTorchLight.intensity = 50f;
+        normalTorchLight.intensity = maxIntensity;
         normalTorchLight.color = Color.red;
 
         normalTorchLight.enabled = true;
