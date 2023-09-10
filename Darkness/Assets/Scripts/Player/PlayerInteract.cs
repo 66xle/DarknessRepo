@@ -154,7 +154,7 @@ public class PlayerInteract : MonoBehaviour
 
                 CollectFuse(hit.collider.gameObject);
             }
-            else if (hit.collider.CompareTag("FusePlate") && fuseList.Count > 0)
+            else if (hit.collider.CompareTag("Console") && fuseList.Count > 0)
             {
                 if (!isInteractUIActive)
                     ToggleUI(insertFuseText);
