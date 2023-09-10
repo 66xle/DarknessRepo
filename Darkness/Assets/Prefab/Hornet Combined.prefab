@@ -2402,7 +2402,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 1
-  m_Speed: 2
+  m_Speed: 4
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -2436,8 +2436,8 @@ MonoBehaviour:
   scuttle2: {fileID: 8300000, guid: 7fabd1ad30ac9ad45a8ea7162edfdea1, type: 3}
   scuttle3: {fileID: 8300000, guid: 1e1cc398130773d4f84bbf37bd24fcd4, type: 3}
   hissClip: {fileID: 8300000, guid: 33d559e3ec0892342be4dbfd21996599, type: 3}
-  hissTimer: 0
-  hissTimerMax: 4
+  scuttleTimer: 0
+  scuttleTimerMax: 4
   isDead: 0
   targetTransform: {fileID: 0}
   guid: 
