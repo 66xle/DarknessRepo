@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e946fb76f798f484bbf7bbe2f2befbbe, type: 3}
   m_Name: Gate2
   m_EditorClassIdentifier: 
-  yAxis: 181.71
+  yAxis: 277.5
   currentGate: 2
-  taskList: 010000000000000002000000
+  taskList: 0000000002000000

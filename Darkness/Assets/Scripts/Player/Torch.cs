@@ -53,7 +53,7 @@ public class Torch : MonoBehaviour
         isFlickering = false;
         disableTorch = false;
 
-        normalTorchLight = torch.transform.GetChild(0).GetComponent<Light>();
+        normalTorchLight = torch.GetComponent<Light>();
         normalTorchLight.intensity = maxIntensity;
 
         currentBattery = maxBattery;
@@ -137,7 +137,7 @@ public class Torch : MonoBehaviour
     IEnumerator FlickerTorch()
     {
         isFlickering = true;
-        normalTorchLight.intensity = 50f;
+        normalTorchLight.intensity = maxIntensity;
         normalTorchLight.color = Color.red;
 
         normalTorchLight.enabled = true;

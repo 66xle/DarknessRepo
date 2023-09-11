@@ -38,6 +38,7 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] string insertFuseText = "Insert Fuse";
     [SerializeField] string consoleText = "Start Elevator";
     [SerializeField] string fixConsoleText = "Restart Elevator";
+    [SerializeField] string intercomText = "Interact with intercom";
     private List<GameObject> fuseList = new List<GameObject>();
 
     [Header("References")]
@@ -45,13 +46,23 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] Transform headCamera;
     [SerializeField] GameObject interactUI;
     [SerializeField] TextMeshProUGUI interactUIText;
+    [SerializeField] AudioSource consoleBeep;
+    [SerializeField] AudioSource grabItem;
 
 
     bool isInteractUIActive = false;
+    bool hasIntercomActivated = false;
+    [HideInInspector] public bool canCollectFuse = false;
+
+
+    public GameObject intercom;
+    private Intercom intercomScript;
+
 
     public void LoadScanners(GateLevel.Gate gate)
     {
         isScanTaskActive = true;
+        hasIntercomActivated = false;
 
         currentScanList.Clear();
 
@@ -66,6 +77,14 @@ public class PlayerInteract : MonoBehaviour
         {
             currentScanList.Add(currentScanParent.GetChild(i));
         }
+    }
+
+    private void Start()
+    {
+        isInteractUIActive = false;
+        canCollectFuse = false;
+
+        intercomScript = intercom.GetComponent<Intercom>();
     }
 
     // Update is called once per frame
@@ -150,13 +169,12 @@ public class PlayerInteract : MonoBehaviour
 
         if (Physics.Raycast(headCamera.position, direction, out hit, interactDistance, interactableLayer))
         {
-
-            if (hit.collider.CompareTag("Fuse"))
+            if (hit.collider.CompareTag("Fuse") && canCollectFuse)
             {
                 if (!isInteractUIActive)
                     ToggleUI(fuseText);
 
-                CollectFuse(hit.collider.gameObject);
+                CollectFuse(hit.collider.transform.parent.gameObject);
             }
             else if (hit.collider.CompareTag("Console") && fuseList.Count > 0)
             {
@@ -174,8 +192,16 @@ public class PlayerInteract : MonoBehaviour
                     else
                         ToggleUI(fixConsoleText);
                 }
-
                 ConsoleInteract();
+            }
+            else if (hit.collider.CompareTag("Intercom") && !hasIntercomActivated && intercomScript.audioSource.isPlaying)
+            {
+                if (!isInteractUIActive)
+                {
+                    ToggleUI(intercomText);
+                }
+
+                IntercomInteract(hit.collider.GetComponent<Intercom>());
             }
             else if (isInteractUIActive)
             {
@@ -184,10 +210,82 @@ public class PlayerInteract : MonoBehaviour
         }
     }
 
+    void IntercomInteract(Intercom script)
+    {
+        if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive)
+        {
+            intercomScript.restartCount++;
+
+            hasIntercomActivated = true;
+
+            ToggleUI();
+
+            if (script.restartCount == 0)
+            {
+                script.audioSource.clip = script.clipList[0];
+                script.audioSource.Play();
+
+            }
+            if (script.restartCount == 1)
+            {
+                script.audioSource.clip = script.clipList[1];
+                script.audioSource.Play();
+
+            }
+            if (script.restartCount == 2)
+            {
+                script.audioSource.clip = script.clipList[2];
+                script.audioSource.Play();
+
+            }
+            if (script.restartCount == 3)
+            {
+                script.audioSource.clip = script.clipList[3];
+                script.audioSource.Play();
+
+            }
+            if (script.restartCount == 4)
+            {
+                script.audioSource.clip = script.clipList[4];
+                script.audioSource.Play();
+
+            }
+            if (script.restartCount == 5)
+            {
+                script.audioSource.clip = script.clipList[5];
+                script.audioSource.Play();
+
+            }
+            if (script.restartCount == 6)
+            {
+                script.audioSource.clip = script.clipList[6];
+                script.audioSource.Play();
+
+            }
+            if (script.restartCount == 7)
+            {
+                script.audioSource.clip = script.clipList[7];
+                script.audioSource.Play();
+
+            }
+            if (script.restartCount == 8)
+            {
+                script.audioSource.clip = script.clipList[8];
+                script.audioSource.Play();
+
+            }
+
+        }
+    }
+
     void CollectFuse(GameObject fuseObject)
     {
         if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive)
         {
+            canCollectFuse = false;
+
+            grabItem.Play();
+
             fuseList.Add(fuseObject);
 
             if (fuseObject != null)
@@ -206,6 +304,8 @@ public class PlayerInteract : MonoBehaviour
 
             ToggleUI();
             gameManager.FinishTask();
+
+            canCollectFuse = true;
         }
     }
 
@@ -214,6 +314,8 @@ public class PlayerInteract : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive )
         {
+            consoleBeep.Play();
+
             currentRestartTimer = restartTimer;
 
             gameManager.areAllTasksComplete = false;
@@ -223,7 +325,13 @@ public class PlayerInteract : MonoBehaviour
             gameManager.FinishTask();
 
             if (gameManager.isElevatorBroken)
+            {
+                // Stop sound
+                gameManager.alarmSound.Stop();
+
+
                 StartCoroutine(RestartingElevator());
+            }
             else
                 gameManager.StartElevator();
         }

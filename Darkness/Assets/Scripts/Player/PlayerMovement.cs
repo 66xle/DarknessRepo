@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -16,6 +17,11 @@ public class PlayerMovement : MonoBehaviour
     public Transform playerHead;
     public GameManager gameManager;
 
+    bool startAttackAnim = false;
+    bool disablePlayerMovement = false;
+    [SerializeField] float faceAIRotationSpeed = 5f;
+    [SerializeField] float moveForce = 5f;
+
     [HideInInspector]
     public Vector3 targetVelocity = Vector3.zero; // Made public for head bobbing
 
@@ -26,11 +32,16 @@ public class PlayerMovement : MonoBehaviour
     float xRotation = 0f;
     Vector2 mouseInput;
 
+    public GameObject spawnSystem;
+
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
+        startAttackAnim = false;
+        disablePlayerMovement = false;
+
         rb = GetComponent<Rigidbody>();
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -39,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (gameManager.isPaused)
+        if (gameManager.isPaused || disablePlayerMovement)
             return;
 
         Movement();
@@ -47,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
 
     void LateUpdate()
     {
-        if (gameManager.isPaused)
+        if (gameManager.isPaused || disablePlayerMovement)
             return;
 
         LookAround();
@@ -103,12 +114,107 @@ public class PlayerMovement : MonoBehaviour
         transform.Rotate(Vector3.up * mouseInput.x);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.collider.CompareTag("Enemy"))
+        if (other.CompareTag("Enemy"))
         {
-            gameManager.Death();
-            // Play animation
+            Vector3 dir = other.transform.position - transform.position;
+
+            RaycastHit hit;
+
+            if (Physics.Raycast(transform.position, dir, out hit, 10f))
+            {
+                if (!hit.collider.CompareTag("Enemy"))
+                    return;
+            }
+
+
+            other.GetComponent<AudioSource>().clip = other.GetComponent<Enemy>().killClip;
+            StartCoroutine(DisableAudioSource());
+
+            for(int i = 0; i < spawnSystem.transform.childCount; i++)
+            {
+                spawnSystem.transform.GetChild(i).GetComponent<AudioSource>().enabled = false;
+            }
+
+            other.gameObject.GetComponent<BoxCollider>().enabled = false;
+            other.gameObject.GetComponent<NavMeshAgent>().enabled = false;
+
+            Animator animController = other.gameObject.GetComponentInChildren<Animator>();
+            animController.SetTrigger("KillPlayer");
+
+
+            rb.useGravity = false;
+            disablePlayerMovement = true;
+            transform.GetComponent<CapsuleCollider>().enabled = false;
+
+            Enemy enemy = other.gameObject.GetComponent<Enemy>();
+            enemy.rotateToPlayer = true;
+
+            StartCoroutine(LookAtHornet(enemy, animController, other.transform.position));
+
+            StartCoroutine(enemy.RotateToPlayer());
         }
     }
+
+    IEnumerator LookAtHornet(Enemy script, Animator animController, Vector3 enemyPos)
+    {
+        // AI
+        Vector3 targetDir = enemyPos - transform.position;
+        
+        float angle = 0f;
+
+        // Wait for attack animation to be played!
+        while (!animController.GetCurrentAnimatorStateInfo(0).IsName("HornetKill"))
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        animController.speed = 0f;
+        rb.velocity = Vector3.zero;
+
+        do
+        {
+            // If minotuar is on screen play animation
+            if (RendererExtensions.IsVisibleFrom(transform.GetComponent<Renderer>(), transform.GetComponentInChildren<Camera>()) && !startAttackAnim || angle < 5f && !startAttackAnim)
+            {
+                animController.speed = 1f;
+                startAttackAnim = true;
+            }
+
+            // Rotate player rotation to minotuar
+            Vector3 playerHeadDir = transform.GetChild(0).forward;
+            Quaternion targetRot = Quaternion.LookRotation(targetDir);
+            Quaternion rot = Quaternion.Slerp(transform.GetChild(0).rotation, targetRot, Time.deltaTime * faceAIRotationSpeed);
+
+            // Make camera not tilt
+            rot.eulerAngles = new Vector3(rot.eulerAngles.x, rot.eulerAngles.y, 0f);
+
+            transform.GetChild(0).rotation = rot;
+
+            // Get angle between two directions
+            angle = Mathf.Acos(Vector3.Dot(targetDir.normalized, playerHeadDir)) * Mathf.Rad2Deg;
+
+            yield return new WaitForEndOfFrame();
+
+        } while (angle > 2f);
+
+
+        animController.speed = 1f;
+        startAttackAnim = true;
+    }
+
+
+    IEnumerator DisableAudioSource()
+    {
+        yield return new WaitForSeconds(3.0f);
+
+        for (int i = 0; i < spawnSystem.transform.childCount; i++)
+        {
+            spawnSystem.transform.GetChild(i).GetComponent<AudioSource>().enabled = false;
+        }
+
+        gameManager.Death();
+    }
+
 }

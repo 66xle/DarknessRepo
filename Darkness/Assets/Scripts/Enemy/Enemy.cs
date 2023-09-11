@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 using UnityEngine.Experimental.GlobalIllumination;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField] float resetTimer = 1f;
     private float currentResetTimer;
-
+    public float disabletime;
     public float deathTime;
     public float lightTime;
     public float edgeWidth = 0.5f;
@@ -18,7 +19,7 @@ public class Enemy : MonoBehaviour
     private Animator animator;
     AudioSource audioSource;
     public AudioClip deathgroanClip;
-    public AudioClip cringeClip;
+    public AudioClip killClip;
     public AudioClip scuttle1;
     public AudioClip scuttle2;
     public AudioClip scuttle3;
@@ -26,6 +27,7 @@ public class Enemy : MonoBehaviour
     int scuttleClipNumber = 1;
     public float scuttleTimer = 0;
     public float scuttleTimerMax = 4;
+    public float rotationAngle = 50;
 
     float distanceToPlayer;
     /*[HideInInspector]*/ public bool isDead;
@@ -36,6 +38,9 @@ public class Enemy : MonoBehaviour
     }
 
 
+    [HideInInspector] public bool rotateToPlayer;
+
+    [HideInInspector] public Transform rootJnt;
 
 
     [HideInInspector] public Transform targetTransform;
@@ -48,6 +53,8 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GetComponentInChildren<Mount>().targetTransform = targetTransform;
+
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
         pointLight = GetComponentInChildren<Light>();
@@ -135,7 +142,7 @@ public class Enemy : MonoBehaviour
     {
         // Light init
         pointLight.enabled = true;
-        float currentIntensity = pointLight.intensity;
+        float maxIntensity = pointLight.intensity;
 
         // Death init
         isDead = true;
@@ -156,8 +163,8 @@ public class Enemy : MonoBehaviour
             deathMat.SetFloat("_Dissolve", Mathf.Clamp01(currentTime / deathTime));
 
             // Fade light
-            currentIntensity = (lightTime - currentTime) / lightTime;
-            pointLight.intensity = Mathf.Clamp01(currentIntensity);
+            float currentIntensity = maxIntensity / lightTime;
+            pointLight.intensity -= currentIntensity * Time.deltaTime;
 
             yield return null;
         }
@@ -165,6 +172,37 @@ public class Enemy : MonoBehaviour
         if (transform.gameObject != null)
             Destroy(transform.gameObject);
 
+    }
+
+    public IEnumerator RotateToPlayer()
+    {
+        agent.updateRotation = false;
+
+        while (rotateToPlayer)
+        {
+            Vector3 dir = targetTransform.position - transform.position;
+
+            // Calculate angle from hornet to player
+            float angle = Mathf.Acos(Vector3.Dot(transform.forward, dir.normalized)) * Mathf.Rad2Deg;
+
+            // Rotation speed
+            float speed = angle / rotationAngle;
+
+            if (speed > 6f)
+            {
+                speed = 6f;
+            }
+
+
+            // Get Rotation
+            Quaternion targetRot = Quaternion.LookRotation(dir);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * speed);
+
+            yield return null;
+        }
+
+
+        agent.updateRotation = true;
     }
 
     AudioClip RandomiseScuttleClip()
@@ -181,4 +219,20 @@ public class Enemy : MonoBehaviour
         
         return scuttle1;
     }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            audioSource.clip = killClip;
+
+        }
+    }
+
+ 
+
+
+
+    
 }

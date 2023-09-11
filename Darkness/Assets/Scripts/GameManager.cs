@@ -54,6 +54,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] BoxCollider hatchA;
     [SerializeField] BoxCollider hatchB;
     [SerializeField] SphereCollider clearCollider;
+    public AudioSource alarmSound;
+    [SerializeField] AudioSource elevatorMovingSound;
+    [SerializeField] GameObject endScreen;
     
 
     [Header("Gate Order")]
@@ -78,6 +81,7 @@ public class GameManager : MonoBehaviour
 
     private bool isLowerPlatformReached = false;
 
+    public GameObject stairs;
 
     CameraShakeInstance elevatorShake;
 
@@ -173,19 +177,20 @@ public class GameManager : MonoBehaviour
 
         if (!isLowerPlatformReached)
         {
-            
-
             StartCoroutine(MoveLowerPlatform());
         }
         else
         {
+            CalculateStopPoint();
             animController.SetBool("isConsoleOpen", false);
         }
+
+        stairs.GetComponent<MeshCollider>().enabled = false;
     }
 
     void CalculateStopPoint()
     {
-        yAxisBreakDown = UnityEngine.Random.Range(currentYAxis + 10f, yAxisToStop - 20f);
+        yAxisBreakDown = UnityEngine.Random.Range(currentYAxis + 50f, yAxisToStop - 100f);
 
     }
 
@@ -193,8 +198,10 @@ public class GameManager : MonoBehaviour
     {
         elevatorShake = CameraShaker.Instance.StartShake(magnitude, roughness, fadeIn);
 
+        elevatorMovingSound.Play();
+
         float currentPlatformYAxis = lowerPlatform.transform.position.y;
-        speedtoMove = (lowerPlatformYAxis - environmentToMove.position.y) / timeToReachPlatform;
+        speedtoMove = (lowerPlatformYAxis - lowerPlatform.transform.position.y) / timeToReachPlatform;
 
         while (currentPlatformYAxis != lowerPlatformYAxis)
         {
@@ -219,6 +226,8 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
+        elevatorMovingSound.Stop();
+
         isLowerPlatformReached = true;
 
         elevatorShake.StartFadeOut(fadeOut);
@@ -240,9 +249,10 @@ public class GameManager : MonoBehaviour
         // Calculate move speed
         speedtoMove = (yAxisToStop - environmentToMove.position.y) / timeToReachGate;
 
+        elevatorMovingSound.Play();
+
         while (currentYAxis != yAxisToStop)
         {
-
             #region Move Elevator
 
             Vector3 newPosition = new Vector3(environmentToMove.position.x, environmentToMove.position.y + Time.deltaTime * speedtoMove, environmentToMove.position.z);
@@ -261,6 +271,23 @@ public class GameManager : MonoBehaviour
             // Bake navmesh here
             navSurface.BuildNavMesh();
 
+            if (currentYAxis >= 300f)
+            {
+                // Stop game fade to end screen
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                Time.timeScale = 0;
+                isPaused = true;
+
+                elevatorMovingSound.Stop();
+                
+
+                endScreen.SetActive(true);
+
+                yield break;
+            }
+
+
             if (currentYAxis >= yAxisBreakDown)
             {
                 Debug.Log(yAxisBreakDown);
@@ -271,6 +298,8 @@ public class GameManager : MonoBehaviour
 
             yield return null;
         }
+
+        elevatorMovingSound.Stop();
 
         elevatorShake.StartFadeOut(fadeOut);
 
@@ -320,6 +349,9 @@ public class GameManager : MonoBehaviour
             spawnScript.LoadElevatorSpawnPoint();
             canSpawnEnemy = true;
             areAllTasksComplete = true;
+
+            // Play sound
+            alarmSound.Play();
         }
 
         #endregion
@@ -329,6 +361,7 @@ public class GameManager : MonoBehaviour
 
         LoadTask();
     }
+
 
     void LoadTask()
     {
@@ -345,6 +378,9 @@ public class GameManager : MonoBehaviour
         if (currentTask == GateLevel.Tasks.Fuse)
         {
             consoleUI.text = fuseConsoleText;
+            interactScript.canCollectFuse = true;
+
+            Debug.Log("collect fuse");
         }
         else  if (currentTask == GateLevel.Tasks.Scan)
         {
