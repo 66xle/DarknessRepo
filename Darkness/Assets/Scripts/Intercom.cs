@@ -8,6 +8,8 @@ public class Intercom : MonoBehaviour
     public int restartCount = 0;
     bool hasPlayed = false;
 
+    public Transform player;
+
     public List<AudioClip> clipList;
     public AudioSource audioSource;
 
@@ -24,16 +26,25 @@ public class Intercom : MonoBehaviour
         else
         {
             restartCount = PlayerPrefs.GetInt("restartCount");
-            restartCount++;
+            
+            if (restartCount > 8)
+                restartCount = 1;
+
+
             PlayerPrefs.SetInt("restartCount", restartCount);
         }
-        
-        audioSource = this.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        float distance = Vector3.Distance(transform.position, player.position);
+
+        Debug.Log(distance);
+
+        if (distance > 4f)
+            return;
+
         if(!audioSource.isPlaying && restartCount == 0 && !hasPlayed)
         {
             audioSource.clip = hailClip;

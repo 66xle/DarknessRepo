@@ -56,6 +56,7 @@ public class PlayerInteract : MonoBehaviour
 
 
     public GameObject intercom;
+    private Intercom intercomScript;
 
 
     public void LoadScanners(GateLevel.Gate gate)
@@ -82,6 +83,8 @@ public class PlayerInteract : MonoBehaviour
     {
         isInteractUIActive = false;
         canCollectFuse = false;
+
+        intercomScript = intercom.GetComponent<Intercom>();
     }
 
     // Update is called once per frame
@@ -191,7 +194,7 @@ public class PlayerInteract : MonoBehaviour
                 }
                 ConsoleInteract();
             }
-            else if (hit.collider.CompareTag("Intercom") && !hasIntercomActivated)
+            else if (hit.collider.CompareTag("Intercom") && !hasIntercomActivated && intercomScript.audioSource.isPlaying)
             {
                 if (!isInteractUIActive)
                 {
@@ -211,6 +214,8 @@ public class PlayerInteract : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive)
         {
+            intercomScript.restartCount++;
+
             hasIntercomActivated = true;
 
             ToggleUI();
