@@ -54,6 +54,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] BoxCollider hatchA;
     [SerializeField] BoxCollider hatchB;
     [SerializeField] SphereCollider clearCollider;
+    public AudioSource alarmSound;
+    [SerializeField] AudioSource elevatorMovingSound;
     
 
     [Header("Gate Order")]
@@ -195,6 +197,8 @@ public class GameManager : MonoBehaviour
     {
         elevatorShake = CameraShaker.Instance.StartShake(magnitude, roughness, fadeIn);
 
+        elevatorMovingSound.Play();
+
         float currentPlatformYAxis = lowerPlatform.transform.position.y;
         speedtoMove = (lowerPlatformYAxis - lowerPlatform.transform.position.y) / timeToReachPlatform;
 
@@ -220,7 +224,9 @@ public class GameManager : MonoBehaviour
 
             yield return null;
         }
-            
+
+        elevatorMovingSound.Stop();
+
         isLowerPlatformReached = true;
 
         elevatorShake.StartFadeOut(fadeOut);
@@ -241,6 +247,8 @@ public class GameManager : MonoBehaviour
 
         // Calculate move speed
         speedtoMove = (yAxisToStop - environmentToMove.position.y) / timeToReachGate;
+
+        elevatorMovingSound.Play();
 
         while (currentYAxis != yAxisToStop)
         {
@@ -272,6 +280,8 @@ public class GameManager : MonoBehaviour
 
             yield return null;
         }
+
+        elevatorMovingSound.Stop();
 
         elevatorShake.StartFadeOut(fadeOut);
 
@@ -321,6 +331,9 @@ public class GameManager : MonoBehaviour
             spawnScript.LoadElevatorSpawnPoint();
             canSpawnEnemy = true;
             areAllTasksComplete = true;
+
+            // Play sound
+            alarmSound.Play();
         }
 
         #endregion

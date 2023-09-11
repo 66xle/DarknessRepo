@@ -46,6 +46,8 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] Transform headCamera;
     [SerializeField] GameObject interactUI;
     [SerializeField] TextMeshProUGUI interactUIText;
+    [SerializeField] AudioSource consoleBeep;
+    [SerializeField] AudioSource grabItem;
 
 
     bool isInteractUIActive = false;
@@ -275,6 +277,8 @@ public class PlayerInteract : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive)
         {
+            grabItem.Play();
+
             fuseList.Add(fuseObject);
 
             if (fuseObject != null)
@@ -303,6 +307,8 @@ public class PlayerInteract : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive )
         {
+            consoleBeep.Play();
+
             currentRestartTimer = restartTimer;
 
             gameManager.areAllTasksComplete = false;
@@ -312,7 +318,13 @@ public class PlayerInteract : MonoBehaviour
             gameManager.FinishTask();
 
             if (gameManager.isElevatorBroken)
+            {
+                // Stop sound
+                gameManager.alarmSound.Stop();
+
+
                 StartCoroutine(RestartingElevator());
+            }
             else
                 gameManager.StartElevator();
         }
