@@ -40,8 +40,6 @@ public class Intercom : MonoBehaviour
     {
         float distance = Vector3.Distance(transform.position, player.position);
 
-        Debug.Log(distance);
-
         if (distance > 4f)
             return;
 

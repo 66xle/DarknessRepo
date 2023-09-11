@@ -860,7 +860,7 @@ MonoBehaviour:
   deathTime: 2
   lightTime: 1.5
   edgeWidth: 0.2
-  deathgroanClip: {fileID: 0}
+  deathgroanClip: {fileID: 8300000, guid: 84c1a44715dc84fdd9de069f7a992320, type: 3}
   killClip: {fileID: 8300000, guid: 3e1a670be5c03480288e94c987142650, type: 3}
   scuttle1: {fileID: 8300000, guid: 2fb9aa8afc0181b418909d14483648a6, type: 3}
   scuttle2: {fileID: 8300000, guid: 7fabd1ad30ac9ad45a8ea7162edfdea1, type: 3}
@@ -4513,7 +4513,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 75000
+  m_Intensity: 5
   m_Range: 15
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -4583,9 +4583,9 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
-  m_Intensity: 3000
+  m_Intensity: 5
   m_EnableSpotReflector: 1
-  m_LuxAtDistance: 5
+  m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
   m_SpotIESCutoffPercent: 100
   m_LightDimmer: 1

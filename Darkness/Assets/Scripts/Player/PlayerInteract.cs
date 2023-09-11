@@ -282,6 +282,8 @@ public class PlayerInteract : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && isInteractUIActive)
         {
+            canCollectFuse = false;
+
             grabItem.Play();
 
             fuseList.Add(fuseObject);

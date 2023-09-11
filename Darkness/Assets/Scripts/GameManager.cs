@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] SphereCollider clearCollider;
     public AudioSource alarmSound;
     [SerializeField] AudioSource elevatorMovingSound;
+    [SerializeField] GameObject endScreen;
     
 
     [Header("Gate Order")]
@@ -270,6 +271,23 @@ public class GameManager : MonoBehaviour
             // Bake navmesh here
             navSurface.BuildNavMesh();
 
+            if (currentYAxis >= 300f)
+            {
+                // Stop game fade to end screen
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                Time.timeScale = 0;
+                isPaused = true;
+
+                elevatorMovingSound.Stop();
+                
+
+                endScreen.SetActive(true);
+
+                yield break;
+            }
+
+
             if (currentYAxis >= yAxisBreakDown)
             {
                 Debug.Log(yAxisBreakDown);
@@ -343,6 +361,7 @@ public class GameManager : MonoBehaviour
 
         LoadTask();
     }
+
 
     void LoadTask()
     {
