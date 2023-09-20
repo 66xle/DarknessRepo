@@ -193,7 +193,6 @@ public class Enemy : MonoBehaviour
                 speed = 6f;
             }
 
-
             // Get Rotation
             Quaternion targetRot = Quaternion.LookRotation(dir);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * speed);

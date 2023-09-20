@@ -12,15 +12,16 @@ public class PlayerMovement : MonoBehaviour
     [Header("Camera Settings")]
     public float mouseSensitivity = 5f;
 
-    
+    [Header("Death")]
+    [SerializeField] float faceAIRotationSpeed = 5f;
+    private bool enemyStartAttackAnim = false;
+    private bool disablePlayerMovement = false;
+
     [Header("References")]
     public Transform playerHead;
     public MenuSystem menuSystem;
 
-    bool startAttackAnim = false;
-    bool disablePlayerMovement = false;
-    [SerializeField] float faceAIRotationSpeed = 5f;
-    [SerializeField] float moveForce = 5f;
+    
 
     [HideInInspector]
     public Vector3 targetVelocity = Vector3.zero; // Made public for head bobbing
@@ -39,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        startAttackAnim = false;
+        enemyStartAttackAnim = false;
         disablePlayerMovement = false;
 
         rb = GetComponent<Rigidbody>();
@@ -120,6 +121,8 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector3 dir = other.transform.position - transform.position;
 
+            #region Raycast Check
+
             RaycastHit hit;
 
             if (Physics.Raycast(transform.position, dir, out hit, 10f))
@@ -128,21 +131,27 @@ public class PlayerMovement : MonoBehaviour
                     return;
             }
 
+            #endregion
 
+            #region Audio
+
+            // Disable audio
             other.GetComponent<AudioSource>().clip = other.GetComponent<Enemy>().killClip;
             StartCoroutine(DisableAudioSource());
 
+            // Disable enemy audio
             for(int i = 0; i < spawnSystem.transform.childCount; i++)
             {
                 spawnSystem.transform.GetChild(i).GetComponent<AudioSource>().enabled = false;
             }
+
+            #endregion
 
             other.gameObject.GetComponent<BoxCollider>().enabled = false;
             other.gameObject.GetComponent<NavMeshAgent>().enabled = false;
 
             Animator animController = other.gameObject.GetComponentInChildren<Animator>();
             animController.SetTrigger("KillPlayer");
-
 
             rb.useGravity = false;
             disablePlayerMovement = true;
@@ -152,7 +161,6 @@ public class PlayerMovement : MonoBehaviour
             enemy.rotateToPlayer = true;
 
             StartCoroutine(LookAtHornet(enemy, animController, other.transform.position));
-
             StartCoroutine(enemy.RotateToPlayer());
         }
     }
@@ -176,10 +184,10 @@ public class PlayerMovement : MonoBehaviour
         do
         {
             // If minotuar is on screen play animation
-            if (RendererExtensions.IsVisibleFrom(transform.GetComponent<Renderer>(), transform.GetComponentInChildren<Camera>()) && !startAttackAnim || angle < 5f && !startAttackAnim)
+            if (RendererExtensions.IsVisibleFrom(transform.GetComponent<Renderer>(), transform.GetComponentInChildren<Camera>()) && !enemyStartAttackAnim || angle < 5f && !enemyStartAttackAnim)
             {
                 animController.speed = 1f;
-                startAttackAnim = true;
+                enemyStartAttackAnim = true;
             }
 
             // Rotate player rotation to minotuar
@@ -201,7 +209,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         animController.speed = 1f;
-        startAttackAnim = true;
+        enemyStartAttackAnim = true;
     }
 
 
