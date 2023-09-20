@@ -26908,6 +26908,53 @@ Transform:
   m_Father: {fileID: 1957863198}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2052434996
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2052434998}
+  - component: {fileID: 2052434997}
+  m_Layer: 0
+  m_Name: MenuSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2052434997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2052434996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c2564c4bcabffd4fb2defb62e11e60c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 0}
+  gameOverMenu: {fileID: 0}
+  endScreen: {fileID: 0}
+  isPaused: 0
+--- !u!4 &2052434998
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2052434996}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 37.431244, y: -45.359364, z: 10.077983}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2063067920 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7d9a3acb5284c466dbb898d84b13e9e7, type: 3}
@@ -29820,7 +29867,7 @@ MonoBehaviour:
   maxVelocityChange: 10
   mouseSensitivity: 5
   playerHead: {fileID: 3222856241309182606}
-  gameManager: {fileID: 6255428113051187986}
+  menuSystem: {fileID: 0}
   faceAIRotationSpeed: 5
   moveForce: 0
   targetVelocity: {x: 0, y: 0, z: 0}
@@ -30104,7 +30151,7 @@ MonoBehaviour:
   ignoreLayer:
     serializedVersion: 2
     m_Bits: 1032
-  gameManager: {fileID: 6255428113051187986}
+  menuSystem: {fileID: 0}
   batteryPercentage: {fileID: 7930072633084594653}
   isTorchActive: 0
   isUVActive: 0
@@ -30159,6 +30206,7 @@ MonoBehaviour:
   fixConsoleText: Restart Elevator
   intercomText: Interact with intercom
   gameManager: {fileID: 6255428113051187986}
+  menuSystem: {fileID: 0}
   headCamera: {fileID: 3222856241309182606}
   interactUI: {fileID: 7930072632169232444}
   interactUIText: {fileID: 7930072632308434366}
@@ -32296,7 +32344,6 @@ MonoBehaviour:
   timeToReachPlatform: 5
   graceTimeWhenElevatorStop: 0
   lowerPlatformYAxis: -15.8
-  clearColldierMaxRadius: 3
   currentGateLevel: {fileID: 0}
   fuseConsoleText: Find fuse & insert here
   scanConsoleText: Require Identification
@@ -32312,19 +32359,17 @@ MonoBehaviour:
   rough: 2
   fIn: 1.24
   fOut: 0.68
-  spawnScript: {fileID: 893229324}
-  interactScript: {fileID: 3222856242102433407}
   consoleUI: {fileID: 1128654537}
   lowerPlatform: {fileID: 1039064907}
-  pauseMenu: {fileID: 7930072632883141467}
-  gameoverMenu: {fileID: 7930072632328993967}
   animController: {fileID: 919132148644935443}
   hatchA: {fileID: 1512365119956445710}
   hatchB: {fileID: 3994829797560087828}
-  clearCollider: {fileID: 919132148644935442}
-  alarmSound: {fileID: 7224343043213444802}
+  startingArea: {fileID: 0}
+  spawnScript: {fileID: 893229324}
+  interactScript: {fileID: 3222856242102433407}
+  menuSystem: {fileID: 0}
   elevatorMovingSound: {fileID: 6255428113051187991}
-  endScreen: {fileID: 1665631221}
+  alarmSound: {fileID: 7224343043213444802}
   gateOrderList:
   - {fileID: 11400000, guid: faf1210ab161378419fc6707ee671b6e, type: 2}
   - {fileID: 11400000, guid: e6c7d7a1e3671734980ab343fb01bd24, type: 2}
@@ -32333,8 +32378,6 @@ MonoBehaviour:
   isElevatorBroken: 0
   areAllTasksComplete: 1
   canSpawnEnemy: 0
-  isPaused: 0
-  stairs: {fileID: 1932781093}
 --- !u!114 &6255428113051187987
 MonoBehaviour:
   m_ObjectHideFlags: 0

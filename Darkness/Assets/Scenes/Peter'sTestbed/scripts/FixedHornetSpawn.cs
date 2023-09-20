@@ -10,6 +10,7 @@ public class FixedHornetSpawn : MonoBehaviour
     public GameObject spawnObject;
     public Transform playerTransform;
     public GameManager gameManager;
+    public MenuSystem menuSystem;
 
     [Header("Spawn Settings")]
     public float spawnInterval = 10;
@@ -45,7 +46,7 @@ public class FixedHornetSpawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameManager.canSpawnEnemy && !gameManager.isPaused)
+        if (gameManager.canSpawnEnemy && !menuSystem.isPaused)
         {
             CheckDistance();
             SpawnEnemy();

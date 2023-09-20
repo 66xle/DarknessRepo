@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     
     [Header("References")]
     public Transform playerHead;
-    public GameManager gameManager;
+    public MenuSystem menuSystem;
 
     bool startAttackAnim = false;
     bool disablePlayerMovement = false;
@@ -50,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (gameManager.isPaused || disablePlayerMovement)
+        if (menuSystem.isPaused || disablePlayerMovement)
             return;
 
         Movement();
@@ -58,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
 
     void LateUpdate()
     {
-        if (gameManager.isPaused || disablePlayerMovement)
+        if (menuSystem.isPaused || disablePlayerMovement)
             return;
 
         LookAround();
@@ -214,7 +214,7 @@ public class PlayerMovement : MonoBehaviour
             spawnSystem.transform.GetChild(i).GetComponent<AudioSource>().enabled = false;
         }
 
-        gameManager.Death();
+        menuSystem.Death();
     }
 
 }

@@ -35,7 +35,7 @@ public class Torch : MonoBehaviour
     [Header("References")]
     [SerializeField] GameObject torch;
     [SerializeField] LayerMask ignoreLayer;
-    [SerializeField] GameManager gameManager;
+    [SerializeField] MenuSystem menuSystem;
     [SerializeField] Slider batteryPercentage;
 
     #region Internal Variables
@@ -62,7 +62,7 @@ public class Torch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameManager.isPaused)
+        if (menuSystem.isPaused)
             return;
 
         ToggleTorch();

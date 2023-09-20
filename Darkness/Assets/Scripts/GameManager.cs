@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] float timeToReachPlatform;
     [SerializeField] float graceTimeWhenElevatorStop = 5f;
     [SerializeField] float lowerPlatformYAxis = 5f;
-    [SerializeField] float clearColldierMaxRadius = 1f;
     [HideInInspector] public GateLevel currentGateLevel;
     private GateLevel nextGateLevel;
 
@@ -42,55 +41,58 @@ public class GameManager : MonoBehaviour
     [SerializeField] float fIn = 1f;
     [SerializeField] float fOut = 1f;
 
-
     [Header("References")]
-    [SerializeField] FixedHornetSpawn spawnScript;
-    [SerializeField] PlayerInteract interactScript;
     public TextMeshProUGUI consoleUI;
     [SerializeField] Transform lowerPlatform;
-    [SerializeField] GameObject pauseMenu;
-    [SerializeField] GameObject gameoverMenu;
     [SerializeField] Animator animController;
     [SerializeField] BoxCollider hatchA;
     [SerializeField] BoxCollider hatchB;
-    [SerializeField] SphereCollider clearCollider;
-    public AudioSource alarmSound;
+    public GameObject startingArea;
+
+    [Header("Scripts")]
+    [SerializeField] FixedHornetSpawn spawnScript;
+    [SerializeField] PlayerInteract interactScript;
+    [SerializeField] MenuSystem menuSystem;
+
+    [Header("Sounds")]
     [SerializeField] AudioSource elevatorMovingSound;
-    [SerializeField] GameObject endScreen;
-    
+    public AudioSource alarmSound;
 
     [Header("Gate Order")]
     [SerializeField] List<GateLevel> gateOrderList;
 
+
+    #region Internal Variables
+
     private List<GateLevel> gateQueue;
     private List<GateLevel.Tasks> taskQueue;
-
-
     private GateLevel.Tasks currentTask;
+
     private float currentYAxis;
     private float speedtoMove;
     private float yAxisToStop;
     private float yAxisBreakDown;
+
     private NavMeshSurface navSurface;
+    private CameraShakeInstance elevatorShake;
+    
 
     [HideInInspector] public bool isElevatorBroken;
     [HideInInspector] public bool areAllTasksComplete = true;
     [HideInInspector] public bool canSpawnEnemy = false;
-
-    [HideInInspector] public bool isPaused = false;
-
     private bool isLowerPlatformReached = false;
 
-    public GameObject stairs;
 
-    CameraShakeInstance elevatorShake;
+
+    #endregion
+
 
     // Start is called before the first frame update
     void Start()
     {
         areAllTasksComplete = true;
         canSpawnEnemy = false;
-        isPaused = false;
+        
         isLowerPlatformReached = false;
         isElevatorBroken = false;
         yAxisBreakDown = 10000f;
@@ -105,57 +107,6 @@ public class GameManager : MonoBehaviour
 
         currentTask = taskQueue[0];
         currentYAxis = currentGateLevel.yAxis;
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (isPaused)
-            {// unpause
-                ResumeGame();
-            }
-            else
-            {// pause
-                PauseGame();
-            }
-        }
-    }
-
-    public void Death()
-    {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        Time.timeScale = 0;
-
-        isPaused = true;
-
-        gameoverMenu.SetActive(true);
-    }
-
-    void PauseGame()
-    {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        Time.timeScale = 0;
-        pauseMenu.SetActive(true);
-        isPaused = true;
-    }
-
-    public void ResumeGame()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        Time.timeScale = 1;
-        pauseMenu.SetActive(false);
-        isPaused = false;
-    }
-
-    public void MainMenu()
-    {
-        Time.timeScale = 1;
-
-        SceneManager.LoadScene(0);
     }
 
     public void StartElevator()
@@ -175,29 +126,30 @@ public class GameManager : MonoBehaviour
 
         yAxisToStop = nextGateLevel.yAxis;
 
+        #region Move Elevator
+
         if (!isLowerPlatformReached)
         {
             StartCoroutine(MoveLowerPlatform());
+            startingArea.GetComponent<MeshCollider>().enabled = false;
         }
-        else
+        else // Continue moving platform
         {
-            CalculateStopPoint();
+            CalculateBreakDownPoint();
             animController.SetBool("isConsoleOpen", false);
         }
 
-        stairs.GetComponent<MeshCollider>().enabled = false;
+        #endregion
     }
 
-    void CalculateStopPoint()
+    void CalculateBreakDownPoint()
     {
         yAxisBreakDown = UnityEngine.Random.Range(currentYAxis + 50f, yAxisToStop - 100f);
-
     }
 
     IEnumerator MoveLowerPlatform()
     {
         elevatorShake = CameraShaker.Instance.StartShake(magnitude, roughness, fadeIn);
-
         elevatorMovingSound.Play();
 
         float currentPlatformYAxis = lowerPlatform.transform.position.y;
@@ -226,17 +178,15 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        elevatorMovingSound.Stop();
-
         isLowerPlatformReached = true;
-
+        elevatorMovingSound.Stop();
         elevatorShake.StartFadeOut(fadeOut);
 
         // Big shake here
         CameraShaker.Instance.ShakeOnce(mag, rough, fIn, fOut);
 
 
-        CalculateStopPoint();
+        CalculateBreakDownPoint();
 
         yield return new WaitForSeconds(2f);
         StartCoroutine(MoveEnvironment());
@@ -245,11 +195,10 @@ public class GameManager : MonoBehaviour
     public IEnumerator MoveEnvironment()
     {
         elevatorShake = CameraShaker.Instance.StartShake(magnitude, roughness, fadeIn);
+        elevatorMovingSound.Play();
 
         // Calculate move speed
         speedtoMove = (yAxisToStop - environmentToMove.position.y) / timeToReachGate;
-
-        elevatorMovingSound.Play();
 
         while (currentYAxis != yAxisToStop)
         {
@@ -271,22 +220,20 @@ public class GameManager : MonoBehaviour
             // Bake navmesh here
             navSurface.BuildNavMesh();
 
+            #region Finish Game
+
             if (currentYAxis >= 300f)
             {
-                // Stop game fade to end screen
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                Time.timeScale = 0;
-                isPaused = true;
-
+                // Finish game
                 elevatorMovingSound.Stop();
-                
-
-                endScreen.SetActive(true);
+                menuSystem.EndGame();
 
                 yield break;
             }
 
+            #endregion
+
+            #region Break Down
 
             if (currentYAxis >= yAxisBreakDown)
             {
@@ -296,11 +243,12 @@ public class GameManager : MonoBehaviour
                 break;
             }
 
+            #endregion
+
             yield return null;
         }
 
         elevatorMovingSound.Stop();
-
         elevatorShake.StartFadeOut(fadeOut);
 
         // Big shake here
@@ -310,22 +258,7 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        clearCollider.enabled = true;
         animController.SetBool("isConsoleOpen", true);
-
-        while (clearCollider.radius < clearColldierMaxRadius)
-        {
-            float raduis = clearCollider.radius + Time.deltaTime * 5f;
-
-            clearCollider.radius = raduis;
-
-            Debug.Log(raduis);
-
-            yield return null;
-        }
-
-        clearCollider.enabled = false;
-
         consoleUI.text = reachedConsoleText;
 
         #endregion
@@ -344,7 +277,7 @@ public class GameManager : MonoBehaviour
             spawnScript.LoadSpawnPoints(currentGateLevel.currentGate);
             canSpawnEnemy = true;
         }
-        else
+        else // Elevator is broken
         {
             spawnScript.LoadElevatorSpawnPoint();
             canSpawnEnemy = true;
@@ -361,7 +294,6 @@ public class GameManager : MonoBehaviour
 
         LoadTask();
     }
-
 
     void LoadTask()
     {
@@ -397,17 +329,11 @@ public class GameManager : MonoBehaviour
 
     public void FinishTask()
     {
-        if (isElevatorBroken)
-        {
-            return;
-        }
+        if (isElevatorBroken) return;
 
         taskQueue.Remove(currentTask);
 
-        if (currentTask == GateLevel.Tasks.StartElevator)
-        {
-            return;
-        }
+        if (currentTask == GateLevel.Tasks.StartElevator) return;
 
         if (taskQueue.Count > 0)
             LoadTask();
