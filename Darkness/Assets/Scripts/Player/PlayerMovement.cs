@@ -133,33 +133,32 @@ public class PlayerMovement : MonoBehaviour
 
             #endregion
 
-            #region Audio
+            Enemy enemyScript = other.GetComponent<Enemy>();
+
 
             // Disable audio
-            other.GetComponent<AudioSource>().clip = other.GetComponent<Enemy>().killClip;
-            StartCoroutine(DisableAudioSource());
+            enemyScript.hissAudioSource.clip = enemyScript.killClip;
+            StartCoroutine(DisableAudioSource(enemyScript.hissAudioSource));
 
-            // Disable enemy audio
-            for(int i = 0; i < spawnSystem.transform.childCount; i++)
-            {
-                spawnSystem.transform.GetChild(i).GetComponent<AudioSource>().enabled = false;
-            }
 
-            #endregion
-
+            // Disable enemy collider and nav agent
             other.gameObject.GetComponent<BoxCollider>().enabled = false;
             other.gameObject.GetComponent<NavMeshAgent>().enabled = false;
 
+            // Trigger kill animation
             Animator animController = other.gameObject.GetComponentInChildren<Animator>();
             animController.SetTrigger("KillPlayer");
 
+            // Freeze player
             rb.useGravity = false;
             disablePlayerMovement = true;
             transform.GetComponent<CapsuleCollider>().enabled = false;
 
+            // Rotate enemy
             Enemy enemy = other.gameObject.GetComponent<Enemy>();
             enemy.rotateToPlayer = true;
 
+            // Rotate player
             StartCoroutine(LookAtHornet(enemy, animController, other.transform.position));
             StartCoroutine(enemy.RotateToPlayer());
         }
@@ -213,15 +212,18 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    IEnumerator DisableAudioSource()
+    IEnumerator DisableAudioSource(AudioSource audio)
     {
         yield return new WaitForSeconds(3.0f);
 
         for (int i = 0; i < spawnSystem.transform.childCount; i++)
         {
-            spawnSystem.transform.GetChild(i).GetComponent<AudioSource>().enabled = false;
+            //spawnSystem.transform.GetComponent<Enemy>().hissAudioSource.enabled = false;
         }
 
+        audio.enabled = true;
+
+        audio.Play();
         menuSystem.Death();
     }
 

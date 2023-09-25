@@ -8,26 +8,35 @@ using UnityEngine.Experimental.GlobalIllumination;
 
 public class Enemy : MonoBehaviour
 {
+    [Header("Death Settings")]
+    [SerializeField] float deathTime;
+    [SerializeField] float lightTime;
+    [SerializeField] float edgeWidth = 0.5f;
+    
+
+    [Header("Take Damage")]
     [SerializeField] float resetTimer = 1f;
     private float currentResetTimer;
-    public float disabletime;
-    public float deathTime;
-    public float lightTime;
-    public float edgeWidth = 0.5f;
+    
+    
+    
+    private int scuttleClipNumber = 1;
+    [SerializeField] float scuttleTimer = 0;
+    [SerializeField] float scuttleTimerMax = 4;
+    [SerializeField] float rotationAngle = 50;
+
+    [Header("Audio")]
+    [SerializeField] AudioClip deathgroanClip;
+    public AudioClip killClip;
+    [SerializeField] List<AudioClip> hissSoundList;
+
+    [Header("References")]
+    public AudioSource hissAudioSource;
+    public AudioSource walkAudioSource;
+
     private Material deathMat;
     private NavMeshAgent agent;
     private Animator animator;
-    AudioSource audioSource;
-    public AudioClip deathgroanClip;
-    public AudioClip killClip;
-    public AudioClip scuttle1;
-    public AudioClip scuttle2;
-    public AudioClip scuttle3;
-    public AudioClip hissClip;
-    int scuttleClipNumber = 1;
-    public float scuttleTimer = 0;
-    public float scuttleTimerMax = 4;
-    public float rotationAngle = 50;
 
     float distanceToPlayer;
     /*[HideInInspector]*/ public bool isDead;
@@ -36,7 +45,6 @@ public class Enemy : MonoBehaviour
         get { return animator.GetBool("IsLightShownOn"); } 
         set { animator.SetBool("IsLightShownOn", value); } 
     }
-
 
     [HideInInspector] public bool rotateToPlayer;
 
@@ -64,12 +72,6 @@ public class Enemy : MonoBehaviour
         deathMat = new Material(meshRend.material);
 
         meshRend.material = deathMat;
-
-        audioSource = this.GetComponent<AudioSource>();
-
-
-        audioSource.clip = RandomiseScuttleClip();
-        audioSource.Play();
     }
 
     // Update is called once per frame
@@ -77,23 +79,19 @@ public class Enemy : MonoBehaviour
     {
         scuttleTimer += Time.deltaTime;
 
-        distanceToPlayer = Vector3.Distance(targetTransform.position, this.transform.position);
+        
 
         if (!isDead && !isCringeAnimator && agent.isOnNavMesh)
         {
             agent.SetDestination(targetTransform.position);
-            if(!audioSource.isPlaying && distanceToPlayer <= 4)
+
+            distanceToPlayer = Vector3.Distance(targetTransform.position, transform.position);
+            if (!walkAudioSource.isPlaying && distanceToPlayer <= 4)
             {
-                audioSource.clip = hissClip;
-                audioSource.Play();
+                // play waling sound
+                walkAudioSource.Play();
             }
-            else if(!audioSource.isPlaying && scuttleTimer >= scuttleTimerMax)
-            {
-                audioSource.clip = RandomiseScuttleClip();
-                audioSource.Play();
-                scuttleTimerMax = Random.Range(4, 6);
-                scuttleTimer = 0;
-            }
+            
            
 
         }
@@ -115,7 +113,6 @@ public class Enemy : MonoBehaviour
         if (currentResetTimer <= 0f)
         {
             animator.SetBool("IsLightStillOn", false);
-          
         }
     }
 
@@ -124,13 +121,21 @@ public class Enemy : MonoBehaviour
         currentResetTimer = resetTimer;
 
         isCringeAnimator = true;
+        HissAtPlayer();
+
         animator.SetBool("IsLightStillOn", true);
-        if (!audioSource.isPlaying)
+    }
+
+
+    public void HissAtPlayer()
+    {
+        if (!hissAudioSource.isPlaying)
         {
-            audioSource.clip = deathgroanClip;
-            audioSource.Play();
+            int index = Random.Range(0, hissSoundList.Count);
+
+            hissAudioSource.clip = hissSoundList[index];
+            hissAudioSource.Play();
         }
-        
     }
 
     public void StartDeathCoroutine()
@@ -148,6 +153,8 @@ public class Enemy : MonoBehaviour
         isDead = true;
         spawnScript.spawnedEnemiesList.Remove(guid);
         animator.SetTrigger("Death");
+        hissAudioSource.clip = deathgroanClip;
+        hissAudioSource.Play();
 
         // Disable colldier to not trigger player death
         GetComponent<BoxCollider>().enabled = false;
@@ -202,31 +209,6 @@ public class Enemy : MonoBehaviour
 
 
         agent.updateRotation = true;
-    }
-
-    AudioClip RandomiseScuttleClip()
-    {
-        scuttleClipNumber = Random.Range(1, 3);
-        if (scuttleClipNumber == 1)        
-            return scuttle1;
-        
-        if (scuttleClipNumber == 2)        
-            return scuttle2;
-        
-        if (scuttleClipNumber == 3)        
-            return scuttle3;
-        
-        return scuttle1;
-    }
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            audioSource.clip = killClip;
-
-        }
     }
 
  
